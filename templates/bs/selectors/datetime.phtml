@@ -1,0 +1,66 @@
+<?php if ($date) { ?>
+<div id="<?php echo $calendarcontainer; ?>" class="round-date-selector" data-year="<?php echo $year; ?>" data-month="<?php echo $month; ?>" data-day="<?php echo $day; ?>">
+    <label class="date-label"><?php echo $view->translate($label_date); ?></label>
+    <div class="circles-selector">
+        <svg class="round-circles" xmlns="http://www.w3.org/2000/svg" version="1.1" width="210" height="210" viewBox="0 0 210 210">
+            <circle cx="105" cy="105" r="80" stroke="yellow" stroke-width="1" fill="white" />
+            <circle cx="105" cy="105" r="60" stroke="lightsteelblue" stroke-width="1" fill="white" />
+            <circle cx="105" cy="105" r="40" stroke="gray" stroke-width="1" fill="white" />
+            <text class="month-name" x="90" y="18" fill="gray">Jan</text>
+            <text class="month-days" x="95" y="85" fill="gray">31</text>
+        </svg>
+        <svg class="pointer_months" xmlns="http://www.w3.org/2000/svg" version="1.1" width="20" height="20" viewBox="0 0 30 30">
+            <circle cx="15" cy="15" r="13" stroke="gainsboro" stroke-width="2" fill="yellow" />
+        </svg>
+        <svg class="pointer_days" xmlns="http://www.w3.org/2000/svg" version="1.1" width="20" height="20" viewBox="0 0 30 30">
+            <circle cx="15" cy="15" r="13" stroke="gainsboro" stroke-width="2" fill="navy" />
+        </svg>
+        <svg class="pointer_years" xmlns="http://www.w3.org/2000/svg" version="1.1" width="20" height="20" viewBox="0 0 30 30">
+            <circle cx="15" cy="15" r="13" stroke="gainsboro" stroke-width="2" fill="black" />
+        </svg>
+        <canvas class="arc_canvas" width="210" height="210"></canvas>
+    </div>
+    <span class="date"></span>
+    <input class="date-input" type="hidden" name="<?php echo $name_date; ?>" value="<?php echo $year . '-' . $month . '-' . $day; ?>">
+</div>
+<?php } ?>
+<?php if ($clock) { ?>
+<div id="<?php echo $clockcontainer; ?>" class="round-date-selector" data-hour="<?php echo $hour; ?>" data-minute="<?php echo $minute; ?>">
+    <label class="clock-label"><?php echo $view->translate($label_clock); ?></label>
+    <div class="circles-selector">
+        <svg class="round-circles" xmlns="http://www.w3.org/2000/svg" version="1.1" width="210" height="210" viewBox="0 0 210 210">
+            <circle cx="105" cy="105" r="80" stroke="greenyellow" stroke-width="1" fill="white" />
+            <circle cx="105" cy="105" r="60" stroke="salmon" stroke-width="1" fill="white" />
+            <text x="2" y="110" fill="gray">18</text>
+            <text x="50" y="110" fill="gray">45</text>
+            <text x="95" y="18" fill="gray">24</text>
+            <text x="95" y="64" fill="gray">60</text>
+            <text x="95" y="158" fill="gray">30</text>
+            <text x="95" y="204" fill="gray">12</text>
+            <text x="140" y="110" fill="gray">15</text>
+            <text x="190" y="110" fill="gray">6</text>
+        </svg>
+        <svg class="pointer_hours" xmlns="http://www.w3.org/2000/svg" version="1.1" width="20" height="20" viewBox="0 0 30 30">
+            <circle cx="15" cy="15" r="13" stroke="gainsboro" stroke-width="2" fill="seagreen" />
+        </svg>
+        <svg class="pointer_minutes" xmlns="http://www.w3.org/2000/svg" version="1.1" width="20" height="20" viewBox="0 0 30 30">
+            <circle cx="15" cy="15" r="13" stroke="gainsboro" stroke-width="2" fill="firebrick" />
+        </svg>
+        <canvas class="arc_canvas" width="210" height="210"></canvas>
+    </div>
+    <span class="clock"></span>
+    <input class="clock-input" type="hidden" name="<?php echo $name_clock; ?>" value="<?php echo $view->formatDateTime($hour . ':' . $minute, '%H:%M'); ?>">
+</div>
+<?php } ?>
+<script>
+<?php if ($date) { ?>
+    DateSlider('<?php echo $calendarcontainer; ?>',
+    {
+        locale: ['<?php echo preg_replace('/_/', '-', \Fado\Model\Setting::get('lang')); ?>', {weekday: 'short', year: 'numeric', month: 'short', day: 'numeric'}]
+    }
+);
+<?php } ?>
+<?php if ($clock) { ?>
+    /* ClockSlider('<?php echo $clockcontainer; ?>', {}); */
+<?php } ?>
+</script>

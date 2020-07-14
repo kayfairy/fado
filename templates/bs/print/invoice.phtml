@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="<?php echo $view->getActiveLanguage(); ?>">
+<head>
+
+    <title><?php echo $view->translate('PROGRAM_TITLE'); ?></title>
+
+    <?php
+
+    $view->includeTemplate('headersrc', array());
+
+    ?>
+
+</head>
+
+<body class="mail">
+    <div id="wrapper">
+        <div id="page-wrapper" style="margin: 10px; border: 1px;">
+            <div class="row">
+                <img class="" width="107" height="56" src="https://127.0.0.1/vendor/fado.png" alt="Fado">
+            <?php
+             $view->includeTemplate('invoiceview', array('invoices' => (array) json_decode(\Fado\Model\Cache::get('activeInvoice'), true), 'shop' => json_decode(\Fado\Model\Cache::get('InvoiceViewShopCustomer'), true), 'activeUser' => json_decode(\Fado\Model\Cache::get('InvoiceViewShopSeller'), true), 'inInvoiceView' => true, 'inPrintView' => true));
+            ?>
+            </div>
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+</body>
+
+</html>

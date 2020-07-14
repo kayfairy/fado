@@ -1,0 +1,24 @@
+.slider-weekday-container {
+    width: 600px;
+    height: 100px;
+}
+.slider-start-weekday {
+    position: absolute;
+    cursor: pointer;
+    z-index 700;
+}
+.slider-weekday {
+    position: absolute;
+    margin-top: 15px;
+    z-index 657;
+}
+.slider-end-weekday {
+    position: absolute;
+    cursor: pointer;
+    margin-left: 600px;
+    z-index 710;
+}
+span.range {
+    position: absolute;
+    margin: 60px 0px 0px 230px;
+}

@@ -1,0 +1,128 @@
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-static-top" style="margin-bottom: 0;">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand-icon" href="/">
+            <img class="navbar-icon" src="<?php echo $view->getHostLink(); ?>/vendor/fado.png" alt="<?php echo $view->translate('PROGRAM_NAME'); ?>">
+        </a>
+        <!--<a class="navbar-brand" href="/">
+            <?php echo $view->translate('PROGRAM_NAME'); ?>
+        </a>-->
+    </div>
+    <!-- /.navbar-header -->
+
+    <ul class="nav navbar-top-links navbar-right pull-right">
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <span class="glyphicon glyphicon-wrench"></span> <span class="glyphicon glyphicon-chevron-down"></span>
+            </a>
+            <ul class="dropdown-menu dropdown-user">
+                <?php
+                    if ($view->userRights->isAllowed('us', \Fado\Controller\RouterRights::$READ) || $view->userRights->isAllowed('us', \Fado\Controller\RouterRights::$WRITE)) {
+                ?>
+                <li>
+                    <a href="<?php echo $view->getRewriteUrl(array('user' => $view->getController('Source\Users')->getLoggedInUser()['sid']), 'us'); ?>#user-panel">
+                        <span class="glyphicon glyphicon-user"></span> <strong><?php echo $view->getController('Source\Users')->getLoggedInUser()['name'];?></strong>
+                    </a>
+                </li>
+                <?php
+                    } else {
+                ?>
+                <li>
+                    <a href="#">
+                        <span class="glyphicon glyphicon-user"></span> <strong><?php echo $view->getController('Source\Users')->getLoggedInUser()['name'];?></strong>
+                    </a>
+                </li>
+                <?php
+                    }
+                ?>
+                <li class="divider"></li>
+                <li><a href="<?php echo $view->getRewriteUrl(array(), 'st'); ?>"><span class="glyphicon glyphicon-wrench"></span> <?php echo $view->translate('NAV_MENU_SETTINGS'); ?></a></li>
+                <li class="divider"></li>
+                <li><a href="<?php echo $view->getRewriteUrl(array('logout' => 1), 'sh'); ?>"><span class="glyphicon glyphicon-off"></span> <?php echo $view->translate('NAV_MENU_LOGOUT'); ?></a></li>
+            </ul>
+            <!-- /.dropdown-user -->
+        </li>
+        <!-- /.dropdown -->
+    </ul>
+    <!-- /.navbar-top-links -->
+</nav>
+<div class="navbar-default sidebar">
+    <div class="sidebar-nav navbar-collapse collapse" role="navigation" aria-expanded="false" style="height: 1px;">
+        <ul class="nav in" id="side-menu">
+        <?php
+            if ($view->userRights->isAllowed('sh', \Fado\Controller\RouterRights::$READ) || $view->userRights->isAllowed('sh', \Fado\Controller\RouterRights::$WRITE)) {
+        ?>
+            <li class="active">
+                <a href="<?php echo $view->getRewriteUrl(array(), 'sh'); ?>"><span class="glyphicon glyphicon-home"></span> <?php echo $view->translate('NAV_SHOP'); ?></a>
+            </li>
+        <?php
+            }
+        ?>
+        <?php
+            if ($view->userRights->isAllowed('ve', \Fado\Controller\RouterRights::$READ) || $view->userRights->isAllowed('ve', \Fado\Controller\RouterRights::$WRITE)) {
+        ?>
+            <li>
+                <a href="<?php echo $view->getRewriteUrl(array(), 've'); ?>"><span class="glyphicon glyphicon-road"></span> <?php echo $view->translate('NAV_VEHICLES'); ?></a>
+            </li>
+        <?php
+            }
+        ?>
+        <?php
+            if ($view->userRights->isAllowed('wa', \Fado\Controller\RouterRights::$READ) || $view->userRights->isAllowed('wa', \Fado\Controller\RouterRights::$WRITE)) {
+        ?>
+            <li>
+                <a href="<?php echo $view->getRewriteUrl(array(), 'wa'); ?>"><span class="glyphicon glyphicon-tag"></span> <?php echo $view->translate('NAV_WAREHOUSE'); ?></a>
+            </li>
+        <?php
+            }
+        ?>
+        <?php
+            if ($view->userRights->isAllowed('in', \Fado\Controller\RouterRights::$READ) || $view->userRights->isAllowed('in', \Fado\Controller\RouterRights::$WRITE)) {
+        ?>
+            <li>
+                <a href="<?php echo $view->getRewriteUrl(array(), 'in'); ?>"><span class="glyphicon glyphicon-list"></span> <?php echo $view->translate('NAV_INVOICES'); ?></a>
+            </li>
+        <?php
+            }
+        ?>
+            <li>
+                <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
+        <?php
+            if ($view->userRights->isAllowed('ne', \Fado\Controller\RouterRights::$WRITE)) {
+        ?>
+                <li>
+                    <a href="<?php echo $view->getRewriteUrl(array(), 'ne'); ?>"><span class="glyphicon glyphicon-plus-sign"></span> <?php echo $view->translate('NAV_NEW_INVOICE'); ?></a>
+                </li>
+        <?php
+            }
+        ?>
+                </ul>
+            </li>
+        <?php
+            if ($view->userRights->isAllowed('na', \Fado\Controller\RouterRights::$READ)) {
+        ?>
+            <li>
+                <a href="<?php echo $view->getRewriteUrl(array(), 'na'); ?>"><span class="glyphicon glyphicon-map-marker"></span> <?php echo $view->translate('NAV_ROUTES'); ?></a>
+            </li>
+        <?php
+            }
+        ?>
+        <?php
+            if ($view->userRights->isAllowed('me', \Fado\Controller\RouterRights::$WRITE)) {
+        ?>
+            <li>
+                <a href="<?php echo $view->getRewriteUrl(array(), 'me'); ?>"><span class="glyphicon glyphicon-calendar"></span> <?php echo $view->translate('NAV_MEETINGS'); ?></a>
+            </li>
+        <?php
+            }
+        ?>
+        </ul>
+    </div>
+    <!-- /.sidebar-collapse -->
+</div>

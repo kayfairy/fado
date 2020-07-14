@@ -1,0 +1,87 @@
+<div class="">
+    <div class="col-lg-3">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <?php echo $view->translate('ROUTES_PICKER_SHOPS'); ?>
+            </div>
+            <div class="panel-body">
+                <select class="route-select form-control" name="route-select" multiple="multiple" style="height: 300px;">
+            <?php
+                foreach($shops->get() as $shop) {
+            ?>
+                <option data-lat="<?php echo $shop['lat']; ?>" data-lng="<?php echo $shop['lng']; ?>"><?php echo $shop['description']; ?></option>
+            <?php
+                }
+            ?>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <?php echo $view->translate('ROUTES_PICKER_VEHICLES'); ?>
+            </div>
+            <div class="panel-body">
+                <select class="route-select form-control" name="route-select" multiple="multiple" style="height: 300px;">
+            <?php
+                foreach($vehicles->get() as $vehicle) {
+            ?>
+                <option data-lat="<?php echo $vehicle['lat']; ?>" data-lng="<?php echo $vehicle['lng']; ?>"><?php echo $vehicle['name']; ?></option>
+            <?php
+                }
+            ?>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <?php echo $view->translate('ROUTES_PICKER_INVOICES'); ?>
+            </div>
+            <div class="panel-body">
+                <select class="route-select form-control" name="route-select" multiple="multiple" style="height: 300px;">
+            <?php
+                foreach($invoices->get() as $invoice) {
+            ?>
+                <option data-lat="<?php echo $invoice['lat']; ?>" data-lng="<?php echo $invoice['lng']; ?>"><?php echo $invoice['id']; ?></option>
+            <?php
+                }
+            ?>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <?php echo $view->translate('ROUTES_PICKER_WAREHOUSE_ITEMS'); ?>
+            </div>
+            <div class="panel-body">
+                <select class="route-select form-control" name="route-select" multiple="multiple" style="height: 300px;">
+            <?php
+                foreach($warehouseitems->get() as $warehouseitem) {
+            ?>
+                <option data-lat="<?php echo $warehouseitem['lat']; ?>" data-lng="<?php echo $warehouseitem['lng']; ?>"><?php echo $warehouseitem['name']; ?></option>
+            <?php
+                }
+            ?>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('.route-select option').mousedown(function(e) {
+        e.preventDefault();
+        var originalScrollTop = $(this).parent().scrollTop();
+        $(this).prop('selected', $(this).prop('selected') ? false : true);
+        var self = this;
+        $(this).parent().focus();
+        setTimeout(function() {
+            $(self).parent().scrollTop(originalScrollTop);
+        }, 0);
+        return false;
+    });
+</script>

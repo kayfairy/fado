@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="<?php echo $view->getActiveLanguage(); ?>">
+<head>
+
+    <title><?php echo $view->translate('PROGRAM_TITLE'); ?></title>
+
+    <?php
+
+    $view->includeTemplate('headersrc', array());
+
+    ?>
+
+</head>
+
+<body>
+    <div id="wrapper">
+        <?php
+
+        $view->includeTemplate('navbar', array());
+
+        $formMessages = json_decode(\Fado\Model\Cache::get('formStatus'), true);
+
+        ?>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="colh1-lg-12">
+                    <div class="panel"></div>
+                </div>
+            </div>
+            <div class="row">
+                <?php
+                if (\Fado\Model\Cache::get('message') != '') {
+                ?>
+                <div class="col-lg-12">
+                    <p>
+                        <button type="button" class="btn btn-outline btn-danger"><?php echo $view->translate(\Fado\Model\Cache::get('message')); ?></button>
+                    </p>
+                </div>
+                <?php
+                }
+                ?>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-sun">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <a href="<?php echo $view->getRewriteUrl(array(), 'st'); ?>"><span class="glyphicon glyphicon-arrow-left glyphicon-md"></span></a>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <h3> <?php echo $view->translate('SETTINGS_EDIT'); ?></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <form id="itemform"  method="POST" action="<?php echo $view->getFullLink(); ?>">
+
+                                <div class="form-group <?php echo (isset($formMessages['lang'])) ? 'has-error' : ''; ?>">
+                                    <label><?php echo $view->translate('SETTINGS_LANG'); ?></label>
+                                    <br>
+                                    <select name="lang" class="">
+                                    <?php
+                                        foreach(json_decode($settings['lang_available'], true) as $field) {
+                                    ?>
+                                        <option value="<?php echo $field; ?>"<?php echo ($settings['lang'] == $field) ? ' selected="selected"' : ''; ?>><?php echo $field; ?></option>
+                                    <?php
+                                        }
+                                    ?>
+                                    </select>
+                                </div>
+
+                                
+                                <div class="form-group <?php echo (isset($formMessages['timezone'])) ? 'has-error' : ''; ?>">
+                                    <label><?php echo $view->translate('SETTINGS_DATE_TIMEZONE'); ?></label>
+                                    <br>
+                                    <select name="timezone" class="">
+                                    <?php
+                                        foreach($view->getAvailableTimeZones() as $field) {
+                                    ?>
+                                        <option value="<?php echo $field; ?>"<?php echo ($settings['timezone'] == $field) ? ' selected="selected"' : ''; ?>><?php echo $field; ?></option>
+                                    <?php
+                                        }
+                                    ?>
+                                    </select>
+
+                                </div>
+
+                                <div class="form-group <?php echo (isset($formMessages['date_time_format'])) ? 'has-error' : ''; ?>">
+                                    <label><?php echo $view->translate('SETTINGS_DATETIMEFORMAT_LABEL'); ?></label>
+                                    <br>
+                                    <select name="date_time_format" class="">
+                                    <?php
+                                        foreach(json_decode($settings['date_time_format_available'], true) as $key => $field) {
+                                    ?>
+                                        <option value="<?php echo $view->escapeString($field); ?>"<?php echo ($settings['date_time_format'] == $field) ? ' selected="selected"' : ''; ?>><?php echo $field; ?></option>
+                                    <?php
+                                        }
+                                    ?>
+                                    </select>
+
+                                </div>
+
+                                <div class="form-group <?php echo (isset($formMessages['date_format'])) ? 'has-error' : ''; ?>">
+                                    <label><?php echo $view->translate('SETTINGS_DATEFORMAT_LABEL'); ?></label>
+                                    <br>
+                                    <select name="date_format" class="">
+                                    <?php
+                                        foreach(json_decode($settings['date_format_available'], true) as $key => $field) {
+                                    ?>
+                                        <option value="<?php echo $view->escapeString($field); ?>"<?php echo ($settings['date_format'] == $field) ? ' selected="selected"' : ''; ?>><?php echo $field; ?></option>
+                                    <?php
+                                        }
+                                    ?>
+                                    </select>
+
+                                </div>
+        <?php
+
+        $view->includeTemplate('selectors/selectaggregator', array('listitems' => json_decode($settings['item_amount_units'], true), 'name' => 'item_amount_units', 'label' => 'SETTINGS_AMOUNT_UNITS', 'validator' => 'word'));
+
+        ?>
+
+        <?php
+
+        $view->includeTemplate('selectors/slider', array('name' => 'list_count_single', 'value' => $settings['list_count_single'], 'label' => 'SETTINGS_LIST_COUNT', 'error' => (isset($formMessages['list_count_single'])) ? $formMessages['list_count_single'] : null, 'unit' => ''));
+
+        ?>
+
+                                 <div class="panel panel-success">
+                                        <div class="panel-heading">
+                                            
+                                            <?php echo $view->translate('SETTINGS_MONEY_FORMAT'); ?>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group <?php echo (isset($formMessages['number_format'])) ? 'has-error' : ''; ?>">
+                                            <?php
+                                                $numberFormat = json_decode($settings['number_format']);
+                                            ?>
+                                                <label><?php echo $view->translate('SETTINGS_NUMBER_FORMAT'); ?></label>
+                                                <?php if (isset($formMessages['number_format'])) { ?>
+                                                <label class="control-label" for="inputError"><?php echo $view->translate($formMessages['number_format']); ?></label>
+                                                <?php } ?>
+                                                <br>
+                                                <input name="number_format[]" class="number-format" value="<?php echo $view->decodeHtmlEntities($numberFormat[0]); ?>">
+                                                <input name="number_format[]" class="number-format" value="<?php echo $view->decodeHtmlEntities($numberFormat[1]); ?>">
+                                                <input name="number_format[]" class="number-format" value="<?php echo $view->decodeHtmlEntities($numberFormat[2]); ?>">
+                                            </div>
+                                            <div class="form-group">
+                                                <label><?php echo $view->translate('SETTINGS_CURRENCY_LABEL'); ?></label>
+                                                <?php if (isset($formMessages['units'])) { ?>
+                                                <label class="control-label" for="inputError"><?php echo $view->translate($formMessages['units']); ?></label>
+                                                <?php } ?>
+                                                <br>
+                                                <select name="currency" class="">
+                                                <?php
+                                                    $allCurrencies = json_decode($settings['currencies_available'], true);
+                                                    foreach($allCurrencies as $key => $field) {
+                                                ?>
+                                                    <option value="<?php echo $key + 1; ?>"<?php echo ($allCurrencies[(int) ($settings['currency'] - 1)] == $field) ? ' selected="selected"' : ''; ?>><?php echo $field; ?></option>
+                                                <?php
+                                                    }
+                                                ?>
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group text-left <?php echo (isset($formMessages['vat_on'])) ? 'has-error' : ''; ?>">
+                                                <label><?php echo $view->translate('SETTINGS_VAT_STATUS'); ?></label>
+                                                <div class="checkbox-inline">
+                                                    <input name="vat_on" type="checkbox" class="form-control" value="1"<?php echo ($settings['vat_on'] == '1') ? ' checked="checked"' : ''; ?>>
+                                                </div>
+                                            </div>
+
+                                        <div class="form-group <?php echo (isset($formMessages['invoice_mode'])) ? 'has-error' : ''; ?>">
+                                            <label><?php echo $view->translate('SETTINGS_INVOICE_MODE'); ?></label>
+                                            <br>
+                                            <select name="invoice_mode" class="">
+                                            <?php
+                                                foreach(json_decode($settings['invoice_mode_available'], true) as $key => $field) {
+                                            ?>
+                                                <option value="<?php echo $view->escapeString($field); ?>"<?php echo ($settings['invoice_mode'] == $field) ? ' selected="selected"' : ''; ?>><?php echo $field; ?></option>
+                                            <?php
+                                                }
+                                            ?>
+                                            </select>
+
+                                        </div>
+
+        <?php
+
+        $view->includeTemplate('selectors/selectaggregator', array('listitems' => json_decode($settings['tax_rates'], true), 'name' => 'tax_rates', 'label' => 'SETTINGS_TAX_RATES_PERCENT', 'validator' => 'number'));
+
+        ?>
+                                        </div>
+                                    </div>
+
+                                <div class="form-group text-left <?php echo (isset($formMessages['display_errors'])) ? 'has-error' : ''; ?>">
+                                    <label><?php echo $view->translate('SETTINGS_DISPLAY_ERRORS'); ?></label>
+                                    <div class="checkbox-inline">
+                                        <input name="display_errors" type="checkbox" class="form-control" value="1"<?php echo ($settings['display_errors'] == '1') ? ' checked="checked"' : ''; ?>>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <button type="submit" name="save" value="save_fadosettings" class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> <?php echo $view->translate('SAVE'); ?></button>
+                                </div>
+
+                            </form>
+
+                           <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+</body>
+
+</html>

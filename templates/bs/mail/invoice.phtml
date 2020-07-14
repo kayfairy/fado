@@ -1,0 +1,152 @@
+<?php
+
+use \Fado\Model\Setting as Setting;
+
+$vatOn = (bool) Setting::get('vat_on');
+$bruttoMode = Setting::get('invoice_mode') == 'brutto';
+$invoices = (array) json_decode(\Fado\Model\Cache::get('activeInvoice'), true);
+$shop = json_decode(\Fado\Model\Cache::get('InvoiceViewShopCustomer'), true);
+$activeUser = json_decode(\Fado\Model\Cache::get('InvoiceViewShopSeller'), true);
+$inInvoiceView = true;
+$inPrintView = true;
+
+?>
+<!DOCTYPE html>
+<html lang="<?php echo $view->getActiveLanguage(); ?>">
+<head>
+
+    <title><?php echo $view->translate('PROGRAM_TITLE'); ?></title>
+
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="page-wrapper" style="margin: 10px; border: 1px;">
+            <table class="" role="grid"  style="width: 100%;">
+                <tbody>
+                    <td>
+                        <?php
+                        if ($shop) {
+                        ?>
+                        <h4><?php echo $this->translate('INVOICES_LABEL_CUSTOMER'); ?></h4>
+                        <address>
+                            <strong><?php echo $shop['description']; ?></strong><br>
+                            <?php echo $shop['street'] . ' ' . $shop['streetnr']; ?><br>
+                            <?php echo $shop['zip'] . ' ' . $shop['city'] . ' ' . $shop['country']; ?><br>
+                        </address>
+                        <address>
+                            <a href="tel:<?php echo $shop['phone']; ?>"><?php echo $shop['phone']; ?></a><br>
+                            <a href="mailto:<?php echo $shop['email']; ?>"><?php echo $shop['email']; ?></a><br><br>
+                        </address>
+                        <?php
+                        }
+                        ?>
+                    </td>
+                    <td>
+                        <h4><?php echo $this->translate('INVOICES_LABEL_SELLER'); ?></h4>
+                        <address>
+                            <strong><?php echo $activeUser['description']; ?></strong><br>
+                            <?php echo $activeUser['street'] . ' ' . $activeUser['streetnr']; ?><br>
+                            <?php echo $activeUser['zip'] . ' ' . $activeUser['city'] . ' ' . $activeUser['country']; ?><br>
+                        </address>
+                        <address>
+                            <a href="tel:<?php echo $activeUser['shop_phone']; ?>"><?php echo $activeUser['shop_phone']; ?></a><br>
+                            <a href="mailto:<?php echo $activeUser['shop_email']; ?>"><?php echo $activeUser['shop_email']; ?></a><br><br>
+                        </address>
+
+                    </td>
+                </tbody>
+            </table>
+            <?php
+                if (isset(current($invoices)['invoice_id'])) {
+            ?>
+            <p>
+            <strong><?php echo $this->translate('INVOICES_LABEL_ID'); ?></strong> <?php echo current($invoices)['invoice_id']; ?><br>
+            <strong><?php echo $this->translate('INVOICES_LABEL_DATE'); ?></strong> <?php echo  $view->formatDateTime(current($invoices)['inv_created']); ?><br>
+            </p>
+            <?php
+                }
+            ?>
+            <table class="" role="grid" style="width: 100%;" border="1">
+                <thead>
+                    <tr>
+                        <th style="text-align: left;"><?php echo $this->translate('WAREHOUSE_ITEMS_LABEL_POS'); ?></th>
+                        <th style="text-align: left;"><?php echo $this->translate('WAREHOUSE_ITEMS_LABEL_INFORMATION'); ?></th>
+                        <th style="text-align: left;"><?php echo $this->translate('INVOICES_LABEL_QUANTITY'); ?></th>
+                        <?php if ($vatOn) { ?><th style="text-align: left;"><?php echo $this->translate('WAREHOUSE_ITEMS_LABEL_TAX_RATE'); ?></th><?php } ?>
+                        <th style="text-align: left;"><?php echo $this->translate('INVOICES_LABEL_PRICE'); ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php
+                	$sum = 0.0;
+                	$sumVAT = 0.0;
+                	$pos = 1;
+                    foreach($invoices as $item) {
+                        $itemSum  = (float)$item['item_amount'] * $item['price_unit'];
+                        if ($vatOn) {
+                            $itemVAT = (float)$view->calculateVAT($itemSum, $item['tax_rate']);
+                            $sumVAT += $itemVAT;
+                        }
+                        $itemCost = (float)$item['price_unit'];
+                        if ($item['cut_rate'] != 0) {
+                            $diff = round((float)$itemCost * $item['cut_rate'] / 100, 2);
+                            $itemSum -= (float)$item['item_amount'] * $diff;
+                        }
+                        $sum += $itemSum;
+                    ?>
+                    <tr>
+                        <td><?php echo $pos; ?></td>
+                        <td><?php echo $item['name']?></td>
+                        <td>
+                        <?php
+                            echo $item['item_amount'] . '&nbsp;' . $this->translate('INVOICE_MULTIPLIER') . '&nbsp;' . $item['unit'] . '&nbsp;' . $this->translate('INVOICE_PER_ITEM') . '&nbsp;' . $view->escapeString($view->formatNumber($itemCost)) . '&nbsp;' . Setting::getActiveCurrency();
+                            if ($item['cut_rate'] != 0) {
+                                echo '&nbsp;-&nbsp;' . $view->escapeString($item['cut_rate']) . '%&nbsp;=&nbsp;' . $view->escapeString($view->formatNumber($itemCost - $diff)) . '&nbsp;' . Setting::getActiveCurrency();
+                            }
+                        ?>
+                        </td>
+                        <?php if ($vatOn) { ?>
+                        <td><?php echo intval($item['tax_rate']) . '%&nbsp;' . $this->translate('INVOICE_MULTIPLIER') . '&nbsp;' . $view->escapeString($view->formatNumber($itemSum)) . '&nbsp;' . Setting::getActiveCurrency() . '&nbsp;=&nbsp;' . $view->formatNumber($itemVAT) . '&nbsp;' . Setting::getActiveCurrency(); ?>
+                        </td>
+                        <?php } ?>
+                        <td><?php echo $view->escapeString($view->formatNumber($itemSum)) . '&nbsp;' . Setting::getActiveCurrency(); ?></td>
+                        </tr>
+                    <?php
+                	   $pos++;
+                    }
+                    ?>
+                    <?php if ($vatOn && !$bruttoMode) { ?>
+                    <tr>
+                        <td colspan="<?php echo ($vatOn) ? 3 : 2; ?>"></td>
+                        <td><strong><?php echo $this->translate('INVOICES_LABEL_SUM_NETTO'); ?></strong></td>
+                        <td><?php echo  $view->escapeString($view->formatNumber($sum)) . '&nbsp;' . Setting::getActiveCurrency(); ?></td>
+                    </tr>
+                    <?php } ?>
+                    <?php if ($vatOn) { ?>
+                    <tr>
+                        <td colspan="<?php echo ($vatOn) ? 3 : 2; ?>"></td>
+                        <td><strong><?php echo $this->translate(($bruttoMode) ? 'INVOICES_LABEL_VAT_BRUTTO' : 'INVOICES_LABEL_VAT_NETTO'); ?></strong></td>
+                        <td><?php echo  $view->escapeString($view->formatNumber($sumVAT)) . '&nbsp;' . Setting::getActiveCurrency(); ?></td>
+                    </tr>
+                    <?php } ?>
+                    <tr>
+                        <td colspan="<?php echo ($vatOn) ? 3 : 2; ?>"></td>
+                        <td><strong><?php echo $this->translate('INVOICES_LABEL_SUM_BRUTTO'); ?></strong></td>
+                    <?php if ($vatOn && $bruttoMode) { ?>
+                        <td><?php echo $view->escapeString($view->formatNumber($sum)) . '&nbsp;' . Setting::getActiveCurrency(); ?></td>
+                    <?php } ?>
+                    <?php if (!$vatOn || ($vatOn && !$bruttoMode)) { ?>
+                        <td><?php echo $view->escapeString($view->formatNumber($sum + $sumVAT)) . '&nbsp;' . Setting::getActiveCurrency(); ?></td>
+                    <?php } ?>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
+</body>
+
+</html>

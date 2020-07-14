@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="<?php echo $view->getActiveLanguage(); ?>">
+<head>
+
+    <title><?php echo $view->translate('PROGRAM_TITLE'); ?></title>
+
+    <?php
+
+    $view->includeTemplate('headersrc', array());
+
+    ?>
+
+</head>
+
+<body>
+    <div id="wrapper">
+        <?php
+
+        $view->includeTemplate('navbar', array());
+
+        ?>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="colh1-lg-12">
+                    <div class="panel"></div>
+                </div>
+            </div>
+            <div class="row">
+                <?php
+                if (\Fado\Model\Cache::get('message') != '') {
+                ?>
+                <div class="col-lg-12">
+                    <p>
+                        <div class="panel panel-danger">
+                            <div class="panel-body">
+                                <button type="button" class="btn btn-outline btn-danger"><?php echo $view->translate(\Fado\Model\Cache::get('message')); ?></button>
+                                <br>
+                                <?php echo \Fado\Model\Cache::get('error'); ?>
+                            </div>
+                        </div>
+                    </p>
+                </div>
+                <?php
+                }
+                ?>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <a href="<?php echo $view->getRewriteUrl(array(), 'st'); ?>"><span class="glyphicon glyphicon-arrow-left glyphicon-md"></span></a>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <h3> <?php echo $view->translate('SQL_PANEL'); ?></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-lg-6">
+                                <form action="<?php echo $view->getFullLink(); ?>" method="POST">
+                                    <div class="form-group input-group">
+                                        <input type="hidden" name="emptycache" value="1">
+                                        <button type="submit" name="submit" class="btn btn-default"><?php echo $view->translate('EMPTY_CACHE'); ?></button>
+                                    </div>
+                                </form>
+                                <form action="<?php echo $view->getFullLink(); ?>" method="POST" enctype="multipart/form-data">
+                                    <div class="form-group input-group">
+                                        <input type="hidden" name="importsql" value="1">
+                                        <input type="file" name="sqlfile[]" style="float:left;" >
+                                        <button type="submit" name="submit" class="btn btn-default"><?php echo $view->translate('RUN_SQL'); ?></button>
+                                    </div>
+                                </form>
+                                <form action="<?php echo $view->getFullLink(); ?>" method="POST">
+                                    <div class="form-group input-group">
+                                        <input type="hidden" name="exportsql" value="1">
+                                        <button type="submit" name="submit" class="btn btn-default"><?php echo $view->translate('DOWNLOAD_SQL'); ?></button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+</body>
+
+</html>

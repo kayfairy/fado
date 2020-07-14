@@ -1,0 +1,58 @@
+<?php
+$currentPage = $shops->getCurrentPage();
+$currentItemsPerPage = $shops->getItemsPerPage();
+?>
+<div class="colh1-lg-12">
+    <div class="panel panel-default panel-fire">
+            <?php
+                $view->includeTemplate('tableheader', array('list' => $shops, 'viewClass' => 'sh', 'viewPrefix' => 'SHOPS'));
+
+                if($shops->count() > 0) {
+            ?>
+                    <tbody>
+            <?php
+
+
+                        foreach($shops->get() as $shop) {
+                            $openingHours = json_decode($shop['opening_hours'], true);
+            ?>
+                        <tr class="gradeA odd">
+                            <td class="sorting_1"><a href="<?php echo $view->getRewriteUrl(array('shop' => $shop['sid']), 'sh'); ?>#shop-panel"><?php echo $shop['description']; ?></a></td>
+                            <td><?php echo $shop['street']; ?> <?php echo $shop['streetnr']; ?></td>
+                            <td><?php echo $shop['zip']; ?></td>
+                            <td class="center"><?php echo $shop['city']; ?></td>
+                            <td class="center"><?php echo $shop['country']; ?></td>
+                            <td class="center">
+                                <?php
+                                    foreach ($openingHours as $key => $hour) {
+                                        $times = explode('-', $hour['range']);
+                                        $openingHours[$key]['start'] = $times[0];
+                                        $openingHours[$key]['stop'] = $times[1];
+                                        $formattedRange = $view->formatDateTime('2017-01-' . ($openingHours[$key]['start'] + 2), '%a') . ' - ' . $view->formatDateTime('2017-01-' . ($openingHours[$key]['stop'] + 2), '%a');
+                                        if ($times[0] == $times[1]) {
+                                            $formattedRange = $view->formatDateTime('2017-01-' . ($openingHours[$key]['start'] + 2), '%a');
+                                        }
+                                        ?>
+                                <b><?php echo '' . $formattedRange; ?></b>
+                                <?php echo $view->formatTime($openingHours[$key]['open']) . '&nbsp;-&nbsp;' .  $view->formatTime($openingHours[$key]['close']); ?>
+                                <?php
+                                    }
+                                ?>
+                            </td>
+                            <td class="center"><?php echo $view->formatDate($shop['established']); ?></td>
+                            <td class="center"><span class="digital7"><?php echo $view->DDtoDMS($shop['lng'], 'lng') . ' ' . $view->DDtoDMS($shop['lat'], 'lat'); ?></span></td>
+                        </tr>
+            <?php
+                        }
+                }
+            ?>
+                    </tbody>
+                </table>
+            </div>
+            <?php
+                $view->includeTemplate('tablenavigation', array('list' => $shops, 'viewClass' => 'sh'));
+            ?>
+        </div>
+    </div>
+    <!-- /.panel-body -->
+</div>

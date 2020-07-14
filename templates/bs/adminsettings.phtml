@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="<?php echo $view->getActiveLanguage(); ?>">
+<head>
+
+    <title><?php echo $view->translate('PROGRAM_TITLE'); ?></title>
+
+    <?php
+
+    $view->includeTemplate('headersrc', array());
+
+    ?>
+
+</head>
+
+<body>
+    <div id="wrapper">
+        <?php
+
+        $view->includeTemplate('navbar', array());
+
+        $formMessages = json_decode(\Fado\Model\Cache::get('formStatus'), true);
+
+        ?>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="colh1-lg-12">
+                    <div class="panel"></div>
+                </div>
+            </div>
+            <div class="row">
+                <?php
+                if (\Fado\Model\Cache::get('message') != '') {
+                ?>
+                <div class="col-lg-12">
+                    <p>
+                        <button type="button" class="btn btn-outline btn-danger"><?php echo $view->translate(\Fado\Model\Cache::get('message')); ?></button>
+                    </p>
+                </div>
+                <?php
+                }
+                ?>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-fire">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <a href="<?php echo $view->getRewriteUrl(array(), 'st'); ?>"><span class="glyphicon glyphicon-arrow-left glyphicon-md"></span></a>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <h3> <?php echo $view->translate('SETTINGS_ADMIN_EDIT'); ?></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <form id="itemform"  method="POST" action="<?php echo $view->getFullLink(); ?>">
+
+                                <div class="panel panel-warning">
+                                    <div class="panel-heading">
+                                        
+                                        <?php echo $view->translate('SETTINGS_MAP_SERVER'); ?>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group <?php echo (isset($formMessages['map_tile_url'])) ? 'has-error' : ''; ?>">
+                                            <label><?php echo $view->translate('SETTINGS_MAP_TILE_URL'); ?></label>
+                                            <?php if (isset($formMessages['map_tile_url'])) { ?>
+                                            <label class="control-label" for="inputError"><?php echo $view->translate($formMessages['map_tile_url']); ?></label>
+                                            <?php } ?>
+                                            <input name="map_tile_url" class="form-control"  value="<?php echo $settings['map_tile_url']; ?>">
+                                        </div>
+                                        <div class="form-group <?php echo (isset($formMessages['map_route_url'])) ? 'has-error' : ''; ?>">
+                                            <label><?php echo $view->translate('SETTINGS_MAP_ROUTE_URL'); ?></label>
+                                            <?php if (isset($formMessages['map_route_url'])) { ?>
+                                            <label class="control-label" for="inputError"><?php echo $view->translate($formMessages['map_route_url']); ?></label>
+                                            <?php } ?>
+                                            <input name="map_route_url" class="form-control"  value="<?php echo $settings['map_route_url']; ?>">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        
+                                        <?php echo $view->translate('SETTINGS_COOKIE'); ?>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group <?php echo (isset($formMessages['cookiename'])) ? 'has-error' : ''; ?>">
+                                            <label><?php echo $view->translate('SETTINGS_COOKIE_ID'); ?></label>
+                                            <input name="cookiename" class="form-control"  value="<?php echo $settings['cookiename']; ?>">
+                                        </div>
+
+        <?php
+
+        $view->includeTemplate('selectors/slider', array('name' => 'cookielife_hours', 'value' => $settings['cookielife_hours'], 'label' => 'SETTINGS_COOKIE_LIFE_HOURS', 'error' => (isset($formMessages['cookielife_hours'])) ? $formMessages['cookielife_hours'] : null, 'unit' => 'HOURS'));
+
+        ?>
+                                    </div>
+                                </div>
+
+                                <div class="panel panel-warning">
+                                    <div class="panel-heading">
+                                        
+                                        <div class="form-group text-left <?php echo (isset($formMessages['memcache_on'])) ? 'has-error' : ''; ?>">
+                                            <label><?php echo $view->translate('SETTINGS_MEMCACHE_ON'); ?></label>
+                                            <div class="checkbox-inline">
+                                                <input name="memcache_on" type="checkbox" class="form-control" value="1" <?php echo ($settings['memcache_on'] == '1') ? 'checked="checked"' : ''; ?>>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="panel-body">
+                                        <div class="form-group <?php echo (isset($formMessages['memcache_host'])) ? 'has-error' : ''; ?>">
+                                            <label><?php echo $view->translate('SETTINGS_MEMCACHE_HOST'); ?></label>
+                                            <input name="memcache_host" class="form-control"  value="<?php echo $settings['memcache_host']; ?>">
+                                        </div>
+
+                                        <div class="form-group <?php echo (isset($formMessages['memcache_port'])) ? 'has-error' : ''; ?>">
+                                            <label><?php echo $view->translate('SETTINGS_MEMCACHE_PORT'); ?></label>
+                                            <input name="memcache_port" class="form-control"  value="<?php echo $settings['memcache_port']; ?>">
+                                        </div>
+                                        <?php
+
+                                        $view->includeTemplate('selectors/slider', array('name' => 'memcache_life_seconds', 'value' => $settings['memcache_life_seconds'], 'label' => 'SETTINGS_MEMCACHE_LIFE', 'max' => 9999, 'min' => '60', 'error' => (isset($formMessages['memcache_life_seconds'])) ? $formMessages['memcache_life_seconds'] : null, 'unit' => 'SECONDS'));
+
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class="form-group text-left <?php echo (isset($formMessages['rewrite_route'])) ? 'has-error' : ''; ?>">
+                                    <label><?php echo $view->translate('SETTINGS_REWRITE_ON'); ?></label>
+                                    <div class="checkbox-inline">
+                                        <input name="rewrite_route" type="checkbox" class="form-control" value="1" <?php echo ($settings['rewrite_route'] == '1') ? 'checked="checked"' : ''; ?>>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" name="save" value="save_fadosettings" class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> <?php echo $view->translate('SAVE'); ?></button>
+                                </div>
+
+                            </form>
+
+                           <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+<form id="vehicle2shop" method="POST" action="<?php echo $view->getFullLink(); ?>">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="form-group">
+                <label><?php echo $view->translate('USER_2_SHOP_LABEL'); ?></label>
+                <input type="hidden" name="user2shop_users" value="<?php echo $activeUser['sid']; ?>"/>
+                <select name="user2shop_id" class="form-control">
+            <?php
+                foreach($allShops->get() as $shop) {
+            ?>
+                <option value="<?php echo $shop['sid']; ?>" <?php echo ($assignedShops->current()['shop_id'] == $shop['sid']) ? 'selected="selected"' : ''; ?>><?php echo $shop['description']; ?></option>
+            <?php
+                }
+            ?>
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <button type="submit" name="save_user2shop" value="save_user2shop" class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> <?php echo $view->translate('SAVE'); ?></button>
+        </div>
+    </div>
+</form>

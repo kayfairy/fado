@@ -1,0 +1,148 @@
+<?php
+$uniqid = uniqid();
+$formMessages = json_decode(\Fado\Model\Cache::get('formStatus'), true);
+$newForm = '';
+$activeShop = 'ss';
+if ($activeShop == null) {
+    $activeShop = json_decode(\Fado\Model\Cache::get('newFormData2'), true);
+    $newForm = 'newform';
+}
+if ($activeShop == null || empty($activeShop) && empty($formMessages)) {
+    $formMessages = array();
+}
+?>
+<form class="shopform" method="POST" action="<?php echo $view->getFullLink(); ?>">
+    <input type="hidden" name="meeting-user-id" value="<?php echo $view->getController('Source\Users')->getLoggedInUser()['sid']; ?>">
+    <div class="col-lg-6">
+        <div class="form-group <?php echo (isset($formMessages['title'])) ? 'has-error' : ''; ?>">
+            <label><?php echo $view->translate('MEETINGS_LABEL_TITLE'); ?></label>
+            <?php if (isset($formMessages['title'])) { ?>
+            <label class="control-label" for="inputError"><?php echo $view->translate($formMessages['title']); ?></label>
+            <?php } ?>
+            <input name="meeting-title" class="form-control" placeholder="" value="">
+        </div>
+        <div class="form-group <?php echo (isset($formMessages['description'])) ? 'has-error' : ''; ?>">
+            <label><?php echo $view->translate('MEETINGS_LABEL_DESCRIPTION'); ?></label>
+            <?php if (isset($formMessages['description'])) { ?>
+            <label class="control-label" for="inputError"><?php echo $view->translate($formMessages['description']); ?></label>
+            <?php } ?>
+            <input name="meeting-description" class="form-control" placeholder="" value="">
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="row col-lg-4">
+        <div class="meetings-date">
+            <button id="<?php echo $uniqid; ?>day" type="button" class="btn btn-xs btn-secondary btn-danger"><span class="glyphicon glyphicon-calendar glyphicon-md"></span></button>
+            <div id="<?php echo $uniqid; ?>dayselector" style="display: none;">
+                <?php
+                    $start = '2019-04-15';
+                    $view->includeTemplate('selectors/datetime', array('name_date' => 'meeting-date', 'date' => true, 'clock' => false, 'label_date' => '', 'label_clock' => '', 'year' => substr($start, 0 , 4), 'month' => substr($start, 5, 2), 'day' => substr($start, 8, 2), 'calendarcontainer' => 'calendarcontainer' . $newForm, 'clockcontainer' => 'clockcontainer' . $newForm));
+                ?>
+            </div>
+            <button id="<?php echo $uniqid; ?>range" type="button" class="btn btn-xs btn-secondary btn-danger"><span class="glyphicon glyphicon-resize-small glyphicon-md"></span></button>
+            <div id="<?php echo $uniqid; ?>rangeselector" style="display: none;">
+                <?php
+                    $view->includeTemplate('selectors/weekdayslider', array('label' => '', 'name' => 'meeting-range'));
+                ?>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="row col-lg-4">
+        <div id="<?php echo $uniqid; ?>meetings-start" class="meetings-start" style="display: none;">
+            <button id="<?php echo $uniqid; ?>start" type="button" class="btn btn-xs btn-secondary btn-danger"><span class="glyphicon glyphicon glyphicon-time glyphicon-md"></span></button>
+            <div id="<?php echo $uniqid; ?>startselector" style="display: none;">
+                <?php
+                    $view->includeTemplate('selectors/datetime', array('name_clock' => 'meeting-start', 'date' => false, 'clock' => true, 'label_date' => '', 'label_clock' => '', 'hour' => 0, 'minute' => 0, 'calendarcontainer' => 'calendarcontainer' . $newForm, 'clockcontainer' => 'clockcontainer' . $newForm));
+                ?>
+            </div>
+        </div>
+    </div>
+    <div class="row col-lg-4">
+        <div id="<?php echo $uniqid; ?>stoprange" style="display: none;">
+            <button id="<?php echo $uniqid; ?>stop" type="button" class="btn btn-xs btn-secondary btn-danger"><span class="glyphicon glyphicon-time glyphicon-md"></span></button>
+            <div id="<?php echo $uniqid; ?>stopselector" style="display: none;">
+                <?php
+                    $view->includeTemplate('selectors/datetime', array('name_clock' => 'meeting-stop', 'date' => false, 'clock' => true, 'label_date' => '', 'label_clock' => '', 'hour' => 0, 'minute' => 0, 'calendarcontainer' => 'calendarcontainer' . $newForm, 'clockcontainer' => 'clockcontainerstop' . $newForm));
+                ?>
+            </div>
+            <button id="<?php echo $uniqid; ?>period" type="button" class="btn btn-xs btn-secondary btn-danger"><span class="glyphicon glyphicon-resize-full glyphicon-md"></span></button>
+            <div id="<?php echo $uniqid; ?>meetingsperiod" class="meetings-period" style="display: none;">
+                <?php
+
+                $view->includeTemplate('selectors/slider', array('name' => 'meeting-period', 'value' => 0, 'label' => '', 'min' => 0, 'max' => 9999, 'error' => null, 'unit' => $view->translate('MEETING_UNIT_MINUTE')));
+
+                ?>
+            </div>
+        </div>
+    </div>
+    <div class="row col-lg-12">
+        <button id="<?php echo $uniqid; ?>submit" type="submit" name="submit" value="save_meeting" class="btn btn-secondary btn-danger" style="display: none;"><span class="glyphicon glyphicon-ok"></span> <?php echo $view->translate('SAVE'); ?></button>
+    </div>
+</form>
+<script>
+(function() {
+    var selector = null;
+    $('#<?php echo $uniqid; ?>day').on('click touchstart', function () {
+        $('input[name="meeting-date"]').val('');
+        $('input[name="meeting-range"]').val('');
+        $('#<?php echo $uniqid; ?>dayselector').toggle();
+        $('#<?php echo $uniqid; ?>range').toggle();
+        $('#<?php echo $uniqid; ?>meetings-start').toggle();
+        $('#<?php echo $uniqid; ?>stopselector').hide();
+        $('#<?php echo $uniqid; ?>meetingsperiod').hide();
+        $('#<?php echo $uniqid; ?>stop').hide();
+        $('#<?php echo $uniqid; ?>submit').hide();
+        $('#<?php echo $uniqid; ?>startselector').hide();
+        $('#<?php echo $uniqid; ?>stoprange').hide();
+    });
+    $('#<?php echo $uniqid; ?>range').on('click touchstart', function (e) {
+        selector = null;
+        $('input[name="meeting-range"]').val('');
+        $('input[name="meeting-date"]').val('');
+        $('#<?php echo $uniqid; ?>rangeselector').toggle();
+        $('#<?php echo $uniqid; ?>day').toggle();
+        $('#<?php echo $uniqid; ?>meetings-start').toggle();
+        $('#<?php echo $uniqid; ?>stopselector').hide();
+        $('#<?php echo $uniqid; ?>meetingsperiod').hide();
+        $('#<?php echo $uniqid; ?>stop').hide();
+        $('#<?php echo $uniqid; ?>submit').hide();
+        $('#<?php echo $uniqid; ?>startselector').hide();
+        $('#<?php echo $uniqid; ?>stoprange').hide();
+        selector = WeekDayRangeSelector('meeting-range', {
+            start: 1,
+            stop: 3,
+            locale: ['<?php echo preg_replace('/_/', '-', \Fado\Model\Setting::get('lang')); ?>', {weekday: 'short', year: 'numeric', month: 'short', day: 'numeric'}]
+        });
+    });
+    $('#<?php echo $uniqid; ?>start').on('click touchstart', function () {
+        $('input[name="meeting-start"]').val('');
+        $('input[name="meeting-period"]').val(0);
+        $('#<?php echo $uniqid; ?>startselector').toggle();
+        $('#<?php echo $uniqid; ?>stoprange').toggle();
+        $('#<?php echo $uniqid; ?>stop').toggle();
+        if ($('#<?php echo $uniqid; ?>startselector').css('display') == 'none' && ($('#<?php echo $uniqid; ?>stopselector').css('display') == 'block' ||  $('#<?php echo $uniqid; ?>meetingsperiod').css('display') == 'block')) {
+            $('#<?php echo $uniqid; ?>submit').hide();
+        }
+        if ($('#<?php echo $uniqid; ?>startselector').css('display') == 'block' && ($('#<?php echo $uniqid; ?>stopselector').css('display') == 'block' ||  $('#<?php echo $uniqid; ?>meetingsperiod').css('display') == 'block')) {
+            $('#<?php echo $uniqid; ?>submit').show();
+        }
+        ClockSlider('<?php echo 'clockcontainer' . $newForm; ?>', {});
+    });
+    $('#<?php echo $uniqid; ?>period').on('click touchstart', function () {
+        $('input[name="meeting-period"]').val(0);
+        $('input[name="meeting-stop"]').val('');
+        $('#<?php echo $uniqid; ?>meetingsperiod').toggle();
+        $('#<?php echo $uniqid; ?>stop').toggle();
+        $('#<?php echo $uniqid; ?>submit').toggle();
+    });
+    $('#<?php echo $uniqid; ?>stop').on('click touchstart', function () {
+        $('input[name="meeting-stop"]').val('');
+        $('input[name="meeting-period"]').val(0);
+        $('#<?php echo $uniqid; ?>stopselector').toggle();
+        $('#<?php echo $uniqid; ?>period').toggle();
+        $('#<?php echo $uniqid; ?>submit').toggle();
+        ClockSlider('<?php echo 'clockcontainerstop' . $newForm; ?>', {});
+    });
+})();
+</script>

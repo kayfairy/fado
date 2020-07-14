@@ -1,0 +1,68 @@
+.round-circles {
+    position: absolute;
+    cursor: default;
+}
+.circles-selector {
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    width: 210px;
+    height: 210px;
+}
+.calendar-input {
+    position: absolute;
+    margin-top: -115px;
+    margin-left: 73px;
+    width: 49px;
+}
+.round-date-selector .calendar-input input {
+    width: 100%;
+}
+.round-date-selector {
+    float: left;
+}
+.pointer_months {
+    position: absolute;
+    margin: 10px 0 0 90px;
+    z-index: 9997;
+}
+.arc_canvas {
+    position: absolute;
+}
+.pointer_months:hover {
+    cursor: pointer;
+}
+.pointer_days {
+    position: absolute;
+    margin: 30px 0 0 90px;
+    z-index: 9999;
+}
+.pointer_days:hover {
+    cursor: pointer;
+}
+.pointer_hours {
+    position: absolute;
+    margin: 10px 0 0 90px;
+    z-index: 9998;
+}
+.pointer_hours:hover {
+    cursor: pointer;
+}
+.pointer_minutes {
+    position: absolute;
+    margin: 30px 0 0 90px;
+    z-index: 9996;
+}
+.pointer_minutes:hover {
+    cursor: pointer;
+}
+.pointer_years {
+    position: absolute;
+    margin: 50px 0 0 90px;
+    z-index: 9994;
+}
+.pointer_years:hover {
+    cursor: pointer;
+}

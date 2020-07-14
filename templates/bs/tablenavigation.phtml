@@ -1,0 +1,59 @@
+<?php
+$currentPage = $list->getCurrentPage();
+$currentItemsPerPage = $list->getItemsPerPage();
+
+$start = $list->getItemsPerPage() * ($list->getCurrentPage() - 1);
+$start = ($list->count() < 1) ? 0 : $start + 1;
+$end   = $start + $list->getItemsPerPage() - 1;
+$end   = ($list->count() < $end) ? $list->count() : $end;
+
+?>
+<div class="row">
+    <div class="col-sm-2">
+        <div class="paging_count">
+            <div class="" role="status" aria-live="polite">
+                <?php echo $view->translate('TABLE_ENTRIES', $start, $end, $list->count()); ?>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-10">
+        <div class="paging_simple_numbers">
+            <ul class="pagination">
+                <?php
+
+                    if ($currentPage != 1) {
+                ?>
+                <li class="paginate_button previous">
+                    <a href="<?php echo $view->getRewriteURL(array('p' => ($currentPage - 1)), $viewClass); ?>"><?php echo $view->translate('TABLE_PREVIOUS'); ?></a>
+                </li>
+                <?php
+                    } else {
+                ?>
+                <li class="paginate_button previous disabled" tabindex="0">
+                    <a href="#"><?php echo $view->translate('TABLE_PREVIOUS'); ?></a>
+                </li>
+                <?php
+                    }
+                ?>
+                <?php
+                    for($i = 1; $i <= $list->getPageCount(); $i++) {
+                ?>
+                <li class="paginate_button <?php echo (($currentPage == $i) ? 'active' : ''); ?>" tabindex="0"><a href="<?php echo $view->getRewriteURL(array('p' =>  $i),  $viewClass); ?>"><?php echo $i; ?></a></li>
+                <?php
+                    }
+                ?>
+                <?php
+                    if ($currentPage + 1 <= $list->getPageCount()) {
+                ?>
+                <li class="paginate_button next" tabindex="0"><a href="<?php echo $view->getRewriteURL(array('p' =>  ($currentPage + 1)), $viewClass); ?>"><?php echo $view->translate('TABLE_NEXT'); ?></a></li>
+                <?php
+                    } else {
+                ?>
+                <li class="paginate_button next disabled" tabindex="0"><a href="#"><?php echo $view->translate('TABLE_NEXT'); ?></a></li>
+                <?php
+                    }
+                ?>
+            </ul>
+        </div>
+    </div>
+</div>

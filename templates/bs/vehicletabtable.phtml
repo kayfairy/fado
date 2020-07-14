@@ -1,0 +1,55 @@
+<div class="colh1-lg-12">
+    <div class="panel panel-default panel-blue">
+        <div class="panel-heading">
+            <div class="">
+                <h4><?php echo $view->translate('SHOP_PANEL_VEHICLE'); ?></h4>
+            </div>
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body table-responsive table-bordered">
+            <div class="form-inline dt-bootstrap no-footer">
+                 <table class="table table-striped table-bordered table-hover no-footer" id="vehicle-tab-table" role="grid" style="width: 100%;">
+                    <thead>
+                        <tr>
+                        <?php
+
+                        $columns = VEHICLES_TABLE_COLUMNS;
+
+                        foreach ($columns as $column) {
+                        ?>
+                            <th class="" tabindex="0" rowspan="1" colspan="1"><?php echo $view->translate('VEHICLES_LABEL_' . mb_strtoupper($column)); ?></th>
+                        <?php
+                        }
+                        ?>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                        foreach($assignedVehicles->get() as $vehicle) {
+                    ?>
+                        <tr class="gradeA odd">
+                            <td class="sorting_1"><a href="<?php echo $view->getRewriteUrl(array('vehicle' => $vehicle['sid']), 've'); ?>"><?php echo $vehicle['name']; ?></a></td>
+                            <td><?php echo $vehicle['manufacturer']; ?></td>
+                            <td><?php echo $vehicle['type']; ?></td>
+                            <td><?php echo $vehicle['construction_year']; ?></td>
+                            <td class="center"><?php echo $vehicle['in_use']; ?></td>
+                            <td><?php echo $vehicle['keynr']; ?></td>
+                            <td class="center"><?php echo $view->formatDateTime($vehicle['vehicle_changed']); ?></td>
+                        </tr>
+                    <?php
+                        }
+                    ?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="">
+                        <div class="" role="status" aria-live="polite"><?php echo $assignedVehicles->count(); ?> entries</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.panel-body -->
+</div>

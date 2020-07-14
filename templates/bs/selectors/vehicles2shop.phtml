@@ -1,0 +1,39 @@
+<form id="vehicle2shop" method="POST" action="<?php echo $view->getFullLink(); ?>">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="form-group">
+                <label><?php $this->translate('SHOP_PANEL_VEHICLE'); ?></label>
+                <input type="hidden" name="vehicle2shop_id" value="<?php echo $activeShop['sid']; ?>"/>
+                <select name="vehicle2shop_vehicles[]" multiple="multiple" class="form-control vehicle2shop-id">
+            <?php
+                foreach($allVehicles->get() as $vehicle) {
+            ?>
+                <option value="<?php echo $vehicle['sid']; ?>" <?php echo (in_array($vehicle['sid'], $assignedVehicles->getKeys())) ? 'selected="selected"' : ''; ?>><?php echo $vehicle['name']; ?></option>
+            <?php
+                }
+            ?>
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <button type="submit" name="save_vehicle2shop" value="save_vehicle2shop" class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> <?php echo $view->translate('SAVE'); ?></button>
+        </div>
+    </div>
+</form>
+<script>
+
+    (function(){
+        $('#vehicle2shop option').mousedown(function(e) {
+            e.preventDefault();
+            var originalScrollTop = $(this).parent().scrollTop();
+            $(this).prop('selected', $(this).prop('selected') ? false : true);
+            var self = this;
+            $(this).parent().focus();
+            setTimeout(function() {
+                $(self).parent().scrollTop(originalScrollTop);
+            }, 0);
+            return false;
+        });
+    })();
+
+</script>

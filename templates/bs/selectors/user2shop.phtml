@@ -1,0 +1,39 @@
+<form id="user2shop" method="POST" action="<?php echo $view->getFullLink(); ?>">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="form-group">
+                <label><?php $this->translate('NAV_SHOP'); ?></label>
+                <input type="hidden" name="user2shop_id" class="" value="<?php echo $activeShop['sid']; ?>"/>
+                <select name="user2shop_users[]" multiple="multiple" class="form-control user2shop-id">
+            <?php
+                foreach($allUsers->get() as $user) {
+            ?>
+                <option value="<?php echo $user['sid']; ?>" <?php echo (in_array($user['sid'], $assignedUsers->getKeys())) ? 'selected="selected"' : ''; ?>><?php echo $user['name']; ?></option>
+            <?php
+                }
+            ?>
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <button type="submit" name="save_user2shop" value="save_user2shop" class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> <?php echo $view->translate('SAVE'); ?></button>
+        </div>
+    </div>
+</form>
+<script>
+
+    (function(){
+        $('#user2shop option').mousedown(function(e) {
+            e.preventDefault();
+            var originalScrollTop = $(this).parent().scrollTop();
+            $(this).prop('selected', $(this).prop('selected') ? false : true);
+            var self = this;
+            $(this).parent().focus();
+            setTimeout(function() {
+                $(self).parent().scrollTop(originalScrollTop);
+            }, 0);
+            return false;
+        });
+    })();
+
+</script>

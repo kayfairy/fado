@@ -51,7 +51,7 @@ class ListIterator implements \Iterator, \ArrayAccess {
         if (in_array($this->activePos, $this->keys)) {
             return $this->list[$this->activePos];
         }
-        return null;
+        return array('sid' => null);
     }
 
     public function key() {

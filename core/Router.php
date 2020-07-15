@@ -83,7 +83,7 @@ class Router {
             $allShopsList = $shops->getAll();
             $users2Shop->get();
             $userList = $pages->filter($user->get($search->get())->setItemsPerPage($listDefaultCount));
-            if ($userList->current()) {
+            if ($userList->current() && $userList->current()['sid'] != null) {
                 $assignedShopList = ListIteratorFactory::create(array($userList->current()['shop_id'] => $userList->current()))->setActivePos($userList->current()['shop_id']);
             } else {
                 $assignedShopList = array();

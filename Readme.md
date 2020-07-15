@@ -9,9 +9,8 @@ Manage shops, vehicles and commodities in administration panel. Calculate invoic
 `Ubuntu 18.04` required.
 
 Download to `/var/www/fado/` and run install script:
-```
-sudo sh /var/www/fado/install.sh
-```
+
+    sudo sh /var/www/fado/install.sh
 
 ## User
 
@@ -31,9 +30,8 @@ Open <http://127.0.0.1> or <https://127.0.0.1> and login as superuser `fado` wit
 MySQL database created is `fado` for user `fado` with password `rood`. Insert new credentials into `database.csv`.
 
 Move file to `/etc/fado/database.csv`. Edit `core/Loader.php`:
-```
-4   define('DB_CONFIG_FILE', '/etc/fado/database.csv');
-```
+
+    4   define('DB_CONFIG_FILE', '/etc/fado/database.csv');
 
 ## Demo
 

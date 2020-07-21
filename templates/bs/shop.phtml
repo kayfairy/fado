@@ -118,7 +118,7 @@
             zoom: 13
         });
         window.lrmConfig = {};
-        L.tileLayer('<?php echo \Fado\Model\Setting::get('map_tile_url'); ?>', {
+        L.tileLayer('<?php echo $view->getProtocol() . \Fado\Model\Setting::get('map_tile_url'); ?>', {
         	attribution: ''
         }).addTo(map);
         var redIcon = L.icon({

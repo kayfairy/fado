@@ -279,7 +279,7 @@ CREATE TABLE fado_meetings (
 CREATE TABLE fado_cache (
     session VARCHAR(64),
     name VARCHAR(64),
-    value VARCHAR(4069)
+    value VARCHAR(8000)
 )ENGINE = MEMORY;
 
 SET sql_mode="ALLOW_INVALID_DATES";

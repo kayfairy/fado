@@ -83,7 +83,11 @@ if ($view->userRights->isAllowed('us', \Fado\Controller\RouterRights::$READ)) {
         </div>
         <div class="clear"></div>
         <button type="submit" name="submit" value="save_user" class="btn btn-default" <?php echo $disabled; ?> ><span class="glyphicon glyphicon-ok"></span> <?php echo $view->translate('SAVE'); ?></button>
-        <?php if ($openNewUserForm != '1') { ?>
+        <?php
+        if ($openNewUserForm != '1'
+            && !in_array($activeUser['name'], ADMIN_USERS)
+            && $view->getController('Source\Users')->getLoggedInUser()['name'] != $activeUser['name']) {
+        ?>
         <button type="button" name="delete" value="delete_user" class="btn btn-default" <?php echo $disabled; ?>  data-toggle="modal" data-target="#modal-delete"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> <?php echo $view->translate('DELETE'); ?></button>
         <?php } ?>
     </form>

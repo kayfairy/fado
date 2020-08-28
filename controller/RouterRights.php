@@ -42,7 +42,7 @@ class RouterRights extends Source\FadoController {
             $rights['in'] = '1';
             $rights['aj'] = '2';
             if (in_array($this->userController->getModel()->get($userId)['name'], ADMIN_USERS)) {
-                $rights['userrights'] = '2';
+                $rights['us'] = '2';
             }
 
             if ($this->model->set($userId, json_encode($rights))) {
@@ -57,7 +57,7 @@ class RouterRights extends Source\FadoController {
 
     public function isAllowed($page, $action, $redirect = false) {
         if ($page == '') {
-            $page = 'shop';
+            $page = 'sh';
         }
         $rights = $this->getRoutingRights($this->userController->getLoggedInUser()['sid']);
         if ($rights != null && array_key_exists($page, $rights) && $rights[$page] == $action) {

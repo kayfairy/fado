@@ -8,7 +8,7 @@
     country VARCHAR(256),
     phone VARCHAR(256),
     email VARCHAR(256),
-    information JSON,
+    information VARCHAR(2048),
     opening_hours VARCHAR(256),
     established DATE NULL DEFAULT NULL,
     created TIMESTAMP NULL DEFAULT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE fado_user (
     session VARCHAR(256),
     phone VARCHAR(256),
     email VARCHAR(256),
-    data JSON,
+    data VARCHAR(2048),
     birthday DATE NULL DEFAULT NULL,
     created TIMESTAMP NULL DEFAULT NULL,
     changed TIMESTAMP NULL DEFAULT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE fado_warehouse_items (
     id INT NOT NULL AUTO_INCREMENT,
     shop_id INT NOT NULL,
     name VARCHAR(256),
-    information JSON,
+    information VARCHAR(2048),
     amount INT,
     sold INT,
     unit VARCHAR(256),
@@ -237,7 +237,7 @@ INSERT INTO `fado_user_settings` (`id`, `user_id`, `name`, `value`, `changed`, `
 CREATE TABLE fado_user_rights (
     id INT NOT NULL AUTO_INCREMENT,
     user_id INT NOT NULL,
-    rights JSON,
+    rights VARCHAR(2048),
     changed TIMESTAMP NULL DEFAULT NULL,
     created TIMESTAMP NULL DEFAULT NULL,
     PRIMARY KEY (id),
@@ -253,7 +253,7 @@ INSERT INTO `fado_user_rights` (`id`, `user_id`, `rights`, `changed`, `created`)
 CREATE TABLE fado_user_routes (
     id INT NOT NULL AUTO_INCREMENT,
     user_id INT NOT NULL,
-    route_points JSON,
+    route_points VARCHAR(2048),
     PRIMARY KEY (id),
     FOREIGN KEY (user_id)
     REFERENCES fado_user(id)

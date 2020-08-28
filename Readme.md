@@ -6,9 +6,9 @@ Manage shops, vehicles and commodities in administration panel. Calculate invoic
 
 ## Install
 
-`Ubuntu 18.04` required.
+`Ubuntu 20.04` required.
 
-Download to `/var/www/fado/` and run install script:
+Download to `/var/www/fado/` and run install script.
 
     sudo sh /var/www/fado/install.sh
 

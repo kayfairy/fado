@@ -2,17 +2,17 @@
 
 cwd=$(dirname "$0")
 
-apt install apache2 php php7.2 php7.2-mysql php7.2-mbstring mysql-common mysql-server php-memcache php-memcached memcached
+apt install apache2 php php7.4 php7.4-mysql php7.4-mbstring mysql-common mysql-server php-memcache php-memcached memcached
 
 locale-gen de_DE de_DE.utf8 en_GB en_GB.utf8 tr_TR tr_TR.utf8
 
 chown -R www-data $cwd/*
 chmod -R a+rx $cwd/*
 
-mysql -u root mysql -e "CREATE USER fado@localhost IDENTIFIED BY \"rood\";";
-mysql -u root mysql -e "DROP DATABASE fado;";
-mysql -u root mysql -e "CREATE DATABASE fado DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;";
-mysql -u root mysql -e "GRANT ALL ON fado.* TO fado@localhost;";
+service mysql start
+
+echo "MySQL root"
+mysql -u root -p -e "CREATE USER IF NOT EXISTS fado@localhost IDENTIFIED BY \"rood\";DROP DATABASE IF EXISTS fado;CREATE DATABASE fado DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;GRANT ALL ON fado.* TO fado@localhost;";
 
 mysql -u fado -prood fado < $cwd/database.sql
 
@@ -89,6 +89,7 @@ EOF
 
 a2enmod rewrite
 a2enmod ssl
+a2enmod php7.4
 service apache2 restart
 
 service memcached restart

@@ -12,6 +12,10 @@ Download to `/var/www/fado/` and run install script.
 
     sudo sh /var/www/fado/install.sh
 
+## Demo
+
+Free live demo: http://fairy13.bplaced.net
+
 ## User
 
 Open <http://127.0.0.1> or <https://127.0.0.1> and login as superuser `fado` with password `rood`.

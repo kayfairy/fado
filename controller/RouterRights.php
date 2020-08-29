@@ -35,14 +35,16 @@ class RouterRights extends Source\FadoController {
             foreach (USER_RIGHTS_AREAS as $page) {
                 if (in_array($this->request->getParameter($page), array(0, 1, 2))) {
                     $rights[$page] = $this->request->getParameter($page);
+                    if ($rights[$page] == false) {
+                        $rights[$page] = '0';
+                    }
                 }
             }
 
-            $rights['st'] = '1';
-            $rights['in'] = '1';
             $rights['aj'] = '2';
+            $rights['if'] = '1';
             if (in_array($this->userController->getModel()->get($userId)['name'], ADMIN_USERS)) {
-                $rights['us'] = '2';
+                $rights['ur'] = '2';
             }
 
             if ($this->model->set($userId, json_encode($rights))) {
@@ -60,6 +62,7 @@ class RouterRights extends Source\FadoController {
             $page = 'sh';
         }
         $rights = $this->getRoutingRights($this->userController->getLoggedInUser()['sid']);
+        
         if ($rights != null && array_key_exists($page, $rights) && $rights[$page] == $action) {
             return true;
         }

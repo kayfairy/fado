@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `fado_cache`;
 CREATE TABLE `fado_cache` (
   `session` varchar(64) DEFAULT NULL,
   `name` varchar(64) DEFAULT NULL,
-  `value` varchar(4096) NOT NULL
+  `value` varchar(9999) NOT NULL
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -156,30 +156,6 @@ LOCK TABLES `fado_meetings` WRITE;
 /*!40000 ALTER TABLE `fado_meetings` DISABLE KEYS */;
 INSERT INTO `fado_meetings` VALUES (34,1,'meeting1','New meeting','{\"day\": \"2025-07-15\", \"stop\": \"05:17\", \"range\": \"\", \"start\": \"18:45\", \"period\": \"0\"}',NULL,'2020-02-02 11:39:04');
 /*!40000 ALTER TABLE `fado_meetings` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `fado_modules`
---
-
-DROP TABLE IF EXISTS `fado_modules`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `fado_modules` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `description` varchar(256) NOT NULL,
-  `active` int NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `fado_modules`
---
-
-LOCK TABLES `fado_modules` WRITE;
-/*!40000 ALTER TABLE `fado_modules` DISABLE KEYS */;
-/*!40000 ALTER TABLE `fado_modules` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -398,31 +374,6 @@ INSERT INTO `fado_user_rights` VALUES (1,1,'{\"aj\": \"2\", \"at\": \"2\", \"if\
 /*!40000 ALTER TABLE `fado_user_rights` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `fado_user_routes`
---
-
-DROP TABLE IF EXISTS `fado_user_routes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `fado_user_routes` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int NOT NULL,
-  `points` varchar(256) DEFAULT 'NULL',
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `fado_user_routes_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `fado_user` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `fado_user_routes`
---
-
-LOCK TABLES `fado_user_routes` WRITE;
-/*!40000 ALTER TABLE `fado_user_routes` DISABLE KEYS */;
-/*!40000 ALTER TABLE `fado_user_routes` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `fado_user_settings`

@@ -31,7 +31,7 @@ define('WAREHOUSE_ITEMS_TABS', array('WAREHOUSE_TAB_DATA'));
 define('ADMIN_USERS', array('fado'));
 
 // Pages available
-define('USER_RIGHTS_AREAS', array('sh', 've', 'wa', 'in', 'ne', 'na', 'us', 'ut', 'at', 'st', 'ri', 'sq', 'me', 'aj', 'if'));
+define('USER_RIGHTS_AREAS', array('sh', 've', 'wa', 'in', 'ne', 'na', 'us', 'ut', 'at', 'st', 'ri', 'sq', 'me', 'aj', 'if', 'ur'));
 
 // Files loaded in order
 require_once './core/Router.php';

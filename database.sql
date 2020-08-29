@@ -250,17 +250,6 @@ CREATE TABLE fado_user_rights (
 INSERT INTO `fado_user_rights` (`id`, `user_id`, `rights`, `changed`, `created`) VALUES
 (1,1,'{\"sh\":\"2\",\"ve\":\"2\",\"wa\":\"2\",\"in\":\"2\",\"ne\":\"2\",\"na\":\"1\",\"us\":\"2\",\"ut\":\"2\",\"at\":\"2\",\"st\":\"1\",\"ri\":\"2\",\"sq\":\"2\",\"me\":\"2\",\"aj\":\"2\",\"if\":\"1\"}',NULL,NOW());
 
-CREATE TABLE fado_user_routes (
-    id INT NOT NULL AUTO_INCREMENT,
-    user_id INT NOT NULL,
-    route_points VARCHAR(2048),
-    PRIMARY KEY (id),
-    FOREIGN KEY (user_id)
-    REFERENCES fado_user(id)
-    ON UPDATE NO ACTION
-    ON DELETE CASCADE
-);
-
 CREATE TABLE fado_meetings (
     id INT NOT NULL AUTO_INCREMENT,
     user_id INT NOT NULL,
@@ -279,7 +268,7 @@ CREATE TABLE fado_meetings (
 CREATE TABLE fado_cache (
     session VARCHAR(64),
     name VARCHAR(64),
-    value VARCHAR(8000)
+    value VARCHAR(10000)
 )ENGINE = MEMORY;
 
 SET sql_mode="ALLOW_INVALID_DATES";

@@ -84,9 +84,9 @@ $rightsRead = $view->userRights->isAllowed('ur', 1);
         <tr>
             <td>usersettings</td>
             <td>
-                <select name="ut" <?php echo (!$rightsWrite) ? 'disabled="disabled"' : ''; ?>>
-                    <option value="0" <?php echo ($routingRights['ut'] == 0) ? 'selected' : ''; ?>>none</option>
-                    <option value="2" <?php echo ($routingRights['ut'] == 2) ? 'selected' : ''; ?>>write</option>
+                <select name="st" <?php echo (!$rightsWrite) ? 'disabled="disabled"' : ''; ?>>
+                    <option value="0" <?php echo ($routingRights['st'] == 0) ? 'selected' : ''; ?>>none</option>
+                    <option value="2" <?php echo ($routingRights['st'] == 2) ? 'selected' : ''; ?>>write</option>
                 </select>
             </td>
         </tr>

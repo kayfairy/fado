@@ -186,7 +186,7 @@ $formMessages = json_decode(\Fado\Model\Cache::get('formStatus'), true);
                     <div class="form-group">
                         <label><?php echo $view->translate('WAREHOUSE_ITEM_LABEL_IS_PAYED'); ?></label>
                         <div class="checkbox-inline">
-                            <input name="is_payed" type="checkbox" class="form-control" value="1" <?php echo (current($invoices)['is_payed'] == '1') ? 'checked="checked"' : ''; ?> <?php echo ($inPrintView) ? 'disabled="disabled"' : ''; ?>>
+                            <input name="is_payed" type="checkbox" class="form-control" value="1" <?php echo (current($invoices)['is_payed'] == '1') ? 'checked="checked"' : ''; ?> <?php echo ($inPrintView) ? 'disabled="disabled" class="disabled"' : ''; ?>>
                         </div>
                     </div>
             <?php

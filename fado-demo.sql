@@ -181,7 +181,26 @@ CREATE TABLE `fado_settings` (
 
 LOCK TABLES `fado_settings` WRITE;
 /*!40000 ALTER TABLE `fado_settings` DISABLE KEYS */;
-INSERT INTO `fado_settings` VALUES (1,'encoding','UTF-8',NULL,'2019-03-24 18:08:54'),(2,'lang_available','[\"en_GB\",\"de_DE\",\"tr_TR\"]',NULL,'2019-03-24 18:08:54'),(3,'date_time_format_available','{\"lang\":\"%c\",\"en_GB\":\"%Y/%m/%d %H:%M:%S\",\"en_US\":\"%d-%m-%Y %H:%M:%S\",\"UTC\":\"%x %H:%M:%S\",\"UTC2\":\"%a, %d. %b %Y %H:%M:%S\",\"UTC3\":\"%A %d. %B %Y %H:%M:%S\",\"de_DE\":\"%d.%m.%Y %H:%M:%S\"}',NULL,'2019-03-24 18:08:54'),(4,'cookiename','FADO','2020-07-09 21:21:40','2019-03-24 18:08:54'),(5,'cookielife_hours','8','2020-07-09 21:21:41','2019-03-24 18:08:54'),(6,'error_reporting_available','[\"0\",\"E_ALL\",\"E_ALL & ~E_NOTICE\"]',NULL,'2019-03-24 18:08:54'),(7,'error_log','1',NULL,'2019-03-24 18:08:54'),(8,'error_reporting','E_ALL',NULL,'2019-03-24 18:08:54'),(9,'memcache_on','1','2020-07-09 21:21:41','2019-03-24 18:08:54'),(10,'memcache_host','127.0.0.1','2020-07-09 21:21:41','2019-03-24 18:08:54'),(11,'memcache_port','11211','2020-07-09 21:21:41','2019-03-24 18:08:54'),(12,'memcache_life_seconds','6071','2020-07-09 21:21:41','2019-03-24 18:08:54'),(13,'memcache_compressed','0',NULL,'2019-03-24 18:08:54'),(14,'invoice_mode_available','[\"brutto\",\"netto\"]',NULL,'2019-03-24 18:08:54'),(15,'map_tile_url','{s}.tile.openstreetmap.org/{z}/{x}/{y}.png','2020-07-09 21:21:41','2019-03-24 18:08:54'),(16,'map_route_url','router.project-osrm.org/route/v1','2020-07-09 21:21:41','2019-03-24 18:08:54'),(17,'rewrite_route','1','2020-07-09 21:21:42','2019-03-24 18:08:54'),(18,'date_format_available','{\"en_GB\":\"%Y/%m/%d\",\"en_US\":\"%d-%m-%Y\",\"UTC\":\"%x\",\"UTC2\":\"%a, %d. %b %Y\",\"UTC3\":\"%A %d. %B %Y\",\"de_DE\":\"%d.%m.%Y\"}',NULL,'2019-03-24 18:08:54'),(19,'maximum_login_attempts','4',NULL,'2020-07-14 17:10:38');
+INSERT INTO `fado_settings` (`id`, `name`, `value`, `changed`, `created`) VALUES
+(1,'encoding','UTF-8',NULL,NOW()),
+(2,'lang_available','[\"en_GB\",\"de_DE\",\"tr_TR\"]',NULL,NOW()),
+(3,'date_time_format_available','{\"lang\":\"%c\",\"en_GB\":\"%Y/%m/%d %H:%M:%S\",\"en_US\":\"%d-%m-%Y %H:%M:%S\",\"UTC\":\"%x %H:%M:%S\",\"UTC2\":\"%a, %d. %b %Y %H:%M:%S\",\"UTC3\":\"%A %d. %B %Y %H:%M:%S\",\"de_DE\":\"%d.%m.%Y %H:%M:%S\"}',NULL,NOW()),
+(4,'cookiename','FADO',NULL,NOW()),
+(5,'cookielife_hours','8',NULL,NOW()),
+(6,'error_reporting_available','[\"0\",\"E_ALL\",\"E_ALL & ~E_NOTICE\"]',NULL,NOW()),
+(7,'error_log','1',NULL,NOW()),
+(8,'error_reporting','E_ALL',NULL,NOW()),
+(9,'memcache_on','0',NULL,NOW()),
+(10,'memcache_host','127.0.0.1',NULL,NOW()),
+(11,'memcache_port','11211',NULL,NOW()),
+(12,'memcache_life_seconds','36000',NULL,NOW()),
+(13,'memcache_compressed','0',NULL,NOW()),
+(14,'invoice_mode_available','[\"brutto\",\"netto\"]',NULL,NOW()),
+(15,'map_tile_url','{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',NULL,NOW()),
+(16,'map_route_url','router.project-osrm.org/route/v1',NULL,NOW()),
+(17,'rewrite_route','0',NULL,NOW()),
+(18,'date_format_available','{"en_GB\":\"%Y/%m/%d\",\"en_US\":\"%d-%m-%Y\",\"UTC\":\"%x\",\"UTC2\":\"%a, %d. %b %Y\",\"UTC3\":\"%A %d. %B %Y\",\"de_DE\":\"%d.%m.%Y\"}',NULL,NOW()),
+(19,'maximum_login_attempts','5',NULL,NOW());
 /*!40000 ALTER TABLE `fado_settings` ENABLE KEYS */;
 UNLOCK TABLES;
 

@@ -3,7 +3,6 @@
 namespace Fado\Core;
 
 use \Fado\Model\Setting as Setting;
-
 $availInvoiceMode = json_decode(Setting::get('invoice_mode_available'));
 $itemAmountUnits = json_decode(Setting::get('item_amount_units'));
 $availLang = json_decode(Setting::get('lang_available'));

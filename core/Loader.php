@@ -72,8 +72,6 @@ require_once './controller/source/Invoices.php';
 require_once './controller/source/Settings.php';
 require_once './controller/source/DatabaseSQL.php';
 require_once './controller/source/Meetings.php';
-require_once './controller/source/InvoicePDF.php';
-require_once './controller/InvoiceMail.php';
 require_once './controller/Ajax.php';
 require_once './controller/RouterRights.php';
 require_once './core/FormValidationPRegExp.php';

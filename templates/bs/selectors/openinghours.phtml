@@ -42,10 +42,9 @@
 ?>
                 <div class="openinghours-clocks">
 <?php
-    $time = explode(':', $view->formatTime($data['open']));
+    $time = explode(':', $data['open']);
     $view->includeTemplate('selectors/datetime', array('name_clock' => $openSelectorId, 'clockcontainer' => $openSelectorId, 'date' => false, 'clock' => true, 'label_clock' => 'SHOPS_LABEL_OPEN', 'hour' => (int) $time[0], 'minute' => (int) $time[1]));
-
-    $time = explode(':', $view->formatTime($data['close']));
+    $time = explode(':', $data['close']);
     $view->includeTemplate('selectors/datetime', array('name_clock' => $closeSelectorId, 'clockcontainer' => $closeSelectorId, 'date' => false, 'clock' => true, 'label_clock' => 'SHOPS_LABEL_CLOSE', 'hour' => (int) $time[0], 'minute' => (int) $time[1]));
 ?>
                 <div class="clear"></div>

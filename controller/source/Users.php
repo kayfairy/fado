@@ -22,10 +22,10 @@ class Users extends FadoController {
         $pwd = $this->request->getParameter('password');
 
         $session = Cookie::get($this->cookieName);
-        if (Cache::get($session . 'logintrycnt') == false) {
-            Cache::set($session . 'logintrycnt', 0);
+        if (Cache::get('logintrycnt') == false) {
+            Cache::set('logintrycnt', 0);
         }
-        if ((int)Cache::get($session . 'logintrycnt') >= (int)Settings::get('maximum_login_attempts')) {
+        if ((int)Cache::get('logintrycnt') >= (int)Settings::get('maximum_login_attempts')) {
             Cache::set('message', 'INVALID_AUTH_TOO_MANY_ATTEMPTS');
             return false;
         }
@@ -38,10 +38,13 @@ class Users extends FadoController {
                 header('Location: ' . $this->request->getReferer(), false, 302);
             }
 
-            Cache::set($session . 'logintrycnt', (int)Cache::get($session . 'logintrycnt') + 1);
+            Cache::set('logintrycnt', (int)Cache::get('logintrycnt') + 1);
             Cache::set('message', 'INVALID_AUTH');
             return false;
+        } else {
+        		Cache::set('message', '');
         }
+            
 
         if ($this->request->getParameter('logout') == '1') {
             $this->logout();

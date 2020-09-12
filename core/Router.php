@@ -179,13 +179,6 @@ class Router {
 
             if ((bool)$request->getParameter('print')) {
                 $view->includeTemplate('print/invoice', array('invoices' => $invoiceItems));
-            } else if ((bool)$request->getParameter('pdf')) {
-                $pdf = new \Fado\Controller\Source\InvoicePDF($request, $rights);
-                $pdf->get();
-            } else if ((bool)$request->getParameter('mail')) {
-                $mail = new \Fado\Controller\InvoiceMail($request, $rights);
-                $mail->get();
-                $view->includeTemplate('invoices', array('invoices' => $invoiceItems, 'allShops' => $allShopsList));
             } else {
                 $view->includeTemplate('invoices', array('invoices' => $invoiceItems, 'allShops' => $allShopsList));
             }

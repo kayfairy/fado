@@ -83,7 +83,7 @@ $rightsRead = $view->userRights->isAllowed('ur', 1);
         <tr>
             <td>user</td>
             <td>
-                <select name="us" <?php echo (!$rightsWrite) ? 'disabled="disabled" class="disabled"' : ''; ?>>
+                <select name="us" <?php echo (!$rightsWrite || in_array($activeUser['name'], ADMIN_USERS)) ? 'disabled="disabled" class="disabled"' : ''; ?>>
                     <option value="0" <?php echo ($routingRights['us'] == 0) ? 'selected' : ''; ?>>none</option>
                     <option value="1" <?php echo ($routingRights['us'] == 1) ? 'selected' : ''; ?>>read</option>
                     <option value="2" <?php echo ($routingRights['us'] == 2) ? 'selected' : ''; ?>>read+write</option>
@@ -93,7 +93,7 @@ $rightsRead = $view->userRights->isAllowed('ur', 1);
         <tr>
             <td>usersettings</td>
             <td>
-                <select name="ut" <?php echo (!$rightsWrite) ? 'disabled="disabled" class="disabled"' : ''; ?>>
+                <select name="ut" <?php echo (!$rightsWrite || in_array($activeUser['name'], ADMIN_USERS)) ? 'disabled="disabled" class="disabled"' : ''; ?>>
                     <option value="0" <?php echo ($routingRights['ut'] == 0) ? 'selected' : ''; ?>>none</option>
                     <option value="2" <?php echo ($routingRights['ut'] == 2) ? 'selected' : ''; ?>>write</option>
                 </select>
@@ -102,7 +102,7 @@ $rightsRead = $view->userRights->isAllowed('ur', 1);
         <tr>
             <td>sqladmin</td>
             <td>
-                <select name="sq" <?php echo (!$rightsWrite) ? 'disabled="disabled" class="disabled"' : ''; ?>>
+                <select name="sq" <?php echo (!$rightsWrite || in_array($activeUser['name'], ADMIN_USERS)) ? 'disabled="disabled" class="disabled"' : ''; ?>>
                     <option value="0" <?php echo ($routingRights['sq'] == 0) ? 'selected' : ''; ?>>none</option>
                     <option value="2" <?php echo ($routingRights['sq'] == 2) ? 'selected' : ''; ?>>write</option>
                 </select>
@@ -111,14 +111,14 @@ $rightsRead = $view->userRights->isAllowed('ur', 1);
         <tr>
             <td>adminsettings</td>
             <td>
-                <select name="at" <?php echo (!$rightsWrite) ? 'disabled="disabled" class="disabled"' : ''; ?>>
+                <select name="at" <?php echo (!$rightsWrite || in_array($activeUser['name'], ADMIN_USERS)) ? 'disabled="disabled" class="disabled"' : ''; ?>>
                     <option value="0" <?php echo ($routingRights['at'] == 0) ? 'selected' : ''; ?>>none</option>
                     <option value="2" <?php echo ($routingRights['at'] == 2) ? 'selected' : ''; ?>>write</option>
                 </select>
             </td>
         </tr>
         <?php
-            if (in_array($activeUser['name'], ADMIN_USERS)) {
+            if (in_array($view->getController()->getLoggedInUser()['name'], ADMIN_USERS)) {
         ?>
         <tr>
             <td>userrights</td>

@@ -8,7 +8,23 @@ namespace Fado\Model;
  * block: 0
  *
  * {"aj": "2", "at": "2", "if": "1", "in": "2", "me": "2", "na": "1", "ne": "2", "ri": "2", "sh": "2", "sq": "2", "st": "1", "ur": 2, "us": "2", "ut": "2", "ve": "2", "wa": "2"}
- *
+ *   
+ *  PAGENAME		=>	SHORT
+ *  ajax 			=> aj
+ *  information 	=> if
+ *  settings		=> st
+ *  shop 	      => sh
+ *  vehicles 	   => ve
+ *  warehouse 	   => wa
+ *  invoices 	   => in
+ *  newinvoice 	=> ne
+ *  navigator 	   => na
+ *  meetings 	   => me
+ *  user 	      => us
+ *  usersettings 	=> ut
+ *  sqladmin 	   => sq
+ *  adminsettings => at
+ *  userrights    => ur
  */
 
 class Rights extends FadoModel {

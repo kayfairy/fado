@@ -21,7 +21,9 @@ class Shop2Vehicle extends FadoController {
         $vehicle2ShopId = $this->request->getParameter('shop2vehicle_shop');
 
         if ($vehicle2ShopId != false && $vehicle2VehicleId !== false && $saveVehicle2Shop == 'save_shop2vehicle') {
-            if ($this->model->saveVehicleToShopRelation(array($vehicle2ShopId), array($vehicle2VehicleId))) {
+            if (!$this->rightsController->isAllowed($this->request->getParameter('page'), \Fado\Controller\RouterRights::$WRITE, true)) {
+                $this->rightsController->redirect();
+            } else if ($this->model->saveVehicleToShopRelation(array($vehicle2ShopId), array($vehicle2VehicleId))) {
                 Cache::set('message', 'VEHICLE_TO_SHOP_ADDED');
             } else {
                 Cache::set('message', 'VEHICLE_TO_SHOP_ERROR');

@@ -4,21 +4,21 @@ namespace Fado\Controller;
 
 use \Fado\Model\Cache as Cache;
 
-/*		
- *  PAGENAME		=>	SHORT
- *  ajax 			=> aj
- *  information 	=> if
- *  settings		=> st
- *  shop 	      => sh
- *  vehicles 	   => ve
- *  warehouse 	   => wa
- *  invoices 	   => in
- *  newinvoice 	=> ne
- *  navigator 	   => na
- *  meetings 	   => me
- *  user 	      => us
- *  usersettings 	=> ut
- *  sqladmin 	   => sq
+/*        
+ *  PAGENAME        =>    SHORT
+ *  ajax             => aj
+ *  information     => if
+ *  settings        => st
+ *  shop           => sh
+ *  vehicles        => ve
+ *  warehouse        => wa
+ *  invoices        => in
+ *  newinvoice     => ne
+ *  navigator        => na
+ *  meetings        => me
+ *  user           => us
+ *  usersettings     => ut
+ *  sqladmin        => sq
  *  adminsettings => at
  *  userrights    => ur
  *
@@ -67,10 +67,10 @@ class RouterRights extends Source\FadoController {
             
             if (in_array($this->userController->getModel()->get($userId)['name'], ADMIN_USERS)) {
                 $rights['ur'] = '2';
-            	 $rights['ut'] = '2';
-            	 $rights['us'] = '2';
-            	 $rights['at'] = '2';
-            	 $rights['sq'] = '2';
+                 $rights['ut'] = '2';
+                 $rights['us'] = '2';
+                 $rights['at'] = '2';
+                 $rights['sq'] = '2';
             }
 
             if ($this->model->set($userId, json_encode($rights))) {

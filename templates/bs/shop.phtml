@@ -119,7 +119,7 @@
         });
         window.lrmConfig = {};
         L.tileLayer('<?php echo $view->getProtocol() . \Fado\Model\Setting::get('map_tile_url'); ?>', {
-        	attribution: ''
+            attribution: ''
         }).addTo(map);
         var redIcon = L.icon({
             iconUrl: '<?php echo $view->getHostLink(); ?>/vendor/leaflet/images/marker-icon-2x.png',

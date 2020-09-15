@@ -102,7 +102,10 @@ class User extends FadoModel {
 
     public function updateLastLogin($id, $time = 'NOW()') {
         $query = $this->prepare('UPDATE ' . $this->relation . ' SET last_login=' . $time . ' WHERE name LIKE :id OR id=:id OR session LIKE :id');
-        return $query->execute(array(':id' => $id));
+        $query->execute(array(':id' => $id));
+          $id= $this->getUserId($id)['id'];
+        $query = $this->prepare('INSERT INTO fado_user_ip (userid, ip, login_time) VALUES (:userid, :ip, ' . $time . ')');
+        return $query->execute(array(':userid' => $id, ':ip' => $_SERVER['REMOTE_ADDR']));
     }
 
     public function validatePwd($pwd, $id) {

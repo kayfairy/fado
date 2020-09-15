@@ -32,6 +32,7 @@ class NewInvoice extends FadoController {
         }
 
         $items = Cache::get('newInvoiceList');
+        var_dump($items);
         if ($items != '') {
             $items = Factory::create(json_decode($items, true));
             if ($items->count() > 0) {
@@ -85,6 +86,14 @@ class NewInvoice extends FadoController {
             $invoiceItems = $this->model->getByIds($items['ids']);
             foreach ($invoiceItems as $key => $item) {
                 $invoiceItems[$key]['item_amount'] = $items['count'][$key];
+                unset($invoiceItems[$key]['information']);
+                unset($invoiceItems[$key]['shop_information']);
+                unset($invoiceItems[$key]['opening_hours']);
+                foreach ($item as $column => $value) {
+                    if (is_int($column)) {
+                        unset($invoiceItems[$key][$column]);
+                    }
+                }
             }
 
             Cache::set('newInvoiceList', json_encode($invoiceItems));

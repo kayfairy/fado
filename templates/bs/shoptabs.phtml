@@ -24,7 +24,7 @@ $activeTab = \Fado\Model\Cache::get('activeTab');
                 </ul>
                 <!-- Tab panes -->
                 <div class="tab-content">
-            	    <div id="SHOP_TAB_ADDRESS" class="tab-pane fade in active" role="tabpanel">
+                    <div id="SHOP_TAB_ADDRESS" class="tab-pane fade in active" role="tabpanel">
                             <address>
                                 <strong><?php echo $activeShop['description']; ?></strong><br>
                                 <?php echo $activeShop['street'] . ' ' . $activeShop['streetnr']; ?><br>
@@ -54,7 +54,7 @@ $activeTab = \Fado\Model\Cache::get('activeTab');
                                 <br><br>
                                 <?php echo $view->DDtoDMS($activeShop['lng'], 'lng') . ' ' . $view->DDtoDMS($activeShop['lat'], 'lat'); ?>
                             </address>
-            	    </div>
+                    </div>
                     <div id="SHOP_TAB_MAP" class="tab-pane fade in active" role="tabpanel">
                         <h4><?php echo $view->translate('SHOP_PANEL_MAP'); ?></h4>
                         <div class="col-lg-9">
@@ -90,7 +90,7 @@ $activeTab = \Fado\Model\Cache::get('activeTab');
                     <div id="SHOP_TAB_FORM" class="tab-pane fade in active" role="tabpanel">
                         <h4><?php echo $view->translate('SHOP_PANEL_DATA'); ?></h4>
                         <?php $view->includeTemplate('shopform', array('activeShop' => $activeShop, 'openNewShop' => false)); ?>
-            	    </div>
+                    </div>
                     <div id="SHOP_TAB_VEHICLE" class="tab-pane fade in active" role="tabpanel">
                         <?php
 
@@ -98,7 +98,7 @@ $activeTab = \Fado\Model\Cache::get('activeTab');
                         $view->includeTemplate('selectors/vehicles2shop', array('activeShop' =>  $activeShop, 'assignedVehicles' => $assignedVehicles, 'allVehicles' => $allVehicles));
 
                         ?>
-            	    </div>
+                    </div>
                     <div id="SHOP_TAB_USER" class="tab-pane fade in active" role="tabpanel">
                         <?php
 
@@ -106,7 +106,7 @@ $activeTab = \Fado\Model\Cache::get('activeTab');
                         $view->includeTemplate('selectors/user2shop', array('activeShop' =>  $activeShop, 'assignedUsers' => $assignedUsers, 'allUsers' => $allUsers));
 
                         ?>
-            	    </div>
+                    </div>
         <?php
             }
         ?>

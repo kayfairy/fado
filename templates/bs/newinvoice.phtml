@@ -125,10 +125,10 @@ $bruttoMode = \Fado\Model\Setting::get('invoice_mode') == 'brutto';
             $('.new-item-row-select').on('change', function (event) {
                 var valueInput = $(this).parents('.new-item-row').find('input');
                 var max = parseInt(event.target.selectedOptions[0].dataset.max);
-            	valueInput.attr('max', max);
-            	if (max < parseInt(valueInput.val())) {
-            	   valueInput.val(max);
-            	}
+                valueInput.attr('max', max);
+                if (max < parseInt(valueInput.val())) {
+                   valueInput.val(max);
+                }
             });
 
             var i = 1;
@@ -137,24 +137,24 @@ $bruttoMode = \Fado\Model\Setting::get('invoice_mode') == 'brutto';
                 event.preventDefault();
                 var maxcount = <?php echo $allItems->count(); ?>;
                 var itemrow = $('.new-item-row:last');
-            	var id = itemrow.find('option:checked').val();
-            	itemrow_copy = itemrow.clone();
-            	itemrow.find('option:not(:checked)').remove();
-            	if (i >= maxcount) return;
-            	itemrow_copy.find('option[value="' + id + '"]').remove();
-            	var max = itemrow_copy.find('option:first').data('max');
-            	itemrow_copy.find('select').attr('name', 'item-' + i).attr('name', 'item-' + i);
-            	itemrow_copy.find('input').attr('name', 'item-count-' + i).attr('max', max);
-            	itemrow_copy.insertAfter(itemrow);
-            	i++;
-            	$('#item-count').val(i);
+                var id = itemrow.find('option:checked').val();
+                itemrow_copy = itemrow.clone();
+                itemrow.find('option:not(:checked)').remove();
+                if (i >= maxcount) return;
+                itemrow_copy.find('option[value="' + id + '"]').remove();
+                var max = itemrow_copy.find('option:first').data('max');
+                itemrow_copy.find('select').attr('name', 'item-' + i).attr('name', 'item-' + i);
+                itemrow_copy.find('input').attr('name', 'item-count-' + i).attr('max', max);
+                itemrow_copy.insertAfter(itemrow);
+                i++;
+                $('#item-count').val(i);
                 $('.new-item-row-select').on('change', function (event) {
                     var valueInput = $(this).parents('.new-item-row').find('input');
                     var max = parseInt(event.target.selectedOptions[0].dataset.max);
-                	valueInput.attr('max', max);
-                	if (max < parseInt(valueInput.val())) {
-                	   valueInput.val(max);
-                	}
+                    valueInput.attr('max', max);
+                    if (max < parseInt(valueInput.val())) {
+                       valueInput.val(max);
+                    }
                 });
             });
 

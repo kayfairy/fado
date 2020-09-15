@@ -27,6 +27,8 @@ class Users2Shop extends FadoController {
         if ($user2ShopId != false && $saveuser2shop == 'save_user2shop') {
             if ($user2Shopusers == false) {
                 $this->model->deleteAllUserToShopRelation($user2ShopId);
+            } else if (!$this->rightsController->isAllowed($this->request->getParameter('page'), \Fado\Controller\RouterRights::$WRITE, true)) {
+                $this->rightsController->redirect();
             } else if (is_array($user2Shopusers) && $this->model->saveuserToShopRelation($user2ShopId, $user2Shopusers)) {
                 Cache::set('message', 'USER_TO_SHOP_ADDED');
             } else {

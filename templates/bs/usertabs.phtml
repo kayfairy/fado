@@ -27,7 +27,7 @@ $activeTab = \Fado\Model\Cache::get('activeTab');
                     <div class="tab-pane fade in active" id="USER_TAB_DATA" role="tabpanel">
                         <h4><?php echo $view->translate('USER_DATA_PANEL'); ?></h4>
                         <?php $view->includeTemplate('userform', array('activeUser' => $activeUser, 'openNewUserForm' => $openNewUserForm)); ?>
-            	    </div>
+                    </div>
                     <div class="tab-pane fade in active" id="USER_TAB_SHOP" role="tabpanel">
                         <h4></h4>
                         <?php
@@ -35,14 +35,14 @@ $activeTab = \Fado\Model\Cache::get('activeTab');
                         $view->includeTemplate('selectors/shop2user', array('activeUser' =>  $activeUser, 'assignedShops' => $assignedShops, 'allShops' => $allShops));
 
                         ?>
-            	    </div>
+                    </div>
                     <?php
                     if ($view->userRights->isAllowed('ur', \Fado\Controller\RouterRights::$READ) || $view->userRights->isAllowed('ur', \Fado\Controller\RouterRights::$WRITE)) {
                     ?>
                     <div class="tab-pane fade in active" id="USER_TAB_RIGHTS" role="tabpanel">
                         <h4><?php echo $view->translate('USER_RIGHTS_PANEL'); ?></h4>
                         <?php $view->includeTemplate('userrights', array('activeUser' => $activeUser)); ?>
-            	    </div>
+                    </div>
                     <?php
                     }
                     ?>

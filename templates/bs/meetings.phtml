@@ -108,9 +108,9 @@
         $('#add-meetings, #close-add-meetings').on('click', function(e) {
             e.preventDefault();
             $('#add-meetings-panel').find("input[type=text], textarea").val("");
-        	$('#add-meetings-panel, #meetings-panel').each(function() {
+            $('#add-meetings-panel, #meetings-panel').each(function() {
                 $(this).toggle();
-        	});
+            });
         });
 
         $('#modal-delete').on('show.bs.modal', function(e) {

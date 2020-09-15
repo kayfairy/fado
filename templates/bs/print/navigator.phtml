@@ -80,11 +80,11 @@ var_dump($matches);
         });
 
         window.lrmConfig = {
-        	serviceUrl: '<?php echo \Fado\Model\Setting::get('map_route_url'); ?>'
+            serviceUrl: '<?php echo \Fado\Model\Setting::get('map_route_url'); ?>'
         };
 
         L.tileLayer('<?php echo \Fado\Model\Setting::get('map_tile_url'); ?>', {
-        	attribution: '',
+            attribution: '',
         }).addTo(map);
 
         var redIcon = L.icon({
@@ -94,18 +94,18 @@ var_dump($matches);
         });
 
         var control = L.Routing.control(L.extend(window.lrmConfig, {
-        	waypoints: [],
-        	geocoder: L.Control.Geocoder.nominatim(),
-        	routeWhileDragging: true,
-        	reverseWaypoints: true,
-        	showAlternatives: true,
-        	altLineOptions: {
-        		styles: [
-        			{color: 'black', opacity: 0.15, weight: 9},
-        			{color: 'white', opacity: 0.8, weight: 6},
-        			{color: 'blue', opacity: 0.5, weight: 2}
-        		]
-        	}
+            waypoints: [],
+            geocoder: L.Control.Geocoder.nominatim(),
+            routeWhileDragging: true,
+            reverseWaypoints: true,
+            showAlternatives: true,
+            altLineOptions: {
+                styles: [
+                    {color: 'black', opacity: 0.15, weight: 9},
+                    {color: 'white', opacity: 0.8, weight: 6},
+                    {color: 'blue', opacity: 0.5, weight: 2}
+                ]
+            }
         })).addTo(map);
 
         L.Routing.errorControl(control).addTo(map);

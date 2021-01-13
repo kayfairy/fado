@@ -43,4 +43,4 @@ Go to <https://127.0.0.1/?page=sqladmin> and upload `fado-demo.sql`.
 
 ## License
 
-[GPLv3 License](https://www.gnu.org/licenses/gpl-3.0.en.html) © 2019 Fatih Kaymak
+[GPLv3 License](https://www.gnu.org/licenses/gpl-3.0.en.html)

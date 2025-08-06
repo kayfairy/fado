@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="<?php echo $view->getActiveLanguage(); ?>">
+<head>
+
+    <title><?php echo $view->translate('PROGRAM_TITLE'); ?></title>
+
+    <?php
+
+    $view->includeTemplate('headersrc', array());
+
+    ?>
+
+    <?php
+        if ($shops->getActivePos() >= 0) {
+    ?>
+    <!-- Leaflet  CSS -->
+    <link rel="stylesheet" href="<?php echo $view->getHostLink(); ?>/vendor/leaflet/leaflet.css">
+
+    <!-- Leaflet  JavaScript -->
+    <script src="<?php echo $view->getHostLink(); ?>/vendor/leaflet/leaflet.js"></script>
+    <?php
+        }
+    ?>
+
+    <!-- Weekday Range Selector CSS -->
+    <script src="<?php echo $view->getHostLink(); ?>/vendor/weekday-range-selector/weekday-range-selector.js"></script>
+
+    <!-- Weekday Range Selector JavaScript -->
+    <link href="<?php echo $view->getHostLink(); ?>/vendor/weekday-range-selector/weekday-range-selector.css" rel="stylesheet" type="text/css">
+
+    <!-- ckeditor JavaScript -->
+    <script src="<?php echo $view->getHostLink(); ?>/vendor/ckeditor/ckeditor.js"></script>
+
+    <!-- ckeditor config JavaScript -->
+    <script src="<?php echo $view->getHostLink(); ?>/vendor/ckeditor/config.js"></script>
+
+</head>
+
+<body>
+    <?php
+
+    $view->includeTemplate('modaldelete', array());
+
+    ?>
+    <div id="wrapper">
+        <?php
+
+        $view->includeTemplate('navbar', array());
+
+        ?>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="colh1-lg-12">
+                    <div class="panel"></div>
+                </div>
+            </div>
+            <div class="row">
+                <?php
+                if (\Fado\Model\Cache::get('message') != '') {
+                ?>
+                <div class="col-lg-12">
+                    <p>
+                        <button type="button" class="btn btn-outline btn-danger"><?php echo $view->translate(\Fado\Model\Cache::get('message')); ?></button>
+                    </p>
+                </div>
+                <?php
+                }
+                ?>
+            </div>
+            <?php
+
+            $openNewShop = \Fado\Model\Cache::get('openNewShopForm');
+            $view->includeTemplate('shoptable', array('shops' => $shops));
+
+            ?>
+            <div class="row" id="add-shop-panel" style="<?php echo ($openNewShop == '1') ? '' : 'display: none'; ?>">
+            <div class="col-lg-12">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <?php echo $view->translate('SHOP_PANEL_HEADING'); ?>
+                            <div class="input-group pull-right">
+                                <form>
+                                    <span class="input-group-btn">
+                                        <button type="button" id="close-add-shop" class="btn btn-xs btn-secondary btn-danger"><span class="glyphicon glyphicon-trash"></span></button>
+                                    </span>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                        <?php
+                           $view->includeTemplate('shopform', array('activeShop' => null, 'openNewShop' => 1));
+                        ?>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <?php
+            $activeShop = $shops->current();
+            if ($shops->getActivePos() >= 0 && $openNewShop != '1') {
+                $view->includeTemplate('shoptabs', array('activeShop' => $activeShop, 'assignedVehicles' => $assignedVehicles, 'allVehicles' => $allVehicles, 'assignedUsers' => $assignedUsers, 'allUsers' => $allUsers, 'openNewShop' => $openNewShop));
+            }
+            ?>
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+    <?php
+        if ($shops->getActivePos() >= 0) {
+    ?>
+     <script>
+
+        var map = L.map('map', {
+            center: [<?php echo $activeShop['lat']; ?>, <?php echo $activeShop['lng']; ?>],
+            zoom: 13
+        });
+        window.lrmConfig = {};
+        L.tileLayer('<?php echo $view->getProtocol() . \Fado\Model\Setting::get('map_tile_url'); ?>', {
+            attribution: ''
+        }).addTo(map);
+        var redIcon = L.icon({
+            iconUrl: '<?php echo $view->getHostLink(); ?>/vendor/leaflet/images/marker-icon-2x.png',
+            iconSize: [28, 50],
+            iconAnchor: [28, 50]
+        });
+        var marker = L.marker([<?php echo $activeShop['lat']; ?>,<?php echo $activeShop['lng']; ?>], {icon: redIcon, draggable: true, riseOnHover: true}).addTo(map);
+        map.on('click', function(e) {$('#shop_coordinates_lng').val(e.latlng.lng); $('#shop_coordinates_lat').val(e.latlng.lat); marker.setLatLng(e.latlng);});
+        map.invalidateSize();
+        marker.on('moveend', function(e) {$('#shop_coordinates_lng').val(this.getLatLng().lng); $('#shop_coordinates_lat').val(this.getLatLng().lat); marker.setLatLng(this.getLatLng());});
+        map.invalidateSize();
+        map.setView([<?php echo $activeShop['lat']; ?>, <?php echo $activeShop['lng']; ?>], 8);
+
+
+     </script>
+     <?php
+        }
+     ?>
+     <script>
+
+        CKEDITOR.replace('editor-1');
+        CKEDITOR.replace('editor-new');
+
+        $('.nav-pills > li').each(function(i, e){
+            var activeTab = '<?php echo \Fado\Model\Cache::get('activeTab'); ?>' + 'ID';
+            if (e.id == activeTab) {
+                $(e).addClass('active');
+            } else {
+                $(e).removeClass('active');
+            }
+        });
+
+        $('.tab-content > div').each(function(i, e){
+            var activeTab = '<?php echo \Fado\Model\Cache::get('activeTab'); ?>';
+            if (e.id == activeTab) {
+                $(e).addClass('active');
+            } else {
+                $(e).removeClass('active');
+            }
+        });
+
+        $('.nav-pills a').click(function(){
+            $(this).tab('show');
+            $.ajax({
+              url: '<?php echo $view->getHostLink(); ?>',
+              method: 'POST',
+              data: { page: 'aj', controller: 'tabs', id: $(this).data('tab-id')},
+              dataType: 'JSON'
+            }).done(function(msg) {
+            });
+        });
+
+        $('a[href*="shop=<?php echo $shops->current()['sid']; ?>"]').on('click', function(e) {
+            $('#add-shop-panel').css('display', 'none');
+            $('#shop-panel').css('display', 'block');
+        });
+
+        $('#add-sh, #close-add-shop').on('click', function(e) {
+            e.preventDefault();
+            $('#add-shop-panel').find('input[type=text], textarea').val('');
+            $('#add-shop-panel, #shop-panel').each(function() {
+                $(this).toggle();
+            });
+            var selector = WeekDayRangeSelector('openinghours-range-new-1', {
+                start: 0,
+                stop: 4,
+                locale: ['<?php echo preg_replace('/_/', '-', \Fado\Model\Setting::get('lang')); ?>', {weekday: 'short', year: 'numeric', month: 'short', day: 'numeric'}]
+            });
+            ClockSlider('openinghours-open-new-1', {});
+            ClockSlider('openinghours-close-new-1', {});
+        });
+
+        $('#modal-delete').on('show.bs.modal', function(e) {
+            var activeForm = $(e.relatedTarget.form)
+            var formInput = activeForm.serializeArray();
+            formInput.push({name: 'delete', value: 'delete_shop'});
+            $('button#modal-confirm-delete').on('click', function(e) {
+                $.ajax({
+                    url: activeForm.action,
+                    type: 'POST',
+                    data: formInput,
+                    success: function(data){
+                        document.open();
+                        document.write(data);
+                        document.close();
+                    }
+                });
+            });
+         });
+     </script>
+
+</body>
+
+</html>

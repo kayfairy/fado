@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="<?php echo $view->getActiveLanguage(); ?>">
+
+<head>
+
+    <title><?php echo $view->translate('PROGRAM_TITLE'); ?></title>
+
+    <?php
+
+    $view->includeTemplate('headersrc', array());
+
+    ?>
+
+</head>
+
+<body>
+
+        <div class="center">
+            <div class="panel panel-warning error-404-panel">
+                <div class="panel-heading">
+                    <?php echo $view->translate('ERROR_403'); ?>
+                </div>
+                <div class="panel-body">
+                    <p>
+                        <button type="button" class="btn btn-danger"><?php echo $view->translate('ERROR_403_TEXT'); ?></button>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+</body>
+
+</html>

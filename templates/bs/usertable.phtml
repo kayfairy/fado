@@ -1,0 +1,38 @@
+<?php
+$currentPage = $user->getCurrentPage();
+$currentItemsPerPage = $user->getItemsPerPage();
+?>
+<div class="colh1-lg-12">
+    <div class="panel panel-default panel-success">
+            <?php
+                $view->includeTemplate('tableheader', array('list' => $user, 'viewClass' => 'us', 'viewPrefix' => 'USER'));
+            ?>
+                    <tbody>
+                    <?php
+
+                        foreach($user->get() as $userItem) {
+                    ?>
+                        <tr class="gradeA odd" >
+                            <td class="sorting_1"><a href="<?php echo $view->getRewriteURL(array('user' => $userItem['sid']), 'us'); ?>#user-panel"><?php echo $userItem['name']; ?></a></td>
+                            <td class="center"><?php echo '****'; ?></td>
+                            <td><?php echo $userItem['active']; ?></td>
+                            <td><?php echo $userItem['online']; ?></td>
+                            <td class="center"><?php echo $view->decodeHtmlEntities(json_decode($userItem['data'])); ?></td>
+                            <td class="center"><?php echo $view->formatDate($userItem['birthday']); ?></td>
+                            <td class="center"><?php echo $view->formatDateTime($userItem['user_created']); ?></td>
+                            <td class="center"><?php echo $view->formatDateTime($userItem['user_changed']); ?></td>
+                            <td class="center"><?php echo $view->formatDateTime($userItem['last_login']); ?></td>
+                        </tr>
+                    <?php
+                        }
+                    ?>
+                    </tbody>
+                </table>
+            </div>
+            <?php
+                $view->includeTemplate('tablenavigation', array('list' => $user, 'viewClass' => 'us'));
+            ?>
+        </div>
+    </div>
+    <!-- /.panel-body -->
+</div>

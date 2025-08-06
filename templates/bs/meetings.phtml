@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="<?php echo $view->getActiveLanguage(); ?>">
+<head>
+
+    <title><?php echo $view->translate('PROGRAM_TITLE'); ?></title>
+
+    <?php
+
+    $view->includeTemplate('headersrc', array());
+
+    ?>
+
+    <?php
+        if ($meetings->getActivePos() >= 0) {
+    ?>
+    <!-- Leaflet  Script + CSS -->
+    <link rel="stylesheet" href="<?php echo $view->getHostLink(); ?>/vendor/leaflet/leaflet.css">
+
+    <script src="<?php echo $view->getHostLink(); ?>/vendor/leaflet/leaflet.js"></script>
+    <?php
+        }
+    ?>
+    <!-- Round Date Selector Script + CSS -->
+    <script src="<?php echo $view->getHostLink(); ?>/vendor/round-date-selector/round-date-selector.min.js"></script>
+
+    <link href="<?php echo $view->getHostLink(); ?>/vendor/round-date-selector/round-date-selector.css" rel="stylesheet" type="text/css">
+
+    <script src="<?php echo $view->getHostLink(); ?>/vendor/weekday-range-selector/weekday-range-selector.js"></script>
+
+    <link href="<?php echo $view->getHostLink(); ?>/vendor/weekday-range-selector/weekday-range-selector.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+    <?php
+
+    $view->includeTemplate('modaldelete', array());
+
+    ?>
+    <div id="wrapper">
+        <?php
+
+        $view->includeTemplate('navbar', array());
+
+        ?>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="colh1-lg-12">
+                    <div class="panel"></div>
+                </div>
+            </div>
+            <div class="row">
+                <?php
+                if (\Fado\Model\Cache::get('message') != '') {
+                ?>
+                <div class="col-lg-12">
+                    <p>
+                        <button type="button" class="btn btn-outline btn-danger"><?php echo $view->translate(\Fado\Model\Cache::get('message')); ?></button>
+                    </p>
+                </div>
+                <?php
+                }
+                ?>
+            </div>
+            <?php
+
+            $openNewMeetings = \Fado\Model\Cache::get('openNewShopForm');
+            $view->includeTemplate('meetingstable', array('list' => $meetings));
+
+            ?>
+            <div class="row" id="add-meetings-panel" style="">
+                <div class="col-lg-12">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <?php echo $view->translate('MEETING_PANEL_HEADING'); ?>
+                            <div class="input-group pull-right">
+                                <form>
+                                    <span class="input-group-btn">
+                                        <!--<button type="button" id="close-add-meetings" class="btn btn-xs btn-secondary btn-danger"><span class="glyphicon glyphicon-trash"></span></button>-->
+                                    </span>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                        <?php
+                           $view->includeTemplate('meetingsform', array('activeShop' => null, 'openNewShop' => 1));
+                        ?>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <?php
+            ?>
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+    <script>
+        $('a[href*="meetings=<?php echo $meetings->current()['sid']; ?>"]').on('click', function(e) {
+            $('#add-meetings-panel').css('display', 'none');
+            $('#meetings-panel').css('display', 'block');
+        });
+        $('#add-meetings, #close-add-meetings').on('click', function(e) {
+            e.preventDefault();
+            $('#add-meetings-panel').find("input[type=text], textarea").val("");
+            $('#add-meetings-panel, #meetings-panel').each(function() {
+                $(this).toggle();
+            });
+        });
+
+        $('#modal-delete').on('show.bs.modal', function(e) {
+            var activeForm = $(e.relatedTarget.form)
+            var formInput = activeForm.serializeArray();
+            formInput.push({name: 'delete', value: 'delete_meeting'});
+            $('button#modal-confirm-delete').on('click', function(e) {
+                $.ajax({
+                    url: activeForm.action,
+                    type: 'POST',
+                    data: formInput,
+                    success: function(data){
+                        document.open();
+                        document.write(data);
+                        document.close();
+                    }
+                });
+            });
+         });
+     </script>
+
+</body>
+
+</html>

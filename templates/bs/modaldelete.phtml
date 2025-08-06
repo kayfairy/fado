@@ -1,0 +1,16 @@
+<div class="modal fade" id="modal-delete" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><?php echo $view->translate('MODAL_DELETE_HEADLINE'); ?></h3>
+            </div>
+            <div class="modal-body">
+                <?php echo $view->translate('MODAL_DELETE_TEXT'); ?>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $view->translate('CANCEL'); ?></button>
+                <button type="submit" class="btn btn-primary" id="modal-confirm-delete" name="delete"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> <?php echo $view->translate('DELETE'); ?></button>
+            </div>
+        </div>
+    </div>
+</div>

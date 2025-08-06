@@ -1,0 +1,12 @@
+version: '3'
+services:
+  php:
+    image: debian:latest
+    docker-php-entrypoint: "<?php exec('sh /var/www/fado/docker/deploy.sh'); ?>"
+    environment:
+      SSL_MODE: "mixed"
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /data/data/com.termux/home/fado:/var/www/html/

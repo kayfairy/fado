@@ -1,0 +1,126 @@
+<?php
+
+use \Fado\Model\Setting as Settings;
+use \Fado\Controller\RouterRights as Rights;
+use \Fado\Model\Cache as Cache;
+
+$amount_units = json_decode(Settings::get('item_amount_units'));
+$tax_rates = json_decode(Settings::get('tax_rates'));
+$formMessages = (array) json_decode(Cache::get('formStatus'), true);
+
+if ($activeItem == null) {
+    $activeItem = (array) json_decode(Cache::get('newFormData2'), true);
+}
+if ($activeItem == null || empty($activeItem) && empty($formMessages)) {
+    $formMessages = array();
+    $activeItem = array_fill_keys(WAREHOUSE_ITEMS_DATA_FIELDS, '');
+    $allShops->rewind();
+    $activeItem['shop_id'] = $allShops->current()['sid'];
+}
+$activeItem = array_merge($activeItem, array('currency' => Settings::getActiveCurrency()));
+
+if ($view->userRights->isAllowed('wa', Rights::$READ)) {
+    $disabled = 'disabled';
+} else {
+    $disabled = '';
+}
+?>
+<div class="col-lg-6">
+    <form method="POST" action="<?php echo $view->getFullLink(); ?>">
+        <input type="hidden" name="id" value="<?php echo $activeItem['sid']; ?>">
+        <div class="form-group <?php echo (isset($formMessages['name'])) ? 'has-error' : ''; ?>">
+            <label><?php echo $view->translate('WAREHOUSE_ITEMS_LABEL_NAME'); ?></label>
+            <?php if (isset($formMessages['name'])) { ?>
+            <label class="control-label" for="inputError"><?php echo $view->translate($formMessages['name']); ?></label>
+            <?php } ?>
+            <input name="name" class="form-control" placeholder="" value="<?php echo $activeItem['name']; ?>" <?php echo $disabled; ?>>
+        </div>
+        <div class="form-group">
+            <label><?php echo $view->translate('WAREHOUSE_2_SHOP_LABEL'); ?></label><br>
+            <select name="shop_id" class="" <?php echo $disabled; ?>>
+            <?php
+                foreach($allShops->get() as $shop) {
+            ?>
+                <option value="<?php echo $shop['sid']; ?>" <?php echo ($allShops[$activeItem['shop_id']]['sid'] === $shop['sid']) ? 'selected="selected"' : ''; ?>><?php echo $shop['description']; ?></option>
+            <?php
+                }
+            ?>
+            </select>
+        </div>
+        <div class="form-group <?php echo (isset($formMessages['information'])) ? 'has-error' : ''; ?>">
+            <label><?php echo $view->translate('WAREHOUSE_ITEMS_LABEL_INFORMATION'); ?></label>
+            <?php if (isset($formMessages['information'])) { ?>
+            <label class="control-label" for="inputError"><?php echo $view->translate($formMessages['information']); ?></label>
+            <?php } ?>
+            <textarea class="ckeditor" cols="80" id="<?php echo (!$openNewItem) ? 'editor-1' : 'editor-new'; ?>" name="<?php echo (!$openNewItem) ? 'editor-1' : 'editor-new'; ?>" rows="10">
+                <?php echo $view->decodeHtmlEntities(json_decode($activeItem['information'])); ?>
+            </textarea>
+        </div>
+        <div class="form-group <?php echo (isset($formMessages['amount'])) ? 'has-error' : ''; ?>">
+            <label><?php echo $view->translate('WAREHOUSE_ITEMS_LABEL_AMOUNT'); ?></label>
+            <?php if (isset($formMessages['amount'])) { ?>
+            <label class="control-label" for="amount"><?php echo $view->translate($formMessages['amount']); ?></label>
+            <?php } ?>
+            <input name="amount" class="form-control" type="number" min="1" placeholder="1" value="<?php echo $activeItem['amount']; ?>" <?php echo $disabled; ?>>
+        </div>
+        <div class="form-group <?php echo (isset($formMessages['unit'])) ? 'has-error' : ''; ?>">
+            <label><?php echo $view->translate('WAREHOUSE_ITEMS_LABEL_UNIT'); ?></label>
+            <?php if (isset($formMessages['unit'])) { ?>
+            <label class="control-label" for="unit"><?php echo $view->translate($formMessages['unit']); ?></label>
+            <?php } ?>
+            <br>
+            <select name="unit" class="" <?php echo $disabled; ?>>
+            <?php
+                foreach($amount_units as $field) {
+            ?>
+                <option value="<?php echo $field; ?>" <?php echo ($activeItem['unit'] === $field) ? 'selected="selected"' : ''; ?>><?php echo $field; ?></option>
+            <?php
+                }
+            ?>
+            </select>
+        </div>
+        <div class="form-group <?php echo (isset($formMessages['price_unit'])) ? 'has-error' : ''; ?>">
+            <label><?php echo $view->translate('WAREHOUSE_ITEMS_LABEL_PRICE_UNIT', $activeItem['currency']); ?></label>
+            <?php if (isset($formMessages['price_unit'])) { ?>
+            <label class="control-label" for="price_unit"><?php echo $view->translate($formMessages['price_unit']); ?></label>
+            <?php } ?>
+            <input name="price_unit" class="form-control" placeholder="" value="<?php echo $view->formatNumber($activeItem['price_unit'], array('2', ',', '')); ?>" <?php echo $disabled; ?>>
+        </div>
+        <div class="form-group <?php echo (isset($formMessages['tax_rate'])) ? 'has-error' : ''; ?>">
+            <label><?php echo $view->translate('WAREHOUSE_ITEMS_LABEL_TAX_RATE'); ?></label>
+            <?php if (isset($formMessages['tax_rate'])) { ?>
+            <label class="control-label" for="units"><?php echo $view->translate($formMessages['tax_rate']); ?></label>
+            <?php } ?>
+            <br>
+            <select name="tax_rate" class="" <?php echo $disabled; ?>>
+            <?php
+                foreach($tax_rates as $field) {
+            ?>
+                <option value="<?php echo $field; ?>" <?php echo ($activeItem['tax_rate'] === $field) ? 'selected="selected"' : ''; ?>><?php echo $field; ?>%</option>
+            <?php
+                }
+            ?>
+            </select>
+        </div>
+        <div class="form-group <?php echo (isset($formMessages['cut_rate'])) ? 'has-error' : ''; ?>">
+            <?php
+
+            $view->includeTemplate('selectors/slider', array('name' => 'cut_rate', 'value' => ($activeItem['cut_rate'] != '') ? $activeItem['cut_rate'] : 0, 'label' => 'WAREHOUSE_ITEMS_LABEL_CUT_RATE', 'min' => 0, 'max' => 100, 'error' => (isset($formMessages['cut_rate'])) ? $formMessages['cut_rate'] : null, 'unit' => '%'));
+
+            ?>
+        </div>
+        <div class="form-group <?php echo (isset($formMessages['active'])) ? 'has-error' : ''; ?>">
+            <label><?php echo $view->translate('WAREHOUSE_ITEMS_LABEL_ACTIVE'); ?></label>
+            <?php if (isset($formMessages['active'])) { ?>
+            <label class="control-label" for="inputError"><?php echo $view->translate($formMessages['active']); ?></label>
+            <?php } ?>
+            <div class="checkbox-inline">
+                <input name="active" type="checkbox" class="form-control" value="1" <?php echo ($activeItem['active'] == '1') ? 'checked="checked"' : ''; ?> <?php echo $disabled; ?>>
+            </div>
+        </div>
+        <button type="submit" name="submit" value="save_item" class="btn btn-default" <?php echo $disabled; ?>><span class="glyphicon glyphicon-ok"></span> <?php echo $view->translate('SAVE'); ?></button>
+        <?php if ($openNewItem != '1') { ?>
+        <button type="button" name="delete" value="delete_item" class="btn btn-default" data-toggle="modal" data-target="#modal-delete" <?php echo $disabled; ?>><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> <?php echo $view->translate('DELETE'); ?></button>
+        <?php } ?>
+    </form>
+</div>

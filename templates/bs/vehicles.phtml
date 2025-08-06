@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="<?php echo $view->getActiveLanguage(); ?>">
+<head>
+
+    <title><?php echo $view->translate('PROGRAM_TITLE'); ?></title>
+
+
+    <?php
+
+    $view->includeTemplate('headersrc', array());
+
+    ?>
+
+</head>
+
+<body>
+    <?php
+
+    $view->includeTemplate('modaldelete', array());
+
+    ?>
+    <div id="wrapper">
+        <?php
+
+        $view->includeTemplate('navbar', array());
+
+        ?>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="colh1-lg-12">
+                    <div class="panel"></div>
+                </div>
+            </div>
+            <div class="row">
+                <?php
+                if (\Fado\Model\Cache::get('message') != '') {
+                ?>
+                <div class="col-lg-12">
+                    <p>
+                        <button type="button" class="btn btn-outline btn-danger"><?php echo $view->translate(\Fado\Model\Cache::get('message')); ?></button>
+                    </p>
+                </div>
+                <?php
+                }
+                ?>
+            </div>
+                <?php
+                $openNewVehicle = \Fado\Model\Cache::get('openNewVehicleForm');
+                $view->includeTemplate('vehicletable', array('vehicles' => $vehicles));
+                ?>
+            <div class="row" id="add-vehicle-panel" style="<?php echo ($openNewVehicle == '1') ? '' : 'display: none'; ?>">
+                <div class="col-lg-12">
+                    <div class="panel panel-sun">
+                        <div class="panel-heading">
+                            <?php echo $view->translate('VEHICLE_PANEL_HEADING'); ?>
+                            <div class="input-group pull-right">
+                                <form>
+                                    <span class="input-group-btn">
+                                        <button type="button" id="close-add-vehicle" class="btn btn-xs btn-secondary btn-danger"><span class="glyphicon glyphicon-trash"></span></button>
+                                    </span>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                        <?php
+                            $view->includeTemplate('vehicleform', array('activeVehicle' => null, 'openNewVehicle' => 1));
+                        ?>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <?php
+            $activeVehicle = $vehicles->current();
+            if ($vehicles->getActivePos() >= 0 && $openNewVehicle != '1') {
+                $view->includeTemplate('vehicletabs', array('activeVehicle' => $activeVehicle, 'assignedShops' => $assignedShops, 'allShops' => $allShops, 'openNewVehicle' => $openNewVehicle));
+            }
+            ?>
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+    <script>
+        $('.nav-pills > li').each(function(i, e){
+            var activeTab = '<?php echo \Fado\Model\Cache::get('activeTab'); ?>' + 'ID';
+            if (e.id == activeTab) {
+                $(e).addClass('active');
+            } else {
+                $(e).removeClass('active');
+            }
+        });
+
+        $('.tab-content > div').each(function(i, e){
+            var activeTab = '<?php echo \Fado\Model\Cache::get('activeTab'); ?>';
+            if (e.id == activeTab) {
+                $(e).addClass('active');
+            } else {
+                $(e).removeClass('active');
+            }
+        });
+
+        $('.nav-pills a').click(function(){
+            $(this).tab('show');
+            $.ajax({
+              url: '<?php echo $view->getHostLink(); ?>/',
+              method: 'POST',
+              data: { page: 'aj', controller: 'tabs', id: $(this).data('tab-id')},
+              dataType: 'JSON'
+            }).done(function(msg) {
+            });
+        });
+        $('a[href*="vehicle=<?php echo $vehicles->current()['sid']; ?>"]').on('click', function(e) {
+            $('#add-vehicle-panel').css('display', 'none');
+            $('#vehicle-panel').css('display', 'block');
+        });
+        $('#add-ve, #close-add-vehicle').on('click', function(e) {
+            e.preventDefault();
+            $('#add-vehicle-panel, #vehicle-panel').each(function() {
+                $(this).toggle();
+            });
+        });
+
+        $('#modal-delete').on('show.bs.modal', function(e) {
+            var activeForm = $(e.relatedTarget.form)
+            var formInput = activeForm.serializeArray();
+            formInput.push({name: 'delete', value: 'delete_vehicle'});
+            $('button#modal-confirm-delete').on('click', function(e) {
+                $.ajax({
+                    url: activeForm.action,
+                    type: 'POST',
+                    data: formInput,
+                    success: function(data){
+                        document.open();
+                        document.write(data);
+                        document.close();
+                    }
+                });
+            });
+         });
+     </script>
+</body>
+
+</html>

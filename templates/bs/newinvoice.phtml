@@ -1,0 +1,168 @@
+<?php
+$vatOn = (bool) \Fado\Model\Setting::get('vat_on');
+$bruttoMode = \Fado\Model\Setting::get('invoice_mode') == 'brutto';
+?>
+<!DOCTYPE html>
+<html lang="<?php echo $view->getActiveLanguage(); ?>">
+<head>
+
+    <title><?php echo $view->translate('PROGRAM_TITLE'); ?></title>
+
+    <?php
+
+    $view->includeTemplate('headersrc', array());
+
+    ?>
+
+</head>
+
+<body>
+    <div id="wrapper">
+        <?php
+
+        $view->includeTemplate('navbar', array());
+
+        ?>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="colh1-lg-12">
+                    <div class="panel"></div>
+                </div>
+            </div>
+            <div class="row">
+                <?php
+                if (\Fado\Model\Cache::get('message') != '') {
+                ?>
+                <div class="col-lg-12">
+                    <p>
+                        <button type="button" class="btn btn-outline btn-danger"><?php echo $view->translate(\Fado\Model\Cache::get('message')); ?></button>
+                    </p>
+                </div>
+                <?php
+                }
+                ?>
+            </div>
+            <div class="row">
+            <?php
+                $currentState = \Fado\Model\Cache::get('newItemState');
+                
+                if($currentState == 2) {
+
+                    $view->includeTemplate('invoiceview', array('invoices' => $invoices->get(), 'shop' => json_decode(\Fado\Model\Cache::get('InvoiceShopCustomer'), true), 'activeUser' => $activeUser, 'inInvoiceView' => false, 'inPrintView' => false));
+
+                } else if ($currentState == 1) {
+                    if ($allShops->count() < 2 || $allItems->count() < 1) {
+                        return;
+                    }
+                ?>
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <?php echo $view->translate('INVOICES_TITLE'); ?>
+                    </div>
+                    <!-- /.panel-heading -->
+                    <form id="invoice"  method="POST" action="<?php echo $view->getFullLink(); ?>">
+                        <input id="item-count" type="hidden" name="item-count" value="1"/>
+                        <div class="panel-body">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <select id="shop-id" name="shop-id" class="">
+                                    <?php
+                                        foreach($allShops->get() as $shop) {
+                                    ?>
+                                        <option value="<?php echo $shop['sid']; ?>"><?php echo $shop['description']; ?></option>
+                                    <?php
+                                        }
+                                    ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row new-item-row col-lg-12">
+                                <div class="new-item-row-count">
+                                    <input type="number" name="item-count-0" value="1" min="0" max="<?php echo $allItems->current()['amount']; ?>" class=""/>
+                                </div>
+                                <div class="new-item-row-name">
+                                    <select id="item-0" name="item-0" class="new-item-row-select">
+                                    <?php
+                                    	 if ($allItems->count() !== 0) {
+                                            foreach($allItems->get() as $item) {
+                                                $itemPrice = ($vatOn && !$bruttoMode) ? $item['price_unit'] + $view->calculateVAT($item['price_unit'], $item['tax_rate']) : $item['price_unit'];
+                                    ?>
+                                        <option value="<?php echo $item['sid']; ?>" data-max="<?php echo $item['amount']; ?>"><?php echo $item['name'] . '&nbsp;' . $this->translate('INVOICE_MULTIPLIER') . '&nbsp;' . $item['unit']  . '&nbsp;' . $view->translate('INVOICE_PER_ITEM') . '&nbsp;' . $view->escapeString($view->formatNumber($itemPrice)) . '&nbsp;' . \Fado\Model\Setting::getActiveCurrency(); ?></option>
+                                    <?php
+                                            }
+                                         }
+                                    ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 add-item-line">
+                                <button type="button" class="btn btn-default" id="add-item-line" href="#"><span class="glyphicon glyphicon-plus"></span></i></button>
+                            </div>
+                            <div class="row col-md-12">
+                                <div class="col-xs-12">
+                                    <button type="submit" name="forward" value="save_forward" class="btn btn-default"><span class="glyphicon glyphicon-shopping-cart"></span> <?php echo $view->translate('FORWARD'); ?></button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <?php
+                    } else if ($currentState == 3) {
+                ?>
+                <?php
+                }
+                ?>
+            </div>
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+    <script>
+
+        (function () {
+
+            $('.new-item-row-select').on('change', function (event) {
+                var valueInput = $(this).parents('.new-item-row').find('input');
+                var max = parseInt(event.target.selectedOptions[0].dataset.max);
+                valueInput.attr('max', max);
+                if (max < parseInt(valueInput.val())) {
+                   valueInput.val(max);
+                }
+            });
+
+            var i = 1;
+
+            $('#add-item-line').on('click touchstart', function (event) {
+                event.preventDefault();
+                var maxcount = <?php echo $allItems->count(); ?>;
+                var itemrow = $('.new-item-row:last');
+                var id = itemrow.find('option:checked').val();
+                itemrow_copy = itemrow.clone();
+                itemrow.find('option:not(:checked)').remove();
+                if (i >= maxcount) return;
+                itemrow_copy.find('option[value="' + id + '"]').remove();
+                var max = itemrow_copy.find('option:first').data('max');
+                itemrow_copy.find('select').attr('name', 'item-' + i).attr('name', 'item-' + i);
+                itemrow_copy.find('input').attr('name', 'item-count-' + i).attr('max', max);
+                itemrow_copy.insertAfter(itemrow);
+                i++;
+                $('#item-count').val(i);
+                $('.new-item-row-select').on('change', function (event) {
+                    var valueInput = $(this).parents('.new-item-row').find('input');
+                    var max = parseInt(event.target.selectedOptions[0].dataset.max);
+                    valueInput.attr('max', max);
+                    if (max < parseInt(valueInput.val())) {
+                       valueInput.val(max);
+                    }
+                });
+            });
+
+        })();
+
+    </script>
+</body>
+
+</html>

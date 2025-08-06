@@ -1,0 +1,126 @@
+<?php
+$formMessages = json_decode(\Fado\Model\Cache::get('formStatus'), true);
+$newForm = '';
+if ($activeShop == null) {
+    $activeShop = json_decode(\Fado\Model\Cache::get('newFormData2'), true);
+    $newForm = 'newform';
+}
+
+if ($activeShop == null || empty($activeShop) && empty($formMessages)) {
+    $formMessages = array();
+    $activeShop = array_fill_keys(SHOPS_DATA_FIELDS, '');
+    $activeShop['close'] = '00:00';
+    $activeShop['open'] = '00:00';
+}
+?>
+<div class="col-lg-6">
+    <form class="shopform" method="POST" action="<?php echo $view->getFullLink(); ?>">
+        <input type="hidden" name="id" value="<?php echo $activeShop['sid']; ?>">
+        <div class="form-group <?php echo (isset($formMessages['description'])) ? 'has-error' : ''; ?>">
+            <label><?php echo $view->translate('SHOPS_LABEL_DESCRIPTION'); ?></label>
+            <?php if (isset($formMessages['description'])) { ?>
+            <label class="control-label" for="inputError"><?php echo $view->translate($formMessages['description']); ?></label>
+            <?php } ?>
+            <input name="description" class="form-control" placeholder="" value="<?php echo $activeShop['description']; ?>">
+        </div>
+        <div class="form-group <?php echo (isset($formMessages['street'])) ? 'has-error' : ''; ?>">
+            <label><?php echo $view->translate('SHOPS_LABEL_STREET'); ?></label>
+            <?php if (isset($formMessages['street'])) { ?>
+            <label class="control-label" for="inputError"><?php echo $view->translate($formMessages['street']); ?></label>
+            <?php } ?>
+            <input name="street" class="form-control" placeholder="" value="<?php echo $activeShop['street']; ?>">
+        </div>
+        <div class="form-group <?php echo (isset($formMessages['streetnr'])) ? 'has-error' : ''; ?>">
+            <label><?php echo $view->translate('SHOPS_LABEL_STREETNR'); ?></label>
+            <?php if (isset($formMessages['streetnr'])) { ?>
+            <label class="control-label" for="inputError"><?php echo $view->translate($formMessages['streetnr']); ?></label>
+            <?php } ?>
+            <input name="streetnr" class="form-control" placeholder="" value="<?php echo $activeShop['streetnr']; ?>">
+        </div>
+        <div class="form-group <?php echo (isset($formMessages['zip'])) ? 'has-error' : ''; ?>">
+            <label><?php echo $view->translate('SHOPS_LABEL_ZIP'); ?></label>
+            <?php if (isset($formMessages['zip'])) { ?>
+            <label class="control-label" for="inputError"><?php echo $view->translate($formMessages['zip']); ?></label>
+            <?php } ?>
+            <input name="zip" class="form-control" placeholder="" value="<?php echo $activeShop['zip']; ?>">
+        </div>
+        <div class="form-group <?php echo (isset($formMessages['city'])) ? 'has-error' : ''; ?>">
+            <label><?php echo $view->translate('SHOPS_LABEL_CITY'); ?></label>
+            <?php if (isset($formMessages['city'])) { ?>
+            <label class="control-label" for="inputError"><?php echo $view->translate($formMessages['city']); ?></label>
+            <?php } ?>
+            <input name="city" class="form-control" placeholder="" value="<?php echo $activeShop['city']; ?>">
+        </div>
+        <div class="form-group <?php echo (isset($formMessages['country'])) ? 'has-error' : ''; ?>">
+            <label><?php echo $view->translate('SHOPS_LABEL_COUNTRY'); ?></label>
+            <?php if (isset($formMessages['country'])) { ?>
+            <label class="control-label" for="inputError"><?php echo $view->translate($formMessages['country']); ?></label>
+            <?php } ?>
+            <div class="form-group input-group">
+                <span class="input-group-addon">⚐</span>
+                <input name="country" class="form-control" placeholder="" value="<?php echo $activeShop['country']; ?>">
+            </div>
+        </div>
+        <div class="form-group <?php echo (isset($formMessages['phone'])) ? 'has-error' : ''; ?>">
+            <label><?php echo $view->translate('SHOPS_LABEL_PHONE'); ?></label>
+            <?php if (isset($formMessages['phone'])) { ?>
+            <label class="control-label" for="inputError"><?php echo $view->translate($formMessages['phone']); ?></label>
+            <?php } ?>
+            <div class="form-group input-group">
+                <span class="input-group-addon">&nbsp;🕻&nbsp;</span>
+                <input name="phone" class="form-control" placeholder="" value="<?php echo $activeShop['phone']; ?>">
+            </div>
+        </div>
+        <div class="form-group <?php echo (isset($formMessages['email'])) ? 'has-error' : ''; ?>">
+            <label><?php echo $view->translate('SHOPS_LABEL_EMAIL'); ?></label>
+            <?php if (isset($formMessages['email'])) { ?>
+            <label class="control-label" for="inputError"><?php echo $view->translate($formMessages['email']); ?></label>
+        <?php } ?>
+            <div class="form-group input-group">
+                <span class="input-group-addon">@</span>
+                <input name="email" class="form-control" placeholder="" value="<?php echo $activeShop['email']; ?>">
+            </div>
+        </div>
+        <div class="form-group">
+            <label><?php echo $view->translate('SHOPS_LABEL_INFORMATION'); ?></label>
+            <textarea class="ckeditor" cols="80" id="<?php echo (!$openNewShop) ? 'editor-1' : 'editor-new'; ?>" name="<?php echo (!$openNewShop) ? 'editor-1' : 'editor-new'; ?>" rows="10">
+                <?php echo $view->decodeHtmlEntities(json_decode($activeShop['information'])); ?>
+            </textarea>
+        </div>
+        <?php
+
+            $view->includeTemplate('selectors/openinghours', array('label' => 'SHOPS_LABEL_WEEKDAYPERIOD', 'openNewShop' => $openNewShop, 'opening_hours' => $activeShop));
+
+        ?>
+        <?php
+            if (in_array($activeShop['established'], array('1900-01-01', '0000-00-00', '', null))) {
+                $activeShop['established'] = '2019-04-15';
+            }
+            $view->includeTemplate('selectors/datetime', array('name_date' => 'established', 'date' => true, 'clock' => false, 'label_date' => 'SHOPS_LABEL_ESTABLISHED', 'label_clock' => 'SHOPS_LABEL_OPEN', 'year' => substr($activeShop['established'], 0 , 4), 'month' => substr($activeShop['established'], 5, 2), 'day' => substr($activeShop['established'], 8, 2), 'calendarcontainer' => 'calendarcontainer' . $newForm, 'clockcontainer' => 'clockcontainer' . $newForm));
+
+        ?>
+        <div class="clear"></div>
+        <button type="submit" name="submit" value="save_shop" class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> <?php echo $view->translate('SAVE'); ?></button>
+        <?php if ($openNewShop != '1') { ?>
+        <button type="button" name="delete" value="delete_shop" class="btn btn-default" data-toggle="modal" data-target="#modal-delete"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> <?php echo $view->translate('DELETE'); ?></button>
+        <?php } ?>
+        <!-- <button type="reset" class="btn btn-default"><?php echo $view->translate('RESET'); ?></button> -->
+    </form>
+</div>
+<?php
+if (!empty($formMessages)) {
+?>
+<script>
+(function(){
+    var selector = WeekDayRangeSelector('openinghours-range-new-1', {
+        start: 0,
+        stop: 4,
+        locale: ['<?php echo preg_replace('/_/', '-', \Fado\Model\Setting::get('lang')); ?>', {weekday: 'short', year: 'numeric', month: 'short', day: 'numeric'}]
+    });
+    ClockSlider('openinghours-open-new-1', {});
+    ClockSlider('openinghours-close-new-1', {});
+})();
+</script>
+<?php
+}
+?>

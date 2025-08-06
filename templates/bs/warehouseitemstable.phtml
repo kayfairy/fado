@@ -1,0 +1,39 @@
+<?php
+$currentPage = $items->getCurrentPage();
+$currentItemsPerPage = $items->getItemsPerPage();
+?>
+<div class="colh1-lg-12">
+    <div class="panel panel-default panel-grass">
+            <?php
+                $view->includeTemplate('tableheader', array('list' => $items, 'viewClass' => 'wa', 'viewPrefix' => 'WAREHOUSE_ITEMS', 'columnLabelReplaceString' => \Fado\Model\Setting::getActiveCurrency()));
+            ?>
+                    <tbody>
+                    <?php
+                        foreach($items->get() as $item) {
+                    ?>
+                        <tr class="gradeA odd" >
+                            <td class="sorting_1"><a href="<?php echo $view->getRewriteUrl(array('item' => $item['sid']), 'wa'); ?>#item-panel"><?php echo $item['name']; ?></a></td>
+                            <td><a href="<?php echo $view->getRewriteUrl(array('shop' => $allShops[$item['shop_id']]['sid']), 'sh'); ?>#shop-panel"><?php echo $allShops[$item['shop_id']]['description']; ?></a></td>
+                            <td><?php echo $view->decodeHtmlEntities(json_decode($item['information'])); ?></td>
+                            <td><?php echo $item['amount']; ?></td>
+                            <td><?php echo $item['sold']; ?></td>
+                            <td><?php echo $item['unit']; ?></td>
+                            <td class="center"><?php echo $item['tax_rate']; ?></td>
+                            <td class="center"><?php echo $item['cut_rate']; ?></td>
+                            <td class="center"><?php echo $view->formatNumber($item['price_unit']); ?></td>
+                            <td class="center"><?php echo $item['active']; ?></td>
+
+                        </tr>
+                    <?php
+                        }
+                    ?>
+                    </tbody>
+                </table>
+            </div>
+            <?php
+                $view->includeTemplate('tablenavigation', array('list' => $items, 'viewClass' => 'wa'));
+            ?>
+        </div>
+    </div>
+    <!-- /.panel-body -->
+</div>

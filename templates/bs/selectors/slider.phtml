@@ -1,0 +1,24 @@
+<?php
+$uniqid = uniqid();
+if(!isset($min)) {
+    $min = 0;
+}
+if(!isset($max)) {
+    $max = '';
+}
+?>
+<div class="form-group <?php echo (isset($error)) ? 'has-error' : ''; ?>">
+    <label><?php echo $view->translate($label); ?></label>
+    <input class="slider" id="<?php echo $uniqid; ?>_slider" name="<?php echo $name;?>" type="range" min="<?php echo $min; ?>" max="<?php echo $max; ?>" value="<?php echo $value; ?>">
+    <span id="<?php echo $uniqid;?>_slider_count"><?php echo  $value . '&nbsp;' . $view->translate($unit); ?></span>
+    <script>
+        (function(){
+            var slider_cookie = document.getElementById('<?php echo $uniqid; ?>_slider');
+            var label_cookie  = document.getElementById('<?php echo $uniqid; ?>_slider_count');
+
+            slider_cookie.oninput = function() {
+                label_cookie.innerHTML = this.value + '&nbsp;<?php echo $view->translate($unit); ?>';
+            }
+        })();
+    </script>
+</div>

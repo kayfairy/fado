@@ -1,0 +1,70 @@
+<?php
+$uniqid = uniqid();
+?>
+<div class="row">
+    <div class="col-lg-10">
+        <div class="form-group">
+            <label><?php echo $view->translate($label); ?></label>
+            <select id="<?php echo $uniqid; ?>-aggregator" name="aggregator" multiple="multiple" class="form-control">
+        <?php
+            foreach($listitems as $item) {
+        ?>
+            <option value="<?php echo $item; ?>"><?php echo $item; ?></option>
+        <?php
+            }
+        ?>
+            </select>
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <label>&nbsp;</label>
+        <input name="<?php echo $name; ?>" type="hidden" class="form-control" placeholder="" value="<?php echo $view->escapeString(json_encode($listitems)); ?>">
+        <input id="<?php echo $uniqid; ?>-new-item" class="form-control" placeholder="" value="">
+        <a id="<?php echo $uniqid; ?>-add-item" class="select-aggregator-add-item" href="#"><span class="glyphicon glyphicon-plus"></span></a>
+        <a id="<?php echo $uniqid; ?>-remove-item" class="select-aggregator-remove-item" href="#"><span class="glyphicon glyphicon-minus"></span></a>
+    </div>
+</div>
+<script>
+
+    (function(){
+        var values = [];
+
+        $('#<?php echo $uniqid; ?>-add-item').click(function(event) {
+            event.preventDefault();
+            values = [];
+            var select = $('#<?php echo $uniqid; ?>-aggregator');
+            var options = $('#<?php echo $uniqid; ?>-aggregator option');
+            var selectedOption = $('#<?php echo $uniqid; ?>-aggregator option:selected');
+            var newitem = $('#<?php echo $uniqid; ?>-new-item');
+            var quit = false;
+            var value = newitem.val();
+            options.each(function(i, e) {
+                if ($(e).val() == value || !<?php echo ($validator == 'word' && $validator != 'number') ? '/[a-zA-Z0-9]+/' : '/[0-9]+/'; ?>.test(value)) {
+                    quit = true;
+                }
+                values[i] = $(e).val();
+            });
+            if (quit) return;
+            values[values.length] = value;
+            select.append('<option value="' + value + '">' + value + '</option>');
+            newitem.val('');
+            $('input[name="<?php echo $name; ?>"]').val(JSON.stringify(values));
+        });
+
+        $('#<?php echo $uniqid; ?>-remove-item').click(function(event) {
+            event.preventDefault();
+            values = [];
+            var select = $('#<?php echo $uniqid; ?>-aggregator');
+            var options = $('#<?php echo $uniqid; ?>-aggregator option');
+            var selectedOption = $('#<?php echo $uniqid; ?>-aggregator option:selected');
+            value = selectedOption.val();
+            options.each(function(i, e) {
+                values[i] = $(e).val();
+            });
+            selectedOption.remove();
+            values.splice(values.indexOf(value), 1);
+            $('input[name="<?php echo $name; ?>"]').val(JSON.stringify(values));
+        });
+    })();
+
+</script>

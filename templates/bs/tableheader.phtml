@@ -1,0 +1,130 @@
+<?php
+$currentPage = $list->getCurrentPage();
+$currentItemsPerPage = $list->getItemsPerPage();
+
+use \Fado\Model\Setting as Settings;
+
+$listCount = (int)Settings::get('list_count_single');
+$isRewrite = (int)Settings::get('rewrite_route');
+
+if (!isset($showAddButton)) {
+    $showAddButton = true;
+}
+
+?>
+<div class="panel-heading">
+    <div class="">
+        <h4><?php echo $view->translate($viewPrefix . '_TABLE_HEADER'); ?></h4>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="col-lg-6">
+                <div class="table-item-count-select">
+                    <input class="slider" id="itemspc" type="range" min="<?php echo $listCount; ?>" max="<?php echo $listCount * 10; ?>" value="<?php echo $currentItemsPerPage; ?>" >
+                    <label id="itemspclabel"><?php echo $view->translate('SHOW_ENTRIES_TEXT', $currentItemsPerPage); ?></label>
+                </div>
+            </div>
+            <script>
+                var slider = document.getElementById("itemspc");
+                var label  = document.getElementById("itemspclabel");
+                var text   = '<?php echo $view->translate('SHOW_ENTRIES_TEXT'); ?>';
+
+                slider.oninput = function() {
+                    label.innerHTML = text.replace('%d', this.value);
+                }
+                slider.onchange = function() {
+                    var newlocation = '<?php echo $view->getRewriteURL(array('p' => 1), $viewClass); ?><?php echo ($isRewrite) ? 'pc/\' + this.value + \'/\';' : '&pc=\' + this.value;'; ?>
+                    document.location.href = newlocation.replace('&amp;', '&');
+                }
+            </script>
+            <div class="col-lg-6">
+                <div class="table-filter">
+                    <form method="POST" name="search" action="<?php echo $view->getRewriteURL(array(), $viewClass); ?>">
+                        <div class="input-group">
+                            <input name="search" class="form-control" type="text" value="<?php echo $view->getCacheParameter('search'); ?>">
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-success" ><span class="glyphicon glyphicon-search"></span></button>
+                                <?php
+                                if ($showAddButton && $view->userRights->isAllowed($viewClass, 2)) {
+                                ?>
+                                <button type="button" id="add-<?php echo $viewClass; ?>" class="btn btn-info"><span class="glyphicon glyphicon-plus"></button>
+                                <?php
+                                }
+                                ?>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.panel-heading -->
+<div class="panel-body table-responsive table-bordered">
+    <div class="form-inline dt-bootstrap no-footer">
+         <table class="table table-striped table-bordered table-hover no-footer" id="<?php echo $viewClass; ?>-table" role="grid" style="width: 100%;">
+            <thead>
+                <tr>
+                <?php
+                
+
+                $columns = constant($viewPrefix . '_TABLE_COLUMNS');
+
+                $dataTypes = \Fado\Model\SQLCache::singleton()::getColumnDataType($viewPrefix, $columns);
+                
+                foreach ($columns as $column) {
+
+                    if ($column == 'shop_name') {
+                        $column = 'shop_id';
+                        $symbolUp = '<span class="glyphicon glyphicon-sort-by-alphabet pull-right"></span>';
+                        $symbolDown = '<span class="glyphicon glyphicon-sort-by-alphabet-alt pull-right"></span>';
+                    } else if ($column == 'shop_seller') {
+                        $column = 'shop_id_seller';
+                        $symbolUp = '<span class="glyphicon glyphicon-sort-by-alphabet pull-right"></span>';
+                        $symbolDown = '<span class="glyphicon glyphicon-sort-by-alphabet-alt pull-right"></span>';
+                    } else if ($column == 'shop_customer') {
+                        $column = 'shop_id_customer';
+                        $symbolUp = '<span class="glyphicon glyphicon-sort-by-alphabet pull-right"></span>';
+                        $symbolDown = '<span class="glyphicon glyphicon-sort-by-alphabet-alt pull-right"></span>';
+                    } else if ($column == 'location') {
+                        $symbolUp = '<span class="glyphicon glyphicon-sort-by-attributes pull-right"></span>';
+                        $symbolDown = '<span class="glyphicon glyphicon-sort-by-attributes-alt pull-right"></span>';
+                    } else if ($column == 'opening_hours') {
+                        $symbolUp = '<span class="glyphicon glyphicon-sort-by-attributes pull-right"></span>';
+                        $symbolDown = '<span class="glyphicon glyphicon-sort-by-attributes-alt pull-right"></span>';
+                    } else if ($column == 'delete') {
+                        $symbolUp = '<span class="glyphicon glyphicon-sort-by-attributes pull-right"></span>';
+                        $symbolDown = '<span class="glyphicon glyphicon-sort-by-attributes-alt pull-right"></span>';
+                    } else if ($dataTypes[$column]['DATA_TYPE'] == 'int' || $dataTypes[$column]['DATA_TYPE'] == 'double') {
+                        $symbolUp = '<span class="glyphicon glyphicon-sort-by-order pull-right"></span>';
+                        $symbolDown = '<span class="glyphicon glyphicon-sort-by-order-alt pull-right"></span>';
+                    } else if ($dataTypes[$column]['DATA_TYPE'] == 'timestamp' || $dataTypes[$column]['DATA_TYPE'] == 'date') {
+                        $symbolUp = '<span class="glyphicon glyphicon-sort-by-attributes pull-right"></span>';
+                        $symbolDown = '<span class="glyphicon glyphicon-sort-by-attributes-alt pull-right"></span>';
+                    } else if ($dataTypes[$column]['DATA_TYPE'] == 'varchar') {
+                        $symbolUp = '<span class="glyphicon glyphicon-sort-by-alphabet pull-right"></span>';
+                        $symbolDown = '<span class="glyphicon glyphicon-sort-by-alphabet-alt pull-right"></span>';
+                    } else {
+                        $symbolUp = '<span class="glyphicon glyphicon-sort-by-attributes pull-right"></span>';
+                        $symbolDown = '<span class="glyphicon glyphicon-sort-by-attributes-alt pull-right"></span>';
+                    }
+
+                    $label = $view->translate($viewPrefix . '_LABEL_' . mb_strtoupper($column), (isset($columnLabelReplaceString) ? $columnLabelReplaceString : ''));
+
+                    if ($view->getCacheParameter('sort') == $column && $view->getCacheParameter('sort_d') == 'ASC') {
+                ?>
+                    <th class="" tabindex="0"rowspan="1" colspan="1" aria-sort="ascending" aria-label="sort up"><?php echo $label; ?><a href="<?php echo $view->getRewriteURL(array('sort' => '', 'order' => ''), $viewClass); ?>"><?php echo $symbolUp; ?></a></th>
+                <?php
+                    } else if ($view->getCacheParameter('sort') == $column && $view->getCacheParameter('sort_d') == 'DESC') {
+                ?>
+                    <th class="" tabindex="0" rowspan="1" colspan="1" aria-sort="descending" aria-label="sort down"><?php echo $label; ?><a href="<?php echo $view->getRewriteURL(array('sort' => $column, 'order' => 'ASC'), $viewClass); ?>"><?php echo $symbolDown; ?></a></th>
+                <?php
+                    } else {
+                ?>
+                    <th class="" tabindex="0" rowspan="1" colspan="1"><?php echo $label; ?><a href="<?php echo $view->getRewriteURL(array('sort' => $column, 'order' => 'DESC'), $viewClass); ?>"><span class="glyphicon glyphicon-sort pull-right"></span></a></th>
+                <?php
+                    }
+                }
+                ?>
+                </tr>
+            </thead>

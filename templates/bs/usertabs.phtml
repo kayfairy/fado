@@ -1,0 +1,56 @@
+<?php
+$activeTab = \Fado\Model\Cache::get('activeTab');
+?>
+<div class="row" id="user-panel" style="display: block;">
+    <div class="col-lg-12">
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <?php echo $view->translate('USER_PANEL_HEADING'); ?>: <span><?php echo $activeUser['name']; ?><span>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <ul class="nav nav-pills">
+                    <li id="USER_TAB_DATAID" class="active"><a data-tab-id="USER_TAB_DATA" data-toggle="tab" href="#USER_TAB_DATA"><?php echo $view->translate('USER_DATA_PANEL'); ?></a></li>
+
+                    <li id="USER_TAB_SHOPID" class="active"><a data-tab-id="USER_TAB_SHOP" data-toggle="tab" href="#USER_TAB_SHOP"><?php echo $view->translate('USER_DATA_SHOP'); ?></a></li>
+
+                    <?php
+                    if ($view->userRights->isAllowed('ur', \Fado\Controller\RouterRights::$READ) || $view->userRights->isAllowed('ur', \Fado\Controller\RouterRights::$WRITE)) {
+                    ?>
+                    <li id="USER_TAB_RIGHTSID" class="active"><a data-tab-id="USER_TAB_RIGHTS" data-toggle="tab" href="#USER_TAB_RIGHTS"><?php echo $view->translate('USER_DATA_RIGHTS'); ?></a></li>
+                    <?php
+                    }
+                    ?>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div class="tab-pane fade in active" id="USER_TAB_DATA" role="tabpanel">
+                        <h4><?php echo $view->translate('USER_DATA_PANEL'); ?></h4>
+                        <?php $view->includeTemplate('userform', array('activeUser' => $activeUser, 'openNewUserForm' => $openNewUserForm)); ?>
+                    </div>
+                    <div class="tab-pane fade in active" id="USER_TAB_SHOP" role="tabpanel">
+                        <h4></h4>
+                        <?php
+
+                        $view->includeTemplate('selectors/shop2user', array('activeUser' =>  $activeUser, 'assignedShops' => $assignedShops, 'allShops' => $allShops));
+
+                        ?>
+                    </div>
+                    <?php
+                    if ($view->userRights->isAllowed('ur', \Fado\Controller\RouterRights::$READ) || $view->userRights->isAllowed('ur', \Fado\Controller\RouterRights::$WRITE)) {
+                    ?>
+                    <div class="tab-pane fade in active" id="USER_TAB_RIGHTS" role="tabpanel">
+                        <h4><?php echo $view->translate('USER_RIGHTS_PANEL'); ?></h4>
+                        <?php $view->includeTemplate('userrights', array('activeUser' => $activeUser)); ?>
+                    </div>
+                    <?php
+                    }
+                    ?>
+                </div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>

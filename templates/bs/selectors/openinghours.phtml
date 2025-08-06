@@ -1,0 +1,119 @@
+<?php
+    if ($openNewShop) {
+        $opening_hours['opening_hours'] = '{"1":{"range":"0-4","open":"08:00","close":"22:00"}}';
+        $dataset = json_decode($opening_hours['opening_hours'], true);
+        $addButtonId = 'add-opening-hours-new';
+        $removeButtonId = 'remove-opening-hours-new';
+        $countInputName = 'openinghours-count-new-1';
+        $selectId = 'openinghours-new-select';
+    } else {
+        $dataset = json_decode($opening_hours['opening_hours'], true);
+        $addButtonId = 'add-opening-hours';
+        $removeButtonId = 'remove-opening-hours';
+        $countInputName = 'openinghours-count-1';
+        $selectId = 'openinghours-select';
+    }
+?>
+<div class="form-group ">
+    <div class="panel panel-danger">
+        <div class="panel-heading">
+            <?php echo $view->translate('SHOPS_LABEL_WEEKDAYPERIOD'); ?>
+        </div>
+        <div class="panel-body" id="<?php echo $selectId; ?>">
+<?php
+            foreach ($dataset as $key => $data) {
+                if (!$openNewShop) {
+                    $selectorId = 'openinghours-selector-' . $key;
+                    $rangeSelectorId = 'openinghours-range-' . $key;
+                    $openSelectorId = 'openinghours-open-' . $key;
+                    $closeSelectorId = 'openinghours-close-' . $key;
+                } else {
+                    $selectorId = 'openinghours-selector-new-' . $key;
+                    $rangeSelectorId = 'openinghours-range-new-' . $key;
+                    $openSelectorId = 'openinghours-open-new-' . $key;
+                    $closeSelectorId = 'openinghours-close-new-' . $key;
+                }
+
+                $range = explode('-', $data['range']);
+        ?>
+            <div id="<?php echo $selectorId; ?>" class="opening-hours-selector">
+<?php
+    $view->includeTemplate('selectors/weekdayslider', array('label' => '', 'name' => $rangeSelectorId));
+?>
+                <div class="openinghours-clocks">
+<?php
+    $time = explode(':', $data['open']);
+    $view->includeTemplate('selectors/datetime', array('name_clock' => $openSelectorId, 'clockcontainer' => $openSelectorId, 'date' => false, 'clock' => true, 'label_clock' => 'SHOPS_LABEL_OPEN', 'hour' => (int) $time[0], 'minute' => (int) $time[1]));
+    $time = explode(':', $data['close']);
+    $view->includeTemplate('selectors/datetime', array('name_clock' => $closeSelectorId, 'clockcontainer' => $closeSelectorId, 'date' => false, 'clock' => true, 'label_clock' => 'SHOPS_LABEL_CLOSE', 'hour' => (int) $time[0], 'minute' => (int) $time[1]));
+?>
+                <div class="clear"></div>
+                </div>
+            </div>
+            <?php
+                if ($rangeSelectorId != 'openinghours-range-new-1') {
+            ?>
+            <script>
+                (function() {
+                    var selector = WeekDayRangeSelector('<?php echo $rangeSelectorId; ?>', {
+                        start: <?php echo $range[0]; ?>,
+                        stop: <?php echo $range[1]; ?>,
+                        locale: ['<?php echo preg_replace('/_/', '-', \Fado\Model\Setting::get('lang')); ?>', {weekday: 'short', year: 'numeric', month: 'short', day: 'numeric'}]
+                    });
+                    ClockSlider('<?php echo $openSelectorId; ?>', {});
+                    ClockSlider('<?php echo $closeSelectorId; ?>', {});
+                })();
+            </script>
+            <?php
+                }
+            ?>
+        <?php
+            }
+        ?>
+        </div>
+    </div>
+</div>
+<button type="button" class="btn btn-default" id="<?php echo $addButtonId; ?>" href="#"><span class="glyphicon glyphicon-plus"></span></button>
+<button type="button" class="btn btn-default" id="<?php echo $removeButtonId; ?>" href="#"><span class="glyphicon glyphicon-minus"></span></button>
+<input type="hidden" name="<?php echo $countInputName; ?>" value="<?php echo count($dataset); ?>" />
+<script>
+    (function() {
+        var data = <?php echo $opening_hours['opening_hours']; ?>;
+        var count = <?php echo count($dataset); ?>;
+        var max = 10;
+        var newForm = '<?php echo ($openNewShop) ? 'new-' : ''; ?>';
+
+        $('#<?php echo $addButtonId; ?>').on('click touchstart', function (event) {
+            if (count >= max) {
+                return;
+            }
+            var row = $('#openinghours-selector-' + newForm + '1').clone();
+            count++;
+            row.attr('id', 'openinghours-selector-' + newForm + count);
+            row.find('#openinghours-open-' + newForm + '1').attr('id', 'openinghours-open-' + newForm + count);
+            row.find('#openinghours-close-' + newForm + '1').attr('id', 'openinghours-close-' + newForm + count);
+            row.find('#openinghours-range-' + newForm + '1').attr('id', 'openinghours-range-' + newForm + count);
+            row.find('input[name="openinghours-close-' + newForm + '1"]').attr('name', 'openinghours-close-' + newForm + count);
+            row.find('input[name="openinghours-open-' + newForm + '1"]').attr('name', 'openinghours-open-' + newForm + count);
+            row.find('input[name="openinghours-range-' + newForm + '1"]').attr('name', 'openinghours-range-' + newForm  + count);
+            $('input[name="openinghours-count-' + newForm + '1"]').val(count);
+            $('#openinghours-' + newForm + 'select').append(row);
+            WeekDayRangeSelector('openinghours-range-' + newForm + count, {
+                start: 0,
+                stop: 4,
+                locale: ['<?php echo preg_replace('/_/', '-', \Fado\Model\Setting::get('lang')); ?>', {weekday: 'short', year: 'numeric', month: 'short', day: 'numeric'}]
+            });
+            ClockSlider('openinghours-open-' + newForm + count, {});
+            ClockSlider('openinghours-close-' + newForm + count, {});
+        });
+
+        $('#<?php echo $removeButtonId; ?>').on('click touchstart', function (event) {
+            if (count - 1 >= 1) {
+                $('#openinghours-selector-' + newForm + count).remove();
+                count--;
+            }
+            $('input[name="openinghours-count-' + newForm + '1"]').val(count);
+        });
+    })();
+</script>
+<div class="clear"></div>

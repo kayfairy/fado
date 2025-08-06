@@ -1,0 +1,138 @@
+<?php
+$routingRights = $view->userRights->getRoutingRights($activeUser['sid']);
+$rightsWrite = $view->userRights->isAllowed('ur', 2);
+$rightsRead = $view->userRights->isAllowed('ur', 1);
+?>
+<form  action="<?php echo $view->getFullLink(); ?>" method="POST">
+    <input type="hidden" name="save_user_rights" value="1" />
+    <input type="hidden" name="user_id" value="<?php echo $activeUser['sid']; ?>" />
+    <table>
+        <th>
+            <?php echo $view->translate('USER_RIGHTS_LABEL_PAGE'); ?>
+        </th>
+        <th>
+            <?php echo $view->translate('USER_RIGHTS_LABEL_RULE'); ?>
+        </th>
+        <tr>
+            <td>shop</td>
+            <td>
+                <select name="sh" <?php echo (!$rightsWrite) ? 'disabled="disabled" class="disabled"' : ''; ?>>
+                    <option value="0" <?php echo ($routingRights['sh'] == 0) ? 'selected' : ''; ?>>none</option>
+                    <option value="1" <?php echo ($routingRights['sh'] == 1) ? 'selected' : ''; ?>>read</option>
+                    <option value="2" <?php echo ($routingRights['sh'] == 2) ? 'selected' : ''; ?>>read+write</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>vehicles</td>
+            <td>
+                <select name="ve" <?php echo (!$rightsWrite) ? 'disabled="disabled" class="disabled"' : ''; ?>>
+                    <option value="0" <?php echo ($routingRights['ve'] == 0) ? 'selected' : ''; ?>>none</option>
+                    <option value="1" <?php echo ($routingRights['ve'] == 1) ? 'selected' : ''; ?>>read</option>
+                    <option value="2" <?php echo ($routingRights['ve'] == 2) ? 'selected' : ''; ?>>read+write</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>warehouse</td>
+            <td>
+                <select name="wa" <?php echo (!$rightsWrite) ? 'disabled="disabled" class="disabled"' : ''; ?>>
+                    <option value="0" <?php echo ($routingRights['wa'] == 0) ? 'selected' : ''; ?>>none</option>
+                    <option value="1" <?php echo ($routingRights['wa'] == 1) ? 'selected' : ''; ?>>read</option>
+                    <option value="2" <?php echo ($routingRights['wa'] == 2) ? 'selected' : ''; ?>>read+write</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>invoices</td>
+            <td>
+                <select name="in" <?php echo (!$rightsWrite) ? 'disabled="disabled" class="disabled"' : ''; ?>>
+                    <option value="0" <?php echo ($routingRights['in'] == 0) ? 'selected' : ''; ?>>none</option>
+                    <option value="1" <?php echo ($routingRights['in'] == 1) ? 'selected' : ''; ?>>read</option>
+                    <option value="2" <?php echo ($routingRights['in'] == 2) ? 'selected' : ''; ?>>read+write</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>newinvoice</td>
+            <td>
+                <select name="ne" <?php echo (!$rightsWrite) ? 'disabled="disabled" class="disabled"' : ''; ?>>
+                    <option value="0" <?php echo ($routingRights['ne'] == 0) ? 'selected' : ''; ?>>none</option>
+                    <option value="2" <?php echo ($routingRights['ne'] == 2) ? 'selected' : ''; ?>>write</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>navigator</td>
+            <td>
+                <select name="na" <?php echo (!$rightsWrite) ? 'disabled="disabled" class="disabled"' : ''; ?>>
+                    <option value="0" <?php echo ($routingRights['na'] == 0) ? 'selected' : ''; ?>>none</option>
+                    <option value="1" <?php echo ($routingRights['na'] == 1) ? 'selected' : ''; ?>>read</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>meetings</td>
+            <td>
+                <select name="me" <?php echo (!$rightsWrite) ? 'disabled="disabled" class="disabled"' : ''; ?>>
+                    <option value="0" <?php echo ($routingRights['me'] == 0) ? 'selected' : ''; ?>>none</option>
+                    <option value="2" <?php echo ($routingRights['me'] == 2) ? 'selected' : ''; ?>>write</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>user</td>
+            <td>
+                <select name="us" <?php echo (!$rightsWrite || in_array($activeUser['name'], ADMIN_USERS)) ? 'disabled="disabled" class="disabled"' : ''; ?>>
+                    <option value="0" <?php echo ($routingRights['us'] == 0) ? 'selected' : ''; ?>>none</option>
+                    <option value="1" <?php echo ($routingRights['us'] == 1) ? 'selected' : ''; ?>>read</option>
+                    <option value="2" <?php echo ($routingRights['us'] == 2) ? 'selected' : ''; ?>>read+write</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>usersettings</td>
+            <td>
+                <select name="ut" <?php echo (!$rightsWrite || in_array($activeUser['name'], ADMIN_USERS)) ? 'disabled="disabled" class="disabled"' : ''; ?>>
+                    <option value="0" <?php echo ($routingRights['ut'] == 0) ? 'selected' : ''; ?>>none</option>
+                    <option value="2" <?php echo ($routingRights['ut'] == 2) ? 'selected' : ''; ?>>write</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>sqladmin</td>
+            <td>
+                <select name="sq" <?php echo (!$rightsWrite || in_array($activeUser['name'], ADMIN_USERS)) ? 'disabled="disabled" class="disabled"' : ''; ?>>
+                    <option value="0" <?php echo ($routingRights['sq'] == 0) ? 'selected' : ''; ?>>none</option>
+                    <option value="2" <?php echo ($routingRights['sq'] == 2) ? 'selected' : ''; ?>>write</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>adminsettings</td>
+            <td>
+                <select name="at" <?php echo (!$rightsWrite || in_array($activeUser['name'], ADMIN_USERS)) ? 'disabled="disabled" class="disabled"' : ''; ?>>
+                    <option value="0" <?php echo ($routingRights['at'] == 0) ? 'selected' : ''; ?>>none</option>
+                    <option value="2" <?php echo ($routingRights['at'] == 2) ? 'selected' : ''; ?>>write</option>
+                </select>
+            </td>
+        </tr>
+        <?php
+            if (in_array($view->getController()->getLoggedInUser()['name'], ADMIN_USERS)) {
+        ?>
+        <tr>
+            <td>userrights</td>
+            <td>
+                <select name="ur" <?php echo (in_array($activeUser['name'], ADMIN_USERS) && $activeUser['sid'] == $view->getController()->getLoggedInUser()['sid']) ? 'disabled="disabled" class="disabled"' : ''; ?>>
+                    <option value="0" <?php echo ($routingRights['ur'] == 0) ? 'selected' : ''; ?>>none</option>
+                    <option value="1" <?php echo ($routingRights['ur'] == 1) ? 'selected' : ''; ?>>read</option>
+                    <option value="2" <?php echo ($routingRights['ur'] == 2) ? 'selected' : ''; ?>>read+write</option>
+                </select>
+            </td>
+        </tr>
+        <?php
+            }
+        ?>
+    </table>
+    <button type="submit" name="save_userrights" value="save_userrights" class="btn btn-default" <?php echo (!$rightsWrite) ? 'disabled="disabled" class="disabled"' : ''; ?>><span class="glyphicon glyphicon-ok"></span> <?php echo $view->translate('SAVE'); ?></button>
+</form>

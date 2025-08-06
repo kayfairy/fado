@@ -1,0 +1,37 @@
+<?php
+$currentPage = $vehicles->getCurrentPage();
+$currentItemsPerPage = $vehicles->getItemsPerPage();
+?>
+<div class="colh1-lg-12">
+    <div class="panel panel-default panel-sun">
+            <?php
+                $view->includeTemplate('tableheader', array('list' => $vehicles, 'viewClass' => 've', 'viewPrefix' => 'VEHICLES'));
+            ?>
+                    <tbody>
+                    <?php
+                        foreach($vehicles->get() as $vehicle) {
+                    ?>
+                        <tr class="gradeA odd">
+                            <td class="sorting_1"><a href="<?php echo $view->getRewriteUrl(array('vehicle' => $vehicle['sid']), 've'); ?>#vehicle-panel"><?php echo $vehicle['name']; ?></a></td>
+                            <td><?php echo $vehicle['manufacturer']; ?></td>
+                            <td><?php echo $vehicle['type']; ?></td>
+                            <td><?php echo $vehicle['construction_year']; ?></td>
+                            <td class="center"><?php echo $vehicle['in_use']; ?></td>
+                            <td><?php echo $vehicle['keynr']; ?></td>
+<!--                            <td class="center"><?php echo $view->formatDateTime($vehicle['vehicle_created']); ?></td>-->
+                            <td class="center"><?php echo $view->formatDateTime($vehicle['vehicle_changed']); ?></td>
+                        </tr>
+                    <?php
+                        }
+                    ?>
+                    </tbody>
+                </table>
+            </div>
+
+            <?php
+                $view->includeTemplate('tablenavigation', array('list' => $vehicles, 'viewClass' => 've'));
+            ?>
+        </div>
+    </div>
+    <!-- /.panel-body -->
+</div>

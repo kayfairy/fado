@@ -1,0 +1,28 @@
+<?php
+$activeTab = \Fado\Model\Cache::get('activeTab');
+?>
+<div class="row" id="item-panel" style="display: block;">
+    <div class="col-lg-12">
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <?php echo $view->translate('WAREHOUSE_PANEL_HEADING'); ?>: <?php echo $activeItem['name']; ?>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <ul class="nav nav-pills">
+                    <li id="WAREHOUSE_TAB_DATAID" class="active"><a data-tab-id='WAREHOUSE_TAB_DATA' data-toggle="tab" href="#WAREHOUSE_TAB_DATA"><?php echo $view->translate('WAREHOUSE_PANEL_DATA'); ?></a></li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div class="tab-pane fade in active" id="WAREHOUSE_TAB_DATA" role="tabpanel">
+                        <h4><?php echo $view->translate('WAREHOUSE_PANEL_DATA'); ?></h4>
+                        <?php $view->includeTemplate('warehouseitemsform', array('activeItem' => $activeItem,  'allShops' => $allShops, 'openNewItem' => false)); ?>
+                    </div>
+                </div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>

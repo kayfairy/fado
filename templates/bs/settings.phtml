@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="<?php echo $view->getActiveLanguage(); ?>">
+<head>
+
+    <title><?php echo $view->translate('PROGRAM_TITLE'); ?></title>
+
+    <?php
+
+    $view->includeTemplate('headersrc', array());
+
+    ?>
+
+</head>
+<?php
+use \Fado\Controller\RouterRights as Rights;
+?>
+<body>
+    <div id="wrapper">
+        <?php
+
+        $view->includeTemplate('navbar', array());
+
+        ?>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="colh1-lg-12">
+                    <div class="panel"></div>
+                </div>
+            </div>
+            <div class="row">
+                <?php
+                    if ($view->userRights->isAllowed('ut', Rights::$WRITE)) {
+                ?>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-default panel-grass">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <span class="glyphicon glyphicon-align-left glyphicon-lg"</span>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class=""><h3><?php echo $view->translate('SETTINGS_EDIT'); ?></h3></div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="<?php echo $view->getRewriteUrl(array(), 'ut'); ?>">
+                            <div class="panel-footer">
+                                <span class="pull-left"><?php echo $view->translate('SETTINGS_OPEN_EDIT'); ?></span>
+                                <span class="pull-right glyphicon glyphicon-forward"></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                    </div>
+                <?php
+                    }
+                ?>
+                <?php
+                    if ($view->userRights->isAllowed('us', Rights::$READ) || $view->userRights->isAllowed('us', Rights::$WRITE)) {
+                ?>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <span class="pull-right glyphicon glyphicon-user glyphicon-lg"></span>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class=""><h3><?php echo $view->translate('SETTINGS_USER_EDIT'); ?></h3></div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="<?php echo $view->getRewriteUrl(array(), 'us'); ?>">
+                            <div class="panel-footer">
+                                <span class="pull-left"><?php echo $view->translate('SETTINGS_USER_OPEN_EDIT'); ?></span>
+                                <span class="pull-right glyphicon glyphicon-forward"></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <?php
+                    }
+                ?>
+            </div>
+            <div class="row">
+            <?php
+                if ($view->userRights->isAllowed('at', Rights::$WRITE)) {
+            ?>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-fire">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <span class="pull-right glyphicon glyphicon-tasks glyphicon-lg"></span>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class=""><h3><?php echo $view->translate('SETTINGS_ADMIN_EDIT'); ?></h3></div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="<?php echo $view->getRewriteUrl(array(), 'at'); ?>">
+                            <div class="panel-footer">
+                                <span class="pull-left"><?php echo $view->translate('SETTINGS_ADMIN_OPEN_EDIT'); ?></span>
+                                <span class="pull-right glyphicon glyphicon-forward"></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <?php
+                    }
+                ?>
+                <?php
+                    if ($view->userRights->isAllowed('sq', Rights::$WRITE)) {
+                ?>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <span class="pull-right glyphicon glyphicon-hdd glyphicon-lg"></span>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class=""><h3><?php echo $view->translate('SETTINGS_DATABASE'); ?></h3></div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="<?php echo $view->getRewriteUrl(array(), 'sq'); ?>">
+                            <div class="panel-footer">
+                                 <span class="pull-left"><?php echo $view->translate('SETTINGS_OPEN_SQL_IMPORT'); ?></span>
+                                 <span class="pull-right glyphicon glyphicon-forward"></span>
+                                 <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <?php
+                    }
+                ?>
+            </div>
+            <div class="row">
+                <?php
+                    if ($view->userRights->isAllowed('if', Rights::$READ)) {
+                ?>
+                 <div class="col-lg-3 col-md-6">
+                     <div class="panel panel-sun">
+                         <div class="panel-heading">
+                             <div class="row">
+                                 <div class="col-xs-3">
+                                    <span class="pull-right glyphicon glyphicon-hourglass glyphicon-lg"></span>
+                                 </div>
+                                 <div class="col-xs-9 text-right">
+                                    <div class=""><h3><?php echo $view->translate('SERVER_INFO'); ?></h3></div>
+                                 </div>
+                             </div>
+                         </div>
+                         <a href="<?php echo $view->getRewriteUrl(array(), 'if'); ?>">
+                             <div class="panel-footer">
+                                 <span class="pull-left"><?php echo $view->translate('SERVER_INFO_OPEN'); ?></span>
+                                 <span class="pull-right glyphicon glyphicon-forward"></span>
+                                 <div class="clearfix"></div>
+                             </div>
+                         </a>
+                     </div>
+                 </div>
+                 <?php
+                     }
+                 ?>
+            </div>
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+</body>
+
+</html>

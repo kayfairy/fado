@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="<?php echo $view->getActiveLanguage(); ?>">
+<head>
+
+    <title><?php echo $view->translate('PROGRAM_TITLE'); ?></title>
+
+    <?php
+
+    $view->includeTemplate('headersrc', array());
+
+    ?>
+
+
+    <!-- Leaflet  Script + CSS -->
+    <link rel="stylesheet" href="<?php echo $view->getHostLink(); ?>/vendor/leaflet/leaflet.css">
+
+    <script src="<?php echo $view->getHostLink(); ?>/vendor/leaflet/leaflet.js"></script>
+
+    <script src="<?php echo $view->getHostLink(); ?>/vendor/leaflet-routing-machine/dist/leaflet-routing-machine.min.js"></script>
+
+    <link rel="stylesheet" href="<?php echo $view->getHostLink(); ?>/vendor/leaflet-routing-machine/dist/leaflet-routing-machine.css">
+
+    <script src="<?php echo $view->getHostLink(); ?>/vendor/leaflet-routing-machine/examples/Control.Geocoder.js"></script>
+
+</head>
+
+<body>
+    <div id="wrapper">
+        <?php
+$printMode = false;
+        $view->includeTemplate('navbar', array());
+
+        ?>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="colh1-lg-12">
+                    <div class="panel">
+                        <!-- <div class="box-right box-routes-print">
+                            <a id="printlink" href="<?php echo $view->getRewriteURL(array('print' => true), 'na'); ?>"></a>
+                        </div>
+                        <div class="box-right box-routes-print">
+                            <a id="pdflink" href="<?php echo $view->getRewriteURL(array('pdf' => true), 'na'); ?>"></a>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <?php
+
+            $view->includeTemplate('routespicker', array('shops' => $shops, 'vehicles' => $vehicles, 'invoices' => $invoices, 'warehouseitems' => $warehouseitems));
+
+            ?>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            Map
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div id="map" class="map" style="height: 800px; width: 100%;" tabindex="0">
+                            </div>
+                        </div>
+                    </div>
+                   <!-- /.panel -->
+                </div>
+               <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+<?php
+    if (!$printMode)  {
+?>
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+<?php
+    }
+?>
+    <!-- /#wrapper -->
+
+    <script>
+
+        var map = L.map('map', {
+            center: [51.505, -0.09],
+            zoom: 13
+        });
+
+        window.lrmConfig = {
+            serviceUrl: '<?php echo $view->getProtocol() . \Fado\Model\Setting::get('map_route_url'); ?>'
+        };
+
+        L.tileLayer('<?php echo $view->getProtocol() . \Fado\Model\Setting::get('map_tile_url'); ?>', {
+            attribution: '',
+        }).addTo(map);
+
+        var redIcon = L.icon({
+            iconUrl: '<?php echo $view->getHostLink(); ?>/vendor/leaflet/images/marker-icon-2x.png',
+            iconSize: [28, 50],
+            iconAnchor: [28, 50]
+        });
+
+        var control = L.Routing.control(L.extend(window.lrmConfig, {
+            waypoints: [],
+            geocoder: L.Control.Geocoder.nominatim(),
+            routeWhileDragging: true,
+            reverseWaypoints: true,
+            showAlternatives: true,
+            useHints: false,
+            altLineOptions: {
+                styles: [
+                    {color: 'black', opacity: 0.15, weight: 9},
+                    {color: 'white', opacity: 0.8, weight: 6},
+                    {color: 'blue', opacity: 0.5, weight: 2}
+                ]
+            }
+        })).addTo(map);
+
+        L.Routing.errorControl(control).addTo(map);
+
+        function selectRoute() {
+           var waypoints = [];
+           $('.route-select option').each(function (i) {
+               if (this.selected) {
+                   waypoints.push(L.latLng(this.dataset.lat, this.dataset.lng));
+               }
+           });
+           control.setWaypoints(waypoints);
+           var linkSuffix = '?';
+           for (var i = 0; i < waypoints.length; i++) {
+               linkSuffix += waypoints[i].lat.toString() + ',' + waypoints[i].lng.toString();
+               if (i + 1 != waypoints.length) {
+                   linkSuffix += ';';
+               }
+           }
+           $('#pdflink').attr('href', $('#pdflink').attr('href') + linkSuffix);
+           $('#printlink').attr('href', $('#printlink').attr('href') + linkSuffix);
+        }
+
+        selectRoute();
+
+        $('.route-select option').each(function() {
+            $(this).on('mousedown', function(event) {
+                selectRoute();
+            });
+        });
+
+     </script>
+
+</body>
+
+</html>

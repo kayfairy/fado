@@ -1,0 +1,62 @@
+<?php
+$currentPage = $list->getCurrentPage();
+$currentItemsPerPage = $list->getItemsPerPage();
+?>
+<div class="colh1-lg-12">
+    <div class="panel panel-danger">
+            <?php
+                $view->includeTemplate('tableheader', array('list' => $list, 'viewClass' => 'me', 'viewPrefix' => 'MEETINGS', 'showAddButton' => false, 'standardSort' => 'ASC'));
+            ?>
+                    <tbody>
+                    <?php
+                        foreach($list->get() as $meeting) {
+                            $meeting['meeting'] = json_decode($meeting['meeting'], true);
+                            $meetingString = '';
+                            if ($meeting['meeting']['range'] != '') {
+                                $times = explode('-', $meeting['meeting']['range']);
+                                $start = $times[0];
+                                $stop = $times[1];
+                                $formattedRange = '<b>' . $view->formatDateTime('2017-01-' . ($start + 2), '%a') . '&nbsp;-&nbsp;' . $view->formatDateTime('2017-01-' . ($stop + 2), '%a') . '</b>';
+                                if ($times[0] == $times[1]) {
+                                    $formattedRange = '<b>' . $view->formatDateTime('2017-01-' . ($start + 2), '%a') . '</b>';
+                                }
+                                $meetingString = $formattedRange;
+                            }
+                            if ($meeting['meeting']['day'] != '' && $meeting['meeting']['range'] == '') {
+                                $meetingString = '<b>' . $view->formatDate($meeting['meeting']['day']) . $meetingString . '</b>';
+                            }
+                            if ($meeting['meeting']['start'] != '') {
+                                $meetingString .= '&nbsp;' . $view->formatTime($meeting['meeting']['start']);
+                            }
+                            if ($meeting['meeting']['stop'] != '' && ($meeting['meeting']['start'] != $meeting['meeting']['stop']) && $meeting['meeting']['period'] == '0') {
+                                $meetingString .= '&nbsp;-&nbsp;' . $view->formatTime($meeting['meeting']['stop']) . '&nbsp;';
+                            }
+                            if ($meeting['meeting']['period'] != '0') {
+                                $meetingString .= '&nbsp;' . $meeting['meeting']['period'] . '&nbsp;' . $view->translate('MEETING_UNIT_MINUTE');
+                            }
+                    ?>
+                        <tr class="gradeA odd" >
+                            <td class="center"><?php echo $meeting['title']; ?></td>
+                            <td class="center"><?php echo $meeting['description']; ?></td>
+                            <td class="center"><?php echo $meetingString; ?></td>
+                            <td class="center"><?php echo $view->formatDateTime($meeting['created']); ?></td>
+                            <td class="center">
+                                <form class="shopform" method="POST" action="<?php echo $view->getFullLink(); ?>">
+                                    <input type="hidden" name="id" value="<?php echo $meeting['sid']; ?>"/>
+                                    <button type="button" name="delete" value="delete_meeting" class="btn btn-secondary btn-danger" data-toggle="modal" data-target="#modal-delete"><span class="glyphicon glyphicon-trash"></button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php
+                        }
+                    ?>
+                    </tbody>
+                </table>
+            </div>
+            <?php
+                $view->includeTemplate('tablenavigation', array('list' => $list, 'viewClass' => 'meetings'));
+            ?>
+        </div>
+    </div>
+    <!-- /.panel-body -->
+</div>

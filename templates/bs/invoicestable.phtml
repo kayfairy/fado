@@ -1,0 +1,34 @@
+<?php
+$currentPage = $list->getCurrentPage();
+$currentItemsPerPage = $list->getItemsPerPage();
+?>
+<div class="colh1-lg-12">
+    <div class="panel panel-danger">
+            <?php
+                $view->includeTemplate('tableheader', array('list' => $list, 'viewClass' => 'in', 'viewPrefix' => 'INVOICES', 'showAddButton' => false, 'standardSort' => 'ASC'));
+            ?>
+                    <tbody>
+                    <?php
+                        foreach($list->get() as $invoice) {
+                    ?>
+                        <tr class="gradeA odd" >
+                            <td class="sorting_1"><a href="<?php echo $view->getRewriteUrl(array('invoice' => $invoice['sid']), 'in'); ?>#invoice-panel"><?php echo $invoice['sid']; ?></a></td>
+                            <td class="center"><a href="<?php echo $view->getRewriteUrl(array('shop' => $allShops[$invoice['shop_id_seller']]['sid']), 'sh'); ?>#shop-panel"><?php echo $allShops[$invoice['shop_id_seller']]['description']; ?></a></td>
+                            <td class="center"><a href="<?php echo $view->getRewriteUrl(array('shop' => $allShops[$invoice['shop_id_customer']]['sid']), 'sh'); ?>#shop-panel"><?php echo $allShops[$invoice['shop_id_customer']]['description']; ?></a></td>
+                            <td class="center"><?php echo $invoice['is_payed']; ?></td>
+                            <td class="center"><?php echo $view->formatDateTime($invoice['created']); ?></td>
+                            <td class="center"><?php echo $view->formatDateTime($invoice['changed']); ?></td>
+                        </tr>
+                    <?php
+                        }
+                    ?>
+                    </tbody>
+                </table>
+            </div>
+            <?php
+                $view->includeTemplate('tablenavigation', array('list' => $list, 'viewClass' => 'in'));
+            ?>
+        </div>
+    </div>
+    <!-- /.panel-body -->
+</div>

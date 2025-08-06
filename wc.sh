@@ -25,9 +25,9 @@ wcll () {
            i=$(( $i + $? ))
            cd "$1"
         elif [ "$y" != "" ]; then
-            wc -l "$1/$s" | grep -E '(^[0-9]+?)[[:space:]].+?$'
+            wc -l "$1/$s" | grep -o -E '(^[0-9]+?)[[:space:]].+?$'
             if [ "$?" != "" ]; then
-                wc -l "$1/$s" | wc.sh | grep -E '(^[0-9]+?)[[:space:]].+?$'
+                wc -l "$1/$s" | grep -o -E '(^[0-9]+?)[[:space:]].+?$'
                 i=$(( $i + $? ))
             fi
         fi
@@ -38,5 +38,6 @@ wcll () {
 echo 0 > "$FWD/c.txt"
 wcll $PWD 0 $PWD
 echo $?
+echo "word count is "
 cat $PWD/c.txt
 exit 0

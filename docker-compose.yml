@@ -10,3 +10,4 @@ services:
       - 443:443
     volumes:
       - /data/data/com.termux/home/fado:/var/www/html/
+      - /data/data/com.termux/home/ssl:/var/www/ssl/

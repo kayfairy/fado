@@ -12,7 +12,7 @@ Download to `/var/www/html/` and run install script.
 
 ## Start Docker container
     cd /home/fado
-    git clone https://gitlab.com/lominferd/fado.git
+    git clone https://gitea.com/ferda/fado.git
     cd fado/
     docker-compose up
 
@@ -33,9 +33,8 @@ Open <http://127.0.0.1> or <https://127.0.0.1> and login as superuser `fado` wit
 -   Appointments calendar
 
 ## includes new useful input elements
-[round date and time](https://gitlab.com/lominferd/fado/-/tree/main/vendor/round-date-selector?ref_type=heads)
-and
-[weekdayrange selector](https://gitlab.com/lominferd/fado/-/tree/main/vendor/weekday-range-selector?ref_type=heads)
+[round date and time](https://gitea.com/ferda/fado/src/branch/master/vendor/round-date-selector)
+[weekdayrange selector](https://gitea.com/ferda/fado/src/branch/master/vendor/weekday-range-selector)
 
 ![FadoOpeningHours](https://user-images.githubusercontent.com/45335404/61489900-0ed7bf00-a9ac-11e9-8c40-73d68b275523.png)
 

@@ -2,7 +2,7 @@ version: '3'
 services:
   php:
     image: debian:latest
-    docker-php-entrypoint: "<?php exec('sh /var/www/fado/docker/deploy.sh'); ?>"
+    docker-php-entrypoint: "<?php exec('sh /var/www/docker/deploy.sh'); ?>"
     environment:
       SSL_MODE: "mixed"
     ports:

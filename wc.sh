@@ -38,6 +38,6 @@ wcll () {
 echo 0 > "$FWD/c.txt"
 wcll $PWD 0 $PWD
 echo $?
-echo "word count is "
+echo "line count is "
 cat $PWD/c.txt
 exit 0

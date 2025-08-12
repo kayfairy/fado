@@ -257,7 +257,7 @@ $lang = array (
   'EMPTY_CACHE' => 'Vaciar caché',
   'EMPTY_CACHE_SUCCESS' => 'Vaciado de caché exitoso',
   'ERROR_404' => 'Error 404',
-  'ERROR_404_TEXT' => 'Página no encontrada. '
+  'ERROR_404_TEXT' => 'Página no encontrada.',
   'ERROR_403' => 'Error 403',
   'ERROR_403_TEXT' => 'Permiso denegado.',
 /***/

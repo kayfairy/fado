@@ -1,4 +1,5 @@
 version: '3'
+# udocker run --entrypoint="/var/www/html/docker/deploy.sh" --volume="/data/data/com.termux/files/home/fado/:/var/www/html/" php:8.2.29-fpm-bookworm
 services:
   php:
     image: php:8.2.29-fpm-bookworm
@@ -12,6 +13,6 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - /data/data/com.termux/home/fado/docker/config/fado.conf:/etc/apache2/sites-available/fado.conf
-      - /data/data/com.termux/home/fado:/var/www/html/
-      - /data/data/com.termux/home/ssl:/var/www/ssl/
+      - /data/data/com.termux/files/home/fado/docker/config/fado.conf:/etc/apache2/sites-available/fado.conf
+      - /data/data/com.termux/files/home/fado:/var/www/html/
+      - /data/data/com.termux/files/home/ssl:/var/www/ssl/

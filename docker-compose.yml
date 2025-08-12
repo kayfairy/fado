@@ -2,14 +2,14 @@ version: '3'
 # udocker run --entrypoint="/var/www/html/docker/deploy.sh" --volume="/data/data/com.termux/files/home/fado/:/var/www/html/" php:8.2.29-fpm-bookworm
 services:
   php:
-    image: php:8.2.29-fpm-bookworm
+    image: debian:bookworm-backports
     command: "sh /var/www/html/docker/deploy.sh"
 #   docker-php-entrypoint: "<?php exec('sh /var/www/html/docker/deploy.sh'); ?>"
     environment:
       ROOT: "/var/www/html"
       SSL_MODE: "mixed"
     ports:
-      - 2020:2020
+      - 2080:2080
       - 80:80
       - 443:443
     volumes:

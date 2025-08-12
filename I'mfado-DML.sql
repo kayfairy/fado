@@ -40,20 +40,20 @@ CREATE TABLE `fado_currency` (
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 INSERT INTO `fado_currency` (`id`, `name`, `currency`, `ISO4217`) VALUES
-(1,	'Euro',	'€',	'EUR'),
-(2,	'Dollar',	'$',	'USD'),
-(3,	'Pound',	'£',	'GBP'),
-(4,	'Lira',	'₺',	'ITL'),
-(5,	'Ruble',	'₽',	'RUB'),
-(6,	'Yen',	'¥',	'JPY'),
-(7,	'Peso',	'₱',	'PHP'),
-(8,	'Dong',	'₫',	'VND'),
-(9,	'Hryvnia',	'₴',	'UAH'),
-(10,	'Franc',	'₣',	'CHF'),
-(11,	'Rial',	'﷼',	'YER'),
-(12,	'Sol',	'S/.',	'PEN'),
-(13,	'Shekel',	'₪',	'ILS'),
-(14,	'Cedi',	'¢',	'GHS');
+(1,     'Euro', '€',    'EUR'),
+(2,     'Dollar',       '$',    'USD'),
+(3,     'Pound',        '£',    'GBP'),
+(4,     'Lira', '₺',    'ITL'),
+(5,     'Ruble',        '₽',    'RUB'),
+(6,     'Yen',  '¥',    'JPY'),
+(7,     'Peso', '₱',    'PHP'),
+(8,     'Dong', '₫',    'VND'),
+(9,     'Hryvnia',      '₴',    'UAH'),
+(10,    'Franc',        '₣',    'CHF'),
+(11,    'Rial', '﷼',    'YER'),
+(12,    'Sol',  'S/.',  'PEN'),
+(13,    'Shekel',       '₪',    'ILS'),
+(14,    'Cedi', '¢',    'GHS');
 
 DROP TABLE IF EXISTS `fado_invoices`;
 CREATE TABLE `fado_invoices` (
@@ -141,8 +141,8 @@ CREATE TABLE `fado_settings` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(256) DEFAULT NULL,
   `value` varchar(256) DEFAULT NULL,
-  `changed` timestamp NULL DEFAULT NULL,
-  `created` timestamp NULL DEFAULT NULL,
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `changed` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
@@ -316,8 +316,8 @@ CREATE TABLE `fado_user_rights` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
   `rights` varchar(2048) DEFAULT NULL,
-  `changed` timestamp NULL DEFAULT NULL,
-  `created` timestamp NULL DEFAULT NULL,
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `changed` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `fado_user_rights_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `fado_user` (`id`) ON DELETE CASCADE

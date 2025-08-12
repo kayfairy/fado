@@ -12,7 +12,7 @@ class Vehicles extends FadoController {
         $this->model = new \Fado\Model\Vehicle();
     }
 
-    public function get(Iterator $list = null) {
+    public function get(?Iterator $list = null) {
         Cache::set('formStatus', '');
         Cache::set('openNewVehicleForm', '0');
         Cache::set('newFormData', '');

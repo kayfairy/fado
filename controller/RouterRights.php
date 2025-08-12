@@ -44,7 +44,7 @@ class RouterRights extends Source\FadoController {
         $this->userController = $user;
     }
 
-    public function get(\Fado\Core\ListIterator $list = null) {
+    public function get(?\Fado\Core\ListIterator $list = null) {
         $page = $this->request->getParameter('page');
         Cache::set('message', '');
 
@@ -64,7 +64,7 @@ class RouterRights extends Source\FadoController {
             $rights['aj'] = '2';
             $rights['st'] = '1';
             $rights['if'] = '1';
-            
+
             if (in_array($this->userController->getModel()->get($userId)['name'], ADMIN_USERS)) {
                 $rights['ur'] = '2';
                  $rights['ut'] = '2';
@@ -88,7 +88,7 @@ class RouterRights extends Source\FadoController {
             $page = 'sh';
         }
         $rights = $this->getRoutingRights($this->userController->getLoggedInUser()['sid']);
-        
+
         if ($rights != null && array_key_exists($page, $rights) && $rights[$page] == $action) {
             return true;
         }

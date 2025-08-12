@@ -19,7 +19,7 @@ class NewInvoice extends FadoController {
         $this->userController = $user;
     }
 
-    public function get(\Fado\Core\ListIterator $list = null) {
+    public function get(?\Fado\Core\ListIterator $list = null) {
         $itemCount = (int)$this->request->getParameter('item-count');
         $shopId = (int)$this->request->getParameter('shop-id');
         $forward = $this->request->getParameter('forward') == 'save_forward';
@@ -32,7 +32,7 @@ class NewInvoice extends FadoController {
         }
 
         $items = Cache::get('newInvoiceList');
-        
+
         if ($items != '') {
             $items = Factory::create(json_decode($items, true));
             if ($items->count() > 0) {

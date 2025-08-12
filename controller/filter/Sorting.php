@@ -15,7 +15,7 @@ class Sorting implements FadoInterface {
         $this->request = $request;
     }
 
-    public function filter(\Fado\Core\ListIterator $list = null) {
+    public function filter(?\Fado\Core\ListIterator $list = null) {
         $sort = $this->request->getParameter('sort');
         $order = $this->request->getParameter('order');
 

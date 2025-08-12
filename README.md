@@ -7,7 +7,7 @@ Manage shops, vehicles and commodities in administration panel. Calculate invoic
 `Debian 11` required (PHP 8.2).
 
 Download to `/var/www/html/` and run install script.
-  
+
     sudo sh /var/www/html/install.sh
 
 ## Start Docker container
@@ -16,12 +16,13 @@ Download to `/var/www/html/` and run install script.
     cd fado/
     docker-compose up
 
-The Apache config file and SSL keys are linked in the volume section of the `docker-compose.yml`. Activate HTTPS with `/usr/sbin/a2enmod ssl`. Incompabilities are possible.
+The Apache config file and SSL keys are linked in the volume section of the `docker-compose.yml`. Activate HTTPS with `/usr/sbin/a2enmod ssl`.
 
 ## User
 Open <http://127.0.0.1> or <https://127.0.0.1> and login as superuser `fado` with password `rood`.
+Change the password of the database user:
 
-    mariadb -u root -e "SET PASSWORD FOR 'fado'@localhost = PASSWORD('1111');"
+    mariadb -u root -e "SET PASSWORD FOR 'fado'@`localhost` = PASSWORD('secret1');"
 
 ## Features
 -   Mobile device support

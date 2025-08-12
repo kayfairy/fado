@@ -12,7 +12,7 @@ class Paginator implements FadoInterface {
         $this->request = $request;
     }
 
-    public function filter(\Fado\Core\ListIterator $list = null) {
+    public function filter(?\Fado\Core\ListIterator $list = null) {
         $itemsPerPage = (int)$this->request->getParameter('pc');
         if ($itemsPerPage == 0) {
             $itemsPerPage = Cache::get('pc');
@@ -45,3 +45,4 @@ class Paginator implements FadoInterface {
         return $list;
     }
 }
+

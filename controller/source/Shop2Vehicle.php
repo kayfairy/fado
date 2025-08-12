@@ -13,7 +13,7 @@ class Shop2Vehicle extends FadoController {
         $this->model = new \Fado\Model\Vehicle();
     }
 
-    public function get(Iterator $list = null) {
+public function get(?Iterator $list = null) {
         $vehicleId = $this->request->getParameter('vehicle');
 
         $saveVehicle2Shop = $this->request->getParameter('save_shop2vehicle');

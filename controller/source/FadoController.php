@@ -21,7 +21,7 @@ class FadoController implements FadoInterface {
         $this->controller = null;
     }
 
-    public function get(\Fado\Core\ListIterator $list) {
+    public function get(?\Fado\Core\ListIterator $list) {
         return $list;
     }
 

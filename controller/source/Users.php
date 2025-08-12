@@ -43,7 +43,6 @@ class Users extends FadoController {
         } else {
                 Cache::set('message', '');
         }
-            
 
         if ($this->request->getParameter('logout') == '1') {
             $this->logout();
@@ -54,7 +53,7 @@ class Users extends FadoController {
         return $this->getLoggedInUser();
     }
 
-    public function get(\Fado\Core\ListIterator $list = null) {
+    public function get(?\Fado\Core\ListIterator $list = null) {
         Cache::set('formStatus', '');
         Cache::set('openNewUserForm', '0');
         Cache::set('newFormData', '');

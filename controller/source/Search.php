@@ -3,7 +3,7 @@
 namespace Fado\Controller\Source;
 
 use \Fado\Model\Cache as Cache;
-use \Fado\Core\ListIteratorFactory as Factory;
+use ?\Fado\Core\?ListIteratorFactory as Factory;
 
 class Search extends FadoController {
 
@@ -14,7 +14,7 @@ class Search extends FadoController {
         $this->controller = $controller;
     }
 
-    public function get(\Fado\Core\ListIterator $list = null) {
+    public function get(?\Fado\Core\?ListIterator $list = null) {
         $needle = '';
         $getParam = $this->request->getParameter($this->urlParmIdentifier);
         $sessionParam = Cache::get($this->urlParmIdentifier);

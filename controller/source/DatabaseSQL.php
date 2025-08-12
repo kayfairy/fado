@@ -12,7 +12,7 @@ class DatabaseSQL extends FadoController {
         $this->model = new \Fado\Model\Shop();
     }
 
-    public function get(\Fado\Core\ListIterator $list = null) {
+    public function get(?\Fado\Core\ListIterator $list = null) {
         if ($this->request->getParameter('importsql')) {
             if (!empty($_FILES['sqlfile']) && !empty($_FILES['sqlfile']['tmp_name'][0])) {
                 $file = file_get_contents($_FILES['sqlfile']['tmp_name'][0]);
@@ -45,7 +45,7 @@ class DatabaseSQL extends FadoController {
             Cache::set('message', 'EMPTY_CACHE_SUCCESS');
         }
     }
-    
+
     /**
      * Perform MySQL Database Backup
      *
@@ -57,7 +57,7 @@ class DatabaseSQL extends FadoController {
     function backupDatabaseTables($pdo, $tables = '*', $filePath = '/')
     {
         try {
-            
+
             // Get all of the tables
             if ($tables == '*') {
                 $tables = [];
@@ -68,26 +68,27 @@ class DatabaseSQL extends FadoController {
             } else {
                 $tables = is_array($tables) ? $tables : explode(',', $tables);
             }
-            
+
             if (empty($tables)) {
                 return false;
             }
-            
+
             $out = '';
-            
+
             // Loop through the tables
+            foreach ($tables as $table) {
+                // Add DROP TABLE statement
+                $out .= 'DROP TABLE ' . $table . ';' . "\n\n";
+            }
             foreach ($tables as $table) {
                 $query = $pdo->query('SELECT * FROM ' . $table);
                 $numColumns = $query->columnCount();
-                
-                // Add DROP TABLE statement
-                $out .= 'DROP TABLE ' . $table . ';' . "\n\n";
-                
+
                 // Add CREATE TABLE statement
                 $query2 = $pdo->query('SHOW CREATE TABLE ' . $table);
                 $row2 = $query2->fetch();
                 $out .= $row2[1] . ';' . "\n\n";
-                
+
                 // Add INSERT INTO statements
                 for ($i = 0; $i < $numColumns; $i++) {
                     while ($row = $query->fetch()) {
@@ -109,15 +110,14 @@ class DatabaseSQL extends FadoController {
                 }
                 $out .= "\n\n\n";
             }
-            
+
             // Save file
             file_put_contents($filePath, $out);
-            
         } catch (\Exception $e) {
             echo "<br><pre>Exception => " . $e->getMessage() . "</pre>\n";
             return false;
         }
-        
+
         return true;
     }
 }

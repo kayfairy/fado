@@ -60,9 +60,11 @@ rm /etc/apache2/sites-available/default-ssl.conf
 
 /usr/sbin/a2enmod rewrite
 /usr/sbin/a2enmod headers
-/usr/sbin/a2enmod ssl
-
+#/usr/sbin/a2enmod ssl
+/usr/sbin/a2enmod proxy_fcgi setenvif
+/usr/sbin/a2enconf php-fpm
 php-fpm -D
+
 service mariadb restart
 service memcached restart
 service apache2 restart

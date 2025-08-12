@@ -16,7 +16,7 @@ class Invoices extends FadoController {
         $this->shopModel = new \Fado\Model\Shop();
     }
 
-    public function get(Iterator $list = null) {
+    public function get(?Iterator $list = null) {
         Cache::set('formStatus', '');
         Cache::set('openNewItemForm', '0');
         Cache::set('newFormData', '');

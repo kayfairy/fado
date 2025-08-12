@@ -13,7 +13,7 @@ class WarehouseItems extends FadoController {
         $this->model = new \Fado\Model\WarehouseItem();
     }
 
-    public function get(Iterator $list = null) {
+    public function get(?Iterator $list = null) {
         Cache::set('formStatus', '');
         Cache::set('openNewItemForm', '0');
         Cache::set('newFormData', '');

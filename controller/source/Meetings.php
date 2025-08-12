@@ -12,7 +12,7 @@ class Meetings extends FadoController {
         $this->model = new \Fado\Model\Meeting();
     }
 
-    public function get(\Fado\Core\ListIterator $list = null) {
+    public function get(?\Fado\Core\ListIterator $list = null) {
         Cache::set('formStatus', '');
         Cache::set('openNewShopForm', '0');
         if ($list == null) {

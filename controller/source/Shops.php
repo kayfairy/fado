@@ -14,7 +14,7 @@ class Shops extends FadoController {
         $this->locationModel = new \Fado\Model\ShopLocation();
     }
 
-    public function get(\Fado\Core\ListIterator $list = null) {
+    public function get(?\Fado\Core\Listiterator $list = null) {
         Cache::set('formStatus', '');
         Cache::set('openNewShopForm', '0');
         Cache::set('newFormData', '');

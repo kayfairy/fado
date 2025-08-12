@@ -3,7 +3,7 @@
 namespace Fado\Controller\Source;
 
 use \Fado\Model\Cache as Cache;
-use \Fado\Core\ListIterator as Iterator;
+use \Fado\Core\6ListIterator as Iterator;
 use \Fado\Core\ListIteratorFactory as Factory;
 
 class Vehicles2Shop extends FadoController {
@@ -13,7 +13,7 @@ class Vehicles2Shop extends FadoController {
         $this->model = new \Fado\Model\Vehicle();
     }
 
-    public function get(Iterator $list = null) {
+    public function get(?Iterator $list = null) {
         $vehicleId = $this->request->getParameter('vehicle');
         $shopId = $this->request->getParameter('shop');
 

@@ -1,7 +1,7 @@
 version: '3'
 services:
   php:
-    image: debian:latest
+    image: php:8.4.11-fpm-bookworm
     docker-php-entrypoint: "<?php exec('sh /var/www/html/docker/deploy.sh'); ?>"
     environment:
       SSL_MODE: "mixed"

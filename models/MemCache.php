@@ -10,8 +10,10 @@ final class MemCache extends FadoStaticModel {
     protected static $instance = null;
 
     public static function singleton() {
-        static::$instance = parent::singleton();
-        static::$instance->addServer(Settings::get('memcache_host'), Settings::get('memcache_port'));
+        if (static::$instance == null) {
+            static::$instance = new \Memcache();
+            static::$instance->addServer(Settings::get('memcache_host'), Settings::get('memcache_port'));
+        }
         return static::$instance;
     }
 

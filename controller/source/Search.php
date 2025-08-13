@@ -14,7 +14,7 @@ class Search extends FadoController {
         $this->controller = $controller;
     }
 
-    public function get(?\Fado\Core\?ListIterator $list = null) {
+    public function get(?\Fado\Core\ListIterator $list = null) {
         $needle = '';
         $getParam = $this->request->getParameter($this->urlParmIdentifier);
         $sessionParam = Cache::get($this->urlParmIdentifier);

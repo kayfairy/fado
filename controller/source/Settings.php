@@ -12,7 +12,7 @@ class Settings extends FadoController {
         $this->model = new \Fado\Model\Setting();
     }
 
-    public function get(\Fado\Core\?ListIterator $list = null, $userSettings = true) {
+    public function get(?\Fado\Core\ListIterator $list = null, $userSettings = true) {
         Cache::set('formStatus', '');
 
         if ($this->request->getParameter('save') == 'save_fadosettings') {

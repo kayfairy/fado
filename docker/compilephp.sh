@@ -1,8 +1,8 @@
 #!/bin/bash
 
 cwd=$(dirname "$0")
-down=true
-extract=true
+down=$1
+extract=$2
 libsdir=$cwd/libs
 
 mkdir $libsdir
@@ -15,7 +15,7 @@ if [ "$down" = true ]; then
    wget -O zlib.tar.gz https://www.zlib.net/zlib-1.3.1.tar.gz
    wget -O oniguruma.zip https://github.com/kkos/oniguruma/archive/refs/tags/v6.9.10.zip
    wget -O icu.zip https://github.com/unicode-org/icu/releases/download/release-72-1/icu4c-72_1-src.zip
-   wget -O libxml.zip https://download.gnome.org/sources/libxml2/2.14/libxml2-2.14.5.tar.xz
+   wget -O libxml.tar.xz https://download.gnome.org/sources/libxml2/2.14/libxml2-2.14.0.tar.xz
    wget -O sqlite.zip https://sqlite.org/2025/sqlite-src-3500200.zip
    wget -O openssl.tar.gz https://github.com/openssl/openssl/releases/download/openssl-3.5.1/openssl-3.5.1.tar.gz
    wget -O php.tar.gz https://www.php.net/distributions/php-8.4.11.tar.gz
@@ -39,9 +39,9 @@ if [ "$extract" = true ]; then
    unzip icu.zip
    cd ..
    mkdir libxml
-   cp libxml.zip libxml/
+   cp libxml.tar.xz libxml/
    cd libxml/
-   unzip libxml.zip
+   tar xvf libxml.tar.xz
    cd ..
    mkdir sqlite
    cp sqlite.zip sqlite/
@@ -64,12 +64,12 @@ if [ "$extract" = true ]; then
    cd php/
    tar xzvf php.tar.gz
    cd php-8.4.11/
+elif [ true ]; then
+   cd php/php-8.4.11/ 
 fi
 
-cd $libsdir/php/php-8.4.11/
-
-export LIBXML_CFLAGS=-I$libsdir/libxml/libxml2-v2.14.5/include
-export LIBXML_LIBS=-L$libsdir/libxml/libxml2-v2.14.5/lib
+export LIBXML_CFLAGS=-I$libsdir/libxml/libxml2-2.14.0/include
+export LIBXML_LIBS=-L$libsdir/libxml/libxml2-2.14.0/lib
 export OPENSSL_CFLAGS=-I$libsdir/openssl/openssl-3.5.1/include
 export OPENSSL_LIBS=-L$libsdir/openssl/openssl-3.5.1/lib
 export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-src-3500200/include
@@ -96,6 +96,11 @@ export INTL_LIBS=-L$libsdir/gettext/gettext-0.26/lib
             --with-mysql-sock=/var/mysql/mysql.sock \
             --enable-calendar \
             --with-gnu-ld \
+            --enable-libgcc \
+            --with-curl \
+            --with-zlib \
+            --with-bz2 \
+            --enable-bcmath \
             --enable-soap \
             --enable-sockets \
             --enable-intl \

@@ -8,7 +8,7 @@ libsdir=$cwd/libs
 mkdir $libsdir
 cd $libsdir
 
-apt install -y linux-headers build-essential autoconf libtool bison re2c libxml2 libxml2-dev libssl3 libssl-dev apache2-ssl-dev libsqlite3-dev zlib1g-dev git libonig5 libonig-dev wget unzip tar patch
+apt install -y build-essential autoconf libtool bison re2c libxml2 libxml2-dev libssl3 libssl-dev apache2-ssl-dev libsqlite3-dev zlib1g-dev git libonig5 libonig-dev wget unzip tar patch
 
 if [ $down ]; then
    wget -O zlib.tar.gz https://www.zlib.net/zlib-1.3.1.tar.gz

@@ -92,11 +92,11 @@ export INTL_LIBS=-L$libsdir/gettext/gettext-0.26/lib
 export CURL_CFLAGS=-I$libsdir/curl/curl-8.15.0/include
 export CURL_LIBS=-L$libsdir/curl/curl-8.15.0/lib
 
-cd "/var/www/html/libxml/libxml2-2.14.0/"
+cd "/var/www/html/docker/libs/libxml/libxml2-2.14.0/"
 
 ./configure --without-python --without-debug --with-gnu-ld
 
-cd "$libsdir/openssl/openssl-3.5.1/"
+cd "/var/www/html/docker/libs/openssl/openssl-3.5.1/"
 
 ./Configure
 

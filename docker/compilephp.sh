@@ -20,7 +20,7 @@ if [ "$down" = true ]; then
    wget -O openssl.tar.gz https://github.com/openssl/openssl/releases/download/openssl-3.5.1/openssl-3.5.1.tar.gz
    wget -O php.tar.gz https://www.php.net/distributions/php-8.4.11.tar.gz
    wget -O gettext.tar.gz https://ftp.gnu.org/pub/gnu/gettext/gettext-0.26.tar.gz
-   wget -O curl.tar.bz2 https://curl.se/snapshots/curl-8.15.1-20250719.tar.bz2
+   wget -O curl.tar.gz https://curl.se/download/curl-8.15.0.tar.gz
 fi
 
 if [ "$extract" = true ]; then
@@ -71,7 +71,8 @@ if [ "$extract" = true ]; then
    tar xzvf php.tar.gz
    cd php-8.4.11/
 elif [ true ]; then
-   cd "$cwd/../php/php-8.4.11/"
+   libsdir="/var/www/html/docker/libs/"
+   cd "/var/www/html/docker/libs/php/php-8.4.11/"
 fi
 
 export LIBXML_CFLAGS=-I$libsdir/libxml/libxml2-2.14.0/include
@@ -88,8 +89,8 @@ export ZLIB_CFLAGS=-I$libsdir/zlib/zlib-1.3.1/include
 export ZLIB_LIBS=-L$libsdir/zlib/zlib-1.3.1/lib
 export INTL_CFLAGS=-I$libsdir/gettext/gettext-0.26/include
 export INTL_LIBS=-L$libsdir/gettext/gettext-0.26/lib
-export CURL_CFLAGS=-I$libsdir/curl/curl-8.15.1-20250719/include
-export CURL_LIBS=-L$libsdir/curl/curl-8.15.1-20250719/lib
+export CURL_CFLAGS=-I$libsdir/curl/curl-8.15.0/include
+export CURL_LIBS=-L$libsdir/curl/curl-8.15.0/lib
 
 ./buildconf
 
@@ -105,7 +106,7 @@ export CURL_LIBS=-L$libsdir/curl/curl-8.15.1-20250719/lib
             --enable-calendar \
             --with-gnu-ld \
             --enable-libgcc \
-            --with-curl \
+#            --with-curl \
             --with-zlib \
             --enable-soap \
             --enable-sockets \

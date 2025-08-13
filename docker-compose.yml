@@ -1,5 +1,5 @@
 version: '3'
-# udocker run --entrypoint="/var/www/html/docker/deploy.sh" --volume="/data/data/com.termux/files/home/fado/:/var/www/html/" php:8.2.29-fpm-bookworm
+# udocker run --entrypoint="/bin/bash" --volume="/data/data/com.termux/files/home/fado/:/var/www/html/" debian:forky-backports
 services:
   php:
     image: debian:bookworm-backports

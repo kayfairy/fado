@@ -3,7 +3,7 @@
 namespace Fado\Controller\Source;
 
 use \Fado\Model\Cache as Cache;
-use \Fado\Core\6ListIterator as Iterator;
+use \Fado\Core\ListIterator as Iterator;
 use \Fado\Core\ListIteratorFactory as Factory;
 
 class Vehicles2Shop extends FadoController {

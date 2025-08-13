@@ -71,7 +71,7 @@ if [ "$extract" = true ]; then
    tar xzvf php.tar.gz
    cd php-8.4.11/
 elif [ true ]; then
-   libsdir="/var/www/html/docker/libs/"
+   libsdir="/var/www/html/docker/libs"
    cd "/var/www/html/docker/libs/php/php-8.4.11/"
 fi
 
@@ -91,6 +91,12 @@ export INTL_CFLAGS=-I$libsdir/gettext/gettext-0.26/include
 export INTL_LIBS=-L$libsdir/gettext/gettext-0.26/lib
 export CURL_CFLAGS=-I$libsdir/curl/curl-8.15.0/include
 export CURL_LIBS=-L$libsdir/curl/curl-8.15.0/lib
+
+cd "/var/www/html/libxml/libxml2-2.14.0/"
+
+./configure --without-python --without-debug --with-gnu-ld
+
+cd "/var/www/html/docker/libs/php/php-8.4.11/"
 
 ./buildconf
 

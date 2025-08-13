@@ -17,7 +17,7 @@ if [ $down ]; then
    wget -O libxml.zip https://gitlab.gnome.org/GNOME/libxml2/-/archive/v2.14.5/libxml2-v2.14.5.zip 
    wget -O sqlite.zip https://sqlite.org/2025/sqlite-src-3500200.zip
    wget -O openssl.tar.gz https://github.com/openssl/openssl/releases/download/openssl-3.5.1/openssl-3.5.1.tar.gz
-   wget -O php.tar.gz https://www.php.net/distributions/php-8.4.10.tar.gz
+   wget -O php.tar.gz https://www.php.net/distributions/php-8.4.11.tar.gz
 fi
 
 if [ $extract ]; then
@@ -56,7 +56,7 @@ if [ $extract ]; then
    cp php.tar.gz php/
    cd php/
    tar xzvf php.tar.gz
-   cd php-8.4.10/
+   cd php-8.4.11/
 fi
 
 export LIBXML_CFLAGS=-I$libsdir/libxml/libxml2-v2.14.5/include
@@ -72,8 +72,8 @@ export ONIG_LIBS=-L$libsdir/oniguruma/oniguruma-6.9.10/src/lib
 export ZLIB_CFLAGS=-I$libsdir/zlib/zlib-1.3.1/include
 export ZLIB_LIBS=-L$libsdir/zlib/zlib-1.3.1/lib
 
-cp $cwd/php_libxml.patch $libsdir/php/php-8.4.10/
-cd $libsdir/php/php-8.4.10/
+cp $cwd/php_libxml.patch $libsdir/php/php-8.4.11/
+cd $libsdir/php/php-8.4.11/
 patch < ./php_libxml.patch
 
 ./buildconf
@@ -92,7 +92,7 @@ patch < ./php_libxml.patch
             --enable-soap \
             --enable-sockets \
             --enable-intl=shared \
-	    --disable-phpdbg \
+	         --disable-phpdbg \
             --disable-phpdbg-webhelper \
             --disable-cgi
 

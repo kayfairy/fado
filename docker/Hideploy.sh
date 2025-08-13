@@ -33,9 +33,9 @@ mariadb -u root -e "DROP DATABASE IF EXISTS fado; CREATE DATABASE fado DEFAULT C
 mariadb -u root -e "GRANT ALL PRIVILEGES ON fado.* TO 'fado'@'localhost' WITH GRANT OPTION; FLUSH PRIVILEGES;"
 mariadb -u fado -prood fado < /var/www/html/fado-DML.sql
 
-rm $cwd/database.csv
+rm /var/www/html/database.csv
 
-cat <<EOF >> $cwd/database.csv
+cat <<EOF >> /var/www/html/database.csv
 user;fado
 pwd;rood
 db;fado

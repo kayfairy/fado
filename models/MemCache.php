@@ -5,7 +5,7 @@ namespace Fado\Model;
 use Fado\Core\Cookie as Cookie;
 use Fado\Model\Setting as Settings;
 
-final class MemCache extends FadoStaticModel {
+final class MemCache {
 
     protected static $instance = null;
 

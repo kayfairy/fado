@@ -3,7 +3,7 @@
 cwd=$(dirname "$0")
 down=$1
 extract=$2
-libsdir=$cwd/libs
+libsdir="$cwd/libs"
 
 mkdir $libsdir
 cd $libsdir
@@ -32,12 +32,12 @@ if [ "$extract" = true ]; then
    mkdir oniguruma
    cp oniguruma.zip oniguruma/
    cd oniguruma/
-   unzip oniguruma.zip
+   unzip -o oniguruma.zip
    cd ..
    mkdir icu
    cp icu.zip uci/
    cd icu
-   unzip icu.zip
+   unzip -o icu.zip
    cd ..
    mkdir libxml
    cp libxml.tar.xz libxml/
@@ -52,7 +52,7 @@ if [ "$extract" = true ]; then
    mkdir sqlite
    cp sqlite.zip sqlite/
    cd sqlite/
-   unzip sqlite.zip
+   unzip -o sqlite.zip
    cd ..
    mkdir openssl
    cp openssl.tar.gz openssl/
@@ -71,8 +71,8 @@ if [ "$extract" = true ]; then
    tar xzvf php.tar.gz
    cd php-8.4.11/
 elif [ true ]; then
-    libsdir="/var/www/html/docker/libs"
-   cd "/var/www/html/docker/libs/php/php-8.4.11/"
+   libsdir="$cwd/docker/libs"
+   cd "$cwd/docker/libs/php/php-8.4.11/"
 fi
 
 export LIBXML_CFLAGS=-I$libsdir/libxml/libxml2-2.14.0/include
@@ -81,8 +81,8 @@ export OPENSSL_CFLAGS=-I$libsdir/openssl/openssl-3.5.1/include
 export OPENSSL_LIBS=-L$libsdir/openssl/openssl-3.5.1/lib
 export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-src-3500200/include
 export SQLITE_LIBS=-L$libsdir/sqlite/sqlite-src-3500200/lib
-export ICU_CFLAGS=-I$libsdir/icu/icu/src/include
-export ICU_LIBS=-L$libsdir/icu/icu/src/lib
+export ICU_CFLAGS=-I$libsdir/icu/icu/source/include
+export ICU_LIBS=-L$libsdir/icu/icu/source/lib
 export ONIG_CFLAGS=-I$libsdir/oniguruma/oniguruma-6.9.10/src/include
 export ONIG_LIBS=-L$libsdir/oniguruma/oniguruma-6.9.10/src/lib
 export ZLIB_CFLAGS=-I$libsdir/zlib/zlib-1.3.1/include
@@ -92,17 +92,23 @@ export INTL_LIBS=-L$libsdir/gettext/gettext-0.26/lib
 export CURL_CFLAGS=-I$libsdir/curl/curl-8.15.0/include
 export CURL_LIBS=-L$libsdir/curl/curl-8.15.0/lib
 
-cd "/var/www/html/docker/libs/libxml/libxml2-2.14.0/"
+cd "$cwd/docker/libs/libxml/libxml2-2.14.0/"
 
-./configure --without-python --without-debug --with-gnu-ld
+x./configure --without-python --without-debug --with-gnu-ld
 
-cd "/var/www/html/docker/libs/openssl/openssl-3.5.1/"
+cd "$cwd/docker/libs/openssl/openssl-3.5.1/"
 
 ./Configure
 
 make -j $(nproc)
 
-cd "/var/www/html/docker/libs/php/php-8.4.11/"
+cd "$cwd/docker/libs/gettext/gettext-0.26"
+
+./configure --with-gnu-ld
+
+make -j $(nproc)
+
+cd "$cwd/docker/libs/php/php-8.4.11/"
 
 ./buildconf
 
@@ -119,11 +125,7 @@ cd "/var/www/html/docker/libs/php/php-8.4.11/"
             --with-gnu-ld \
             --enable-libgcc \
 #            --with-curl \
-            --with-zlib \
-            --enable-soap \
-            --enable-sockets \
-            --enable-intl \
-	    --disable-phpdbg \
+#            --with-zlib \
             --disable-cgi
 
 make -j $(nproc)

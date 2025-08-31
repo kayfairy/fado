@@ -59,4 +59,10 @@ class Meetings extends FadoController {
         }
         return $list;
     }
+
+    public function getAllMeetingsICSjson() {
+         $all = $this->model->getAll();
+
+          
+    }
 }

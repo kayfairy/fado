@@ -1,4 +1,4 @@
-# udocker run --entrypoint="/bin/bash" --volume="~/fado/:/var/www/html/" debian:forky
+# udocker run --entrypoint="/bin/bash" --volume="/data/data/com.termux/files/home/fado/:/var/www/html/" debian:forky
 version: '3'
 services:
   php:

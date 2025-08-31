@@ -3,6 +3,12 @@
 cwd=$(dirname "$0")
 
 if [ -f /var/www/isdeployed ]; then
+    service apache2 restart
+    service mariadb restart
+    service php8.2-fpm restart
+    service memcached restart
+    service --status-all
+    
     tail -f /var/log/apache2/access.log
     exit 0
 fi
@@ -76,12 +82,7 @@ ServerName fado.org
                 RewriteEngine on
                 RewriteCond "%{HTTPS}" on
                 RewriteCond "%{SSL_PROTOCOL}" "(SSLv3|TLSv1|TLSv1.1|TLSv1.2)"
-                RewriteRule ".?" "-" [S=2]
-                    RewriteRule "^/?(.*)" "https://%{SERVER_NAME}/$1" [L,R=301]
-                    RewriteRule ".?" "-" [S=3]
-                    RewriteCond %{REQUEST_FILENAME} !-d
-                    RewriteCond %{REQUEST_FILENAME} !-f
-                    RewriteRule "/(.*)/$" "/index.php?page=$1" [L,QSA]
+                RewriteRule "^/?(.*)" "https://%{SERVER_NAME}/$1" [L,R=301]
             </IfModule>
         </IfModule>
         <IfModule mod_rewrite.c>
@@ -138,7 +139,7 @@ ln -s /etc/apache2/sites-available/fado.conf /etc/apache2/sites-enabled/fado.con
 #/usr/sbin/a2enmod ssl
 /usr/sbin/a2enmod proxy_fcgi setenvif
 /usr/sbin/a2enconf php8.2-fpm
-/usr/sbin/php-fpm8.2 -D
+#/usr/sbin/php-fpm8.2 -D
 
 service apache2 restart
 service mariadb restart

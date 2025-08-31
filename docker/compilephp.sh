@@ -96,6 +96,8 @@ cd "$cwd/docker/libs/libxml/libxml2-2.14.0/"
 
 ./configure --without-python --without-debug --with-gnu-ld
 
+make -j $(nproc)
+
 cd "$cwd/docker/libs/openssl/openssl-3.5.1/"
 
 ./Configure

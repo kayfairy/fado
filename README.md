@@ -12,7 +12,7 @@ Download to `/var/www/html/` and run install script.
 
 ## Start Docker container
     cd /home/fado
-    git clone https://github.com/kayfairy/fado2/blob/master/wc.sh
+    git clone https://github.com/kayfairy/fado2.git
     cd fado/
     docker-compose up
 
@@ -34,7 +34,7 @@ Change the password of the database user:
 -   Appointments calendar
 
 ## includes new useful input elements
-[round date and time selector](https://github.com/kayfairy/round-date-time-selector.git)
+[round date and time selector](https://github.com/kayfairy/round-date-selector.git)
 
 [weekdayrange selector](https://github.com/kayfairy/weekday-range-selector.git)
 

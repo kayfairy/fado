@@ -12,7 +12,7 @@ Download to `/var/www/html/` and run install script.
 
 ## Start Docker container
     cd /home/fado
-    git clone https://gitea.com/ferda/fado.git
+    git clone https://github.com/kayfairy/fado2/blob/master/wc.sh
     cd fado/
     docker-compose up
 
@@ -34,8 +34,9 @@ Change the password of the database user:
 -   Appointments calendar
 
 ## includes new useful input elements
-[round date and time](https://gitea.com/ferda/fado/src/branch/master/vendor/round-date-selector)
-[weekdayrange selector](https://gitea.com/ferda/fado/src/branch/master/vendor/weekday-range-selector)
+[round date and time selector](https://github.com/kayfairy/round-date-time-selector.git)
+
+[weekdayrange selector](https://github.com/kayfairy/weekday-range-selector.git)
 
 ![FadoOpeningHours](https://user-images.githubusercontent.com/45335404/61489900-0ed7bf00-a9ac-11e9-8c40-73d68b275523.png)
 
@@ -47,9 +48,6 @@ Move file to `/etc/fado/database.csv`. Edit `core/Loader.php`:
 
 ## Demo data
 Go to <http://127.0.0.1/?page=sq> and upload `fado-DML.sql`.
-
-## Live demo
-[https://fado.duckdns.org:8443](https://fado.duckdns.org:8443)
 
 ## Languages
 English, German, Spanish, Turkish (per user 4 available)

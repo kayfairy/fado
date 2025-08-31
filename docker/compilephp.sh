@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cwd=$(dirname "$0")
+cwd=$PWD
 down=$1
 extract=$2
 libsdir="$cwd/libs"

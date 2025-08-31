@@ -35,7 +35,7 @@ wcll () {
     echo "$i" > "$cdir/c.txt"
     return "$i";
 }
-echo 0 > "$FWD/c.txt"
+echo 0 > "$PWD/c.txt"
 wcll $PWD 0 $PWD
 echo $?
 echo "line count is "

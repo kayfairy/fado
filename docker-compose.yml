@@ -2,8 +2,8 @@
 version: '3'
 services:
   php:
-    image: debian:forky
-    command: "sh /var/www/html/docker/deploy-forky.sh"
+    image: debian:bookworm
+    command: "sh /var/www/html/docker/deploy.sh"
     environment:
       ROOT: "/var/www/html"
     ports:

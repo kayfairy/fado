@@ -12,11 +12,12 @@ Download to `/var/www/html/` and run install script.
 
 ## Start Docker container
     cd /home/fado
-    git clone https://github.com/kayfairy/fado2.git
+    git clone https://github.com/kayfairy/fado.git
     cd fado/
     docker-compose up
 
 The Apache config file and SSL keys are linked in the volume section of the `docker-compose.yml`. Activate HTTPS with `/usr/sbin/a2enmod ssl`.
+Compatible with Android and Termux App utilizing udocker on ARM CPU.
 
 ## User
 Open <http://127.0.0.1> or <https://127.0.0.1> and login as superuser `fado` with password `rood`.

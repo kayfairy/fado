@@ -94,7 +94,7 @@ export CURL_LIBS=-L$libsdir/curl/curl-8.15.0/lib
 
 cd "$cwd/docker/libs/libxml/libxml2-2.14.0/"
 
-x./configure --without-python --without-debug --with-gnu-ld
+./configure --without-python --without-debug --with-gnu-ld
 
 cd "$cwd/docker/libs/openssl/openssl-3.5.1/"
 

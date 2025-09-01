@@ -8,10 +8,10 @@ libsdir="$cwd/libs"
 mkdir $libsdir
 cd $libsdir
 
-apt update && apt upgrade -y
-apt install -y build-essential autoconf libtool bison re2c git wget unzip tar patch
-
 if [ "$down" = true ]; then
+  apt update && apt upgrade -y
+  apt install -y build-essential autoconf libtool bison re2c git wget unzip tar patch
+
    wget -O zlib.tar.gz https://www.zlib.net/zlib-1.3.1.tar.gz
    wget -O oniguruma.zip https://github.com/kkos/oniguruma/archive/refs/tags/v6.9.10.zip
    wget -O icu.zip https://github.com/unicode-org/icu/releases/download/release-72-1/icu4c-72_1-src.zip
@@ -21,6 +21,7 @@ if [ "$down" = true ]; then
    wget -O php.tar.gz https://www.php.net/distributions/php-8.4.11.tar.gz
    wget -O gettext.tar.gz https://ftp.gnu.org/pub/gnu/gettext/gettext-0.26.tar.gz
    wget -O curl.tar.gz https://curl.se/download/curl-8.15.0.tar.gz
+   wget -O sqlite.zip https://sqlite.org/2025/sqlite-src-3500400.zip
 fi
 
 if [ "$extract" = true ]; then
@@ -64,6 +65,10 @@ if [ "$extract" = true ]; then
    cd gettext
    tar xzvf gettext.tar.gz
    cd ..
+   mkdir sqlite
+   cp sqlite.zip sqlite/
+   cd sqlite/
+   unzip -o sqlite.zip
    rm -f php/
    mkdir php
    cp php.tar.gz php/
@@ -71,8 +76,8 @@ if [ "$extract" = true ]; then
    tar xzvf php.tar.gz
    cd php-8.4.11/
 elif [ true ]; then
-   libsdir="$cwd/docker/libs"
-   cd "$cwd/docker/libs/php/php-8.4.11/"
+   libsdir="$cwd/libs"
+   cd "$cwd/libs/php/php-8.4.11/"
 fi
 
 export LIBXML_CFLAGS=-I$libsdir/libxml/libxml2-2.14.0/include
@@ -91,24 +96,30 @@ export INTL_CFLAGS=-I$libsdir/gettext/gettext-0.26/include
 export INTL_LIBS=-L$libsdir/gettext/gettext-0.26/lib
 export CURL_CFLAGS=-I$libsdir/curl/curl-8.15.0/include
 export CURL_LIBS=-L$libsdir/curl/curl-8.15.0/lib
+export SQLITE_LIBS=-L$libsdir/sqlite/sqlite-src-3500400
+export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-src-3500400
 
-cd "$cwd/docker/libs/libxml/libxml2-2.14.0/"
+cd "$cwd/libs/libxml/libxml2-2.14.0/"
 
 ./configure --without-python --without-debug --with-gnu-ld
 
-make -j $(nproc)
+#make -j $(nproc)
 
-cd "$cwd/docker/libs/openssl/openssl-3.5.1/"
+cd "$cwd/libs/openssl/openssl-3.5.1/"
 
 ./Configure
 
 make -j $(nproc)
 
-cd "$cwd/docker/libs/gettext/gettext-0.26"
+cd "$cwdd/libs/gettext/gettext-0.26"
 
 ./configure --with-gnu-ld
 
 make -j $(nproc)
+
+cd "$libsdir/sqlite/sqlite-src-3500400"
+
+./configure --without-debug
 
 cd "$cwd/docker/libs/php/php-8.4.11/"
 

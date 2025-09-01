@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cwd=$(dirname "$0")
+cwd=$PWD
 
 if [ -f /var/www/isdeployed ]; then
     service apache2 restart

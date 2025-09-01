@@ -2,7 +2,9 @@
 ![MariaDB](https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=mariadb&logoColor=white)
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 [<img src="https://vmssoftware.com/images/intro/product/memcached.png" width="30"/>](https://vmssoftware.com/images/intro/product/memcached.png)
+[<img src="https://wiki.openstreetmap.org/w/images/3/3e/Icon_logos.png" width="30" />](https://wiki.openstreetmap.org/w/images/3/3e/Icon_logos.png)
 ![Firefox](https://img.shields.io/badge/Firefox-FF7139?style=for-the-badge&logo=Firefox-Browser&logoColor=white)![Opera](https://img.shields.io/badge/Opera-FF1B2D?style=for-the-badge&logo=Opera&logoColor=white)
+
 # fado
 Manage shops, vehicles and commodities in administration panel. Calculate invoices and routes with fado server.
 

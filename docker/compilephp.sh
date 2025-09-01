@@ -96,8 +96,8 @@ export INTL_CFLAGS=-I$libsdir/gettext/gettext-0.26/include
 export INTL_LIBS=-L$libsdir/gettext/gettext-0.26/lib
 export CURL_CFLAGS=-I$libsdir/curl/curl-8.15.0/include
 export CURL_LIBS=-L$libsdir/curl/curl-8.15.0/lib
-export SQLITE_LIBS=-L$libsdir/sqlite/sqlite-src-3500400
-export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-src-3500400
+export SQLITE_LIBS=-L$libsdir/sqlite/sqlite-src-3500400/lib
+export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-src-3500400/include
 
 cd "$cwd/libs/libxml/libxml2-2.14.0/"
 

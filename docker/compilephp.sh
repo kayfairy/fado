@@ -9,8 +9,8 @@ mkdir $libsdir
 cd $libsdir
 
 if [ "$down" = true ]; then
-  apt update && apt upgrade -y
-  apt install -y build-essential autoconf libtool bison re2c git wget unzip tar patch
+   apt update && apt upgrade -y
+   apt install -y build-essential autoconf libtool bison re2c git wget unzip tar patch
 
    wget -O zlib.tar.gz https://www.zlib.net/zlib-1.3.1.tar.gz
    wget -O oniguruma.zip https://github.com/kkos/oniguruma/archive/refs/tags/v6.9.10.zip
@@ -69,6 +69,7 @@ if [ "$extract" = true ]; then
    cp sqlite.zip sqlite/
    cd sqlite/
    unzip -o sqlite.zip
+   cd ..
    rm -f php/
    mkdir php
    cp php.tar.gz php/
@@ -99,29 +100,55 @@ export CURL_LIBS=-L$libsdir/curl/curl-8.15.0/lib
 export SQLITE_LIBS=-L$libsdir/sqlite/sqlite-src-3500400/lib
 export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-src-3500400/include
 
-cd "$cwd/libs/libxml/libxml2-2.14.0/"
+cd "$libsdir/libxml/libxml2-2.14.0/"
 
 ./configure --without-python --without-debug --with-gnu-ld
 
-#make -j $(nproc)
+make -j $(nproc)
 
-cd "$cwd/libs/openssl/openssl-3.5.1/"
+cd "$libsdir/openssl/openssl-3.5.1/"
 
 ./Configure
 
 make -j $(nproc)
 
-cd "$cwdd/libs/gettext/gettext-0.26"
+cd "$libsdir/gettext/gettext-0.26"
 
 ./configure --with-gnu-ld
 
 make -j $(nproc)
 
+cd "$libsdir/icu/icu/"
+
+./configure
+
+make -j $(nproc)
+
+cd "$libsdir/curl/curl-8.15.0/"
+
+./configure --without-python
+
+make -j $(nproc)
+
+cd "$libsdir/zlib/zlib-1.3.1/"
+
+./configure
+
+make -j $(nproc)
+
+cd "$libsdir/oniguruma/oniguruma-6.9.10/"
+
+./configure
+
+make -j $(nproc)
+
 cd "$libsdir/sqlite/sqlite-src-3500400"
 
-./configure --without-debug
+./configure --with-icu-ldflags=ICU_LIBS --with-icu-cflags=ICU_CFLAGS --icu-collations
 
-cd "$cwd/docker/libs/php/php-8.4.11/"
+make -j $(nproc)
+
+cd "$libsdir/php/php-8.4.11/"
 
 ./buildconf
 
@@ -137,9 +164,8 @@ cd "$cwd/docker/libs/php/php-8.4.11/"
             --enable-calendar \
             --with-gnu-ld \
             --enable-libgcc \
-#            --with-curl \
-#            --with-zlib \
-            --disable-cgi
+            --with-curl \
+            --with-zlib \
 
 make -j $(nproc)
 

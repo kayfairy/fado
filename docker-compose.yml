@@ -1,4 +1,5 @@
-# udocker run --entrypoint="/bin/bash" --volume="/data/data/com.termux/files/home/fado/:/var/www/html/" debian:forky
+# Termux command
+# udocker run --entrypoint="/bin/bash" --volume="/data/data/com.termux/files/home/fado/:/var/www/html/" debian:forky-backports
 version: '3'
 services:
   php:
@@ -8,9 +9,8 @@ services:
       ROOT: "/var/www/html"
     ports:
       - 2080:2080
-#     - 80:80
-#     - 443:443
+      - 80:80
+      - 443:443
     volumes:
-      - /data/data/com.termux/files/home/fado/docker/config/fado.conf:/etc/apache2/sites-available/fado.conf
       - ~/fado:/var/www/html/
       - ~/ssl:/var/www/ssl/

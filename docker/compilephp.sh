@@ -17,16 +17,16 @@ if [ "$pak" = true ]; then
 fi
 
 if [ "$down" = true ]; then
-   wget -O zlib.tar.gz https://www.zlib.net/zlib-1.3.1.tar.gz
-   wget -O oniguruma.zip https://github.com/kkos/oniguruma/archive/refs/tags/v6.9.10.zip
-   wget -O icu.zip https://github.com/unicode-org/icu/releases/download/release-72-1/icu4c-72_1-src.zip
-   wget -O libxml.tar.xz https://download.gnome.org/sources/libxml2/2.14/libxml2-2.14.0.tar.xz
-   wget -O sqlite.zip https://sqlite.org/2025/sqlite-src-3500200.zip
-   wget -O openssl.tar.gz https://github.com/openssl/openssl/releases/download/openssl-3.5.1/openssl-3.5.1.tar.gz
-   wget -O php.tar.gz https://www.php.net/distributions/php-8.4.11.tar.gz
-   wget -O gettext.tar.gz https://ftp.gnu.org/pub/gnu/gettext/gettext-0.26.tar.gz
-   wget -O curl.tar.gz https://curl.se/download/curl-8.15.0.tar.gz
-   wget -O sqlite.zip https://sqlite.org/2025/sqlite-src-3500400.zip
+   wget2 -O zlib.tar.gz https://www.zlib.net/zlib-1.3.1.tar.gz
+   wget2 -O oniguruma.zip https://github.com/kkos/oniguruma/archive/refs/tags/v6.9.10.zip
+   wget2 -O icu.zip https://github.com/unicode-org/icu/releases/download/release-72-1/icu4c-72_1-src.zip
+   wget2 -O libxml.tar.xz https://download.gnome.org/sources/libxml2/2.14/libxml2-2.14.0.tar.xz
+   wget2 -O sqlite.zip https://sqlite.org/2025/sqlite-src-3500200.zip
+   wget2 -O openssl.tar.gz https://github.com/openssl/openssl/releases/download/openssl-3.5.1/openssl-3.5.1.tar.gz
+   wget2 -O php.tar.gz https://www.php.net/distributions/php-8.4.11.tar.gz
+   wget2 -O gettext.tar.gz https://ftp.gnu.org/pub/gnu/gettext/gettext-0.26.tar.gz
+   wget2 -O curl.tar.gz https://curl.se/download/curl-8.15.0.tar.gz
+   wget2 -O sqlite.zip https://sqlite.org/2025/sqlite-src-3500400.zip
 fi
 
 if [ "$extract" = true ]; then

@@ -1,10 +1,9 @@
 #!/bin/bash
 
-cwd=$PWD
 down=$1
 extract=$2
 pak=$3
-libsdir="$cwd/libs"
+libsdir="$PWD/libs"
 
 mkdir $libsdir
 cd $libsdir
@@ -24,7 +23,7 @@ if [ "$down" = true ]; then
    wget2 -O sqlite.zip https://sqlite.org/2025/sqlite-src-3500200.zip
    wget2 -O openssl.tar.gz https://github.com/openssl/openssl/releases/download/openssl-3.5.1/openssl-3.5.1.tar.gz
    wget2 -O php.tar.gz https://www.php.net/distributions/php-8.4.11.tar.gz
-   wget2 -O gettext.tar.gz https://ftp.gnu.org/pub/gnu/gettext/gettext-0.26.tar.gz
+   wget2 -O gettext.zip https://github.com/winlibs/gettext/archive/refs/heads/master.zip
    wget2 -O curl.tar.gz https://curl.se/download/curl-8.15.0.tar.gz
    wget2 -O sqlite.zip https://sqlite.org/2025/sqlite-src-3500400.zip
 fi
@@ -68,7 +67,7 @@ if [ "$extract" = true ]; then
    mkdir gettext
    cp gettext.tar.gz gettext/
    cd gettext
-   tar xzvf gettext.tar.gz
+   tar unzip gettext.zip
    cd ..
    mkdir sqlite
    cp sqlite.zip sqlite/
@@ -82,8 +81,8 @@ if [ "$extract" = true ]; then
    tar xzvf php.tar.gz
    cd php-8.4.11/
 elif [ true ]; then
-   libsdir="$cwd/libs"
-   cd "$cwd/libs/php/php-8.4.11/"
+   libsdir="$PWD/libs"
+   cd "$PWD/libs/php/php-8.4.11/"
 fi
 
 export LIBXML_CFLAGS=-I$libsdir/libxml/libxml2-2.14.0/include

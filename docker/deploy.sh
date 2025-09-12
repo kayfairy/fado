@@ -24,6 +24,7 @@ localedef -f UTF-8 -i tr_TR tr_TR.utf8
 localedef -f UTF-8 -i de_DE de_DE.utf8
 localedef -f UTF-8 -i en_GB en_GB.utf8
 localedef -f UTF-8 -i es_ES es_ES.utf8
+localedef -f UTF-8 -i nl_NL nl_NL.utf8
 
 chown -R www-data $cwd/*
 chmod -R 770 $cwd/*

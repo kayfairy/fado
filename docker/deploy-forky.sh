@@ -11,7 +11,7 @@ fi
 echo "Download & install packages"
 
 apt update && apt upgrade -y
-apt install -y apache2 php8.4 php8.4-fpm php8.4-intl php8.4-mysql php8.4-mbstring php8.4-cli mariadb-client mariadb-common mariadb-server mycli php-mariadb-mysql-kbs php-memcache php-memcached memcached htop nano locales curl
+apt install -y apache2 php8.4 php8.4-fpm php8.4-intl php8.4-mysql php8.4-mbstring php8.4-cli mariadb-client mariadb-common mariadb-server php-mariadb-mysql-kbs php-memcache php-memcached memcached htop nano locales curl
 
 echo "Compile locales"
 

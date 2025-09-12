@@ -8,11 +8,13 @@ libsdir="$PWD/libs"
 mkdir $libsdir
 cd $libsdir
 
+rmdir -f extr/
+
 if [ "$pak" = true ]; then
    dpkg-statoverride --remove "/etc/ssl/private"
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    apt update && apt upgrade -y
-   apt install -y build-essential autoconf libtool bison re2c git wget wget2 unzip tar patch cct gcc fcc fprintd
+   apt install -y build-essential autoconf libtool bison re2c git wget wget2 unzip tar patch libc6-dev
 fi
 
 if [ "$down" = true ]; then
@@ -29,61 +31,65 @@ if [ "$down" = true ]; then
 fi
 
 if [ "$extract" = true ]; then
+   mkdir "$libsdir/extr"
+   cd "$libsdir/extr"
    mkdir zlib
-   cp zlib.tar.gz zlib/
+   cp "$libsdir/zlib.tar.gz" zlib/
    cd zlib/
    tar xzvf zlib.tar.gz
    cd ..
    mkdir oniguruma
-   cp oniguruma.zip oniguruma/
+   cp "$libsdir/oniguruma.zip" oniguruma/
    cd oniguruma/
    unzip -o oniguruma.zip
    cd ..
    mkdir icu
-   cp icu.zip uci/
+   cp "$libsdir/icu.zip" uci/
    cd icu
    unzip -o icu.zip
    cd ..
    mkdir libxml
-   cp libxml.tar.xz libxml/
+   cp "$libsdir/libxml.tar.xz" libxml/
    cd libxml/
    tar xvf libxml.tar.xz
    cd ..
    mkdir curl
-   cp curl.tar.bz2 curl/
+   cp "$libsdir/curl.tar.bz2" curl/
    cd curl/
    tar xvf curl.tar.bz2
    cd ..
    mkdir sqlite
-   cp sqlite.zip sqlite/
+   cp "$libsdir/sqlite.zip" sqlite/
    cd sqlite/
    unzip -o sqlite.zip
    cd ..
    mkdir openssl
-   cp openssl.tar.gz openssl/
+   cp "$libsdir/openssl.tar.gz" openssl/
    cd openssl/
    tar xzvf openssl.tar.gz
    cd ..
    mkdir gettext
-   cp gettext.tar.gz gettext/
+   cp "$libsdir/gettext.zip" gettext/
    cd gettext
-   tar unzip gettext.zip
+   unzip -o gettext.zip
    cd ..
    mkdir sqlite
-   cp sqlite.zip sqlite/
+   cp "$libsdir/sqlite.zip" sqlite/
    cd sqlite/
    unzip -o sqlite.zip
    cd ..
    rm -f php/
    mkdir php
-   cp php.tar.gz php/
+   cp "$libsdir/php.tar.gz" php/
    cd php/
    tar xzvf php.tar.gz
    cd php-8.4.11/
 elif [ true ]; then
    libsdir="$PWD/libs"
-   cd "$PWD/libs/php/php-8.4.11/"
+   cd "$PWD/libs/extr/php/php-8.4.11/"
 fi
+
+libsdir="$libsdir/extr"
 
 export LIBXML_CFLAGS=-I$libsdir/libxml/libxml2-2.14.0/include
 export LIBXML_LIBS=-L$libsdir/libxml/libxml2-2.14.0/lib
@@ -97,8 +103,8 @@ export ONIG_CFLAGS=-I$libsdir/oniguruma/oniguruma-6.9.10/src/include
 export ONIG_LIBS=-L$libsdir/oniguruma/oniguruma-6.9.10/src/lib
 export ZLIB_CFLAGS=-I$libsdir/zlib/zlib-1.3.1/include
 export ZLIB_LIBS=-L$libsdir/zlib/zlib-1.3.1/lib
-export INTL_CFLAGS=-I$libsdir/gettext/gettext-0.26/include
-export INTL_LIBS=-L$libsdir/gettext/gettext-0.26/lib
+export INTL_CFLAGS=-I$libsdir/gettext/gettext-master/include
+export INTL_LIBS=-L$libsdir/gettext/gettext-master/lib
 export CURL_CFLAGS=-I$libsdir/curl/curl-8.15.0/include
 export CURL_LIBS=-L$libsdir/curl/curl-8.15.0/lib
 export SQLITE_LIBS=-L$libsdir/sqlite/sqlite-src-3500400/lib
@@ -116,7 +122,7 @@ cd "$libsdir/openssl/openssl-3.5.1/"
 
 make -j $(nproc)
 
-cd "$libsdir/gettext/gettext-0.26"
+cd "$libsdir/gettext/gettext-master"
 
 ./configure --with-gnu-ld
 
@@ -168,7 +174,7 @@ cd "$libsdir/php/php-8.4.11/"
             --enable-calendar \
             --with-gnu-ld \
             --enable-libgcc \
-            --with-curl \
+#            --with-curl \
             --with-zlib \
 
 make -j $(nproc)

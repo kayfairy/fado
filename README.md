@@ -30,7 +30,7 @@ Compatible with Android and Termux App utilizing udocker on ARM CPU.
 Open <http://127.0.0.1> or <https://127.0.0.1> and login as superuser `fado` with password `rood`.
 Change the password of the database user:
 
-    mariadb -u root -e "SET PASSWORD FOR 'fado'@`localhost` = PASSWORD('secret1');"
+    mariadb -u root -e "SET PASSWORD FOR 'fado'@'localhost' = PASSWORD('secret1');"
 
 ## Features
 -   Mobile device support
@@ -58,7 +58,7 @@ Move file to `/etc/fado/database.csv`. Edit `core/Loader.php`:
 Go to <http://127.0.0.1/?page=sq> and upload `fado-DML.sql`.
 
 ## Languages
-English, German, Spanish, Turkish (per user 4 available)
+English, German, Spanish, Dutch, Turkish (per user 5 available)
 
 ## License
 [GPLv3 License](https://www.gnu.org/licenses/gpl-3.0.en.html) © 2017-2025 Fatih Kaymak

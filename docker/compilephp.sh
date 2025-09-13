@@ -59,6 +59,7 @@ if [ "$extract" = true ]; then
    cd ntp/
    tar xvf ntp-4.2.8p18.tar.gz
    mkdir curl
+   cd ..
    cp "$libsdir/curl.tar.bz2" curl/
    cd curl/
    tar xvf curl.tar.bz2
@@ -155,7 +156,7 @@ make -j $(nproc)
 
 cd "$libsdir/oniguruma/oniguruma-6.9.10/"
 
-./configure
+./Configure
 
 make -j $(nproc)
 

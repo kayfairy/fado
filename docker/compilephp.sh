@@ -8,7 +8,7 @@ libsdir="$PWD/libs"
 mkdir $libsdir
 cd $libsdir
 
-rmdir -f extr/
+rmdir  extr/
 
 if [ "$pak" = true ]; then
    dpkg-statoverride --remove "/etc/ssl/private"
@@ -25,9 +25,10 @@ if [ "$down" = true ]; then
    wget2 -O sqlite.zip https://sqlite.org/2025/sqlite-src-3500200.zip
    wget2 -O openssl.tar.gz https://github.com/openssl/openssl/releases/download/openssl-3.5.1/openssl-3.5.1.tar.gz
    wget2 -O php.tar.gz https://www.php.net/distributions/php-8.4.11.tar.gz
-   wget2 -O gettext.zip https://github.com/winlibs/gettext/archive/refs/heads/master.zip
+   wget2 -o gettext.zip https://github.com/autotools-mirror/gettext/archive/refs/tags/v0.26.tar.gz
    wget2 -O curl.tar.gz https://curl.se/download/curl-8.15.0.tar.gz
    wget2 -O sqlite.zip https://sqlite.org/2025/sqlite-src-3500400.zip
+   wget2 -o ntp.tar.gz https://downloads.nwtime.org/ntp/ntp-4.2.8p18.tar.gz
 fi
 
 if [ "$extract" = true ]; then
@@ -53,6 +54,10 @@ if [ "$extract" = true ]; then
    cd libxml/
    tar xvf libxml.tar.xz
    cd ..
+   mkdir ntp
+   cp "$libsdir/ntp/ntp-4.2.8p18.tar.gz" ntp/
+   cd ntp/
+   tar xvf ntp-4.2.8p18.tar.gz
    mkdir curl
    cp "$libsdir/curl.tar.bz2" curl/
    cd curl/
@@ -109,6 +114,8 @@ export CURL_CFLAGS=-I$libsdir/curl/curl-8.15.0/include
 export CURL_LIBS=-L$libsdir/curl/curl-8.15.0/lib
 export SQLITE_LIBS=-L$libsdir/sqlite/sqlite-src-3500400/lib
 export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-src-3500400/include
+export NTP_LIBS=-L$libsdir/ntp/ntp-4.2.8p18/lib
+export NTP_CFLAGS=-I$libsdir/ntp/ntp-4.2.8p18/include
 
 cd "$libsdir/libxml/libxml2-2.14.0/"
 
@@ -128,7 +135,7 @@ cd "$libsdir/gettext/gettext-master"
 
 make -j $(nproc)
 
-cd "$libsdir/icu/icu/"
+cd "$libsdir/icu/icu/source"
 
 ./configure
 
@@ -157,6 +164,10 @@ cd "$libsdir/sqlite/sqlite-src-3500400"
 ./configure --with-icu-ldflags=ICU_LIBS --with-icu-cflags=ICU_CFLAGS --icu-collations
 
 make -j $(nproc)
+
+cd "$libsdir/ntp/ntp-4.2.8p18"
+
+./configure
 
 cd "$libsdir/php/php-8.4.11/"
 

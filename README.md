@@ -27,7 +27,7 @@ The Apache config file and SSL keys are linked in the volume section of the `doc
 Compatible with Android and Termux App utilizing udocker on ARM CPU.
 
 ## User
-Open <http://127.0.0.1> or <https://127.0.0.1> and login as superuser `fado` with password `rood`.
+Open <http://172.0.0.1> or <https://172.0.0.1> and login as superuser `fado` with password `rood`.
 Change the password of the database user:
 
     mariadb -u root -e "SET PASSWORD FOR 'fado'@'localhost' = PASSWORD('secret1');"

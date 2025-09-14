@@ -55,11 +55,11 @@ if [ "$extract" = true ]; then
    tar xvf libxml.tar.xz
    cd ..
    mkdir ntp
-   cp "$libsdir/ntp/ntp-4.2.8p18.tar.gz" ntp/
+   cp "$libsdir/ntp/ntp.tar.gz" ntp/
    cd ntp/
-   tar xvf ntp-4.2.8p18.tar.gz
-   mkdir curl
+   tar xzvf ntp.tar.gz
    cd ..
+   mkdir curl
    cp "$libsdir/curl.tar.bz2" curl/
    cd curl/
    tar xvf curl.tar.bz2
@@ -162,7 +162,7 @@ make -j $(nproc)
 
 cd "$libsdir/sqlite/sqlite-src-3500400"
 
-./configure --with-icu-ldflags=ICU_LIBS --with-icu-cflags=ICU_CFLAGS --icu-collations
+./configure --with-icu-ldflags=$ICU_LIBS --with-icu-cflags=$ICU_CFLAGS --icu-collations
 
 make -j $(nproc)
 

@@ -8,8 +8,6 @@ libsdir="$PWD/libs"
 mkdir $libsdir
 cd $libsdir
 
-rm -r  extr/
-
 if [ "$pak" = true ]; then
    dpkg-statoverride --remove "/etc/ssl/private"
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
@@ -32,6 +30,7 @@ if [ "$down" = true ]; then
 fi
 
 if [ "$extract" = true ]; then
+   rm -r "$libsdir/extr"
    mkdir "$libsdir/extr"
    cd "$libsdir/extr"
    mkdir zlib

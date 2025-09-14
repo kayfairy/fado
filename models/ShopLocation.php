@@ -6,6 +6,10 @@ class ShopLocation extends FadoModel {
 
     protected $relation = 'fado_shops2location';
 
+    public function set($shopId, array $coordinates = array('NULL', 'NULL')) {
+       return $this->add($shopId, $coordinates);
+    }
+
     public function add($shopId, array $coordinates = array('NULL', 'NULL')) {
         if ($this->hasLocation($shopId)) {
             $query = $this->prepare('UPDATE ' . $this->relation . ' SET lng=:lng, lat=:lat, changed=NOW() WHERE shop_id=:id');

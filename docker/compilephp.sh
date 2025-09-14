@@ -1,4 +1,8 @@
 #!/bin/bash
+#
+# sh docker/compilephp.sh true true true
+#
+# Ferda Kamkov <ferda@fado.org>
 
 down=$1
 extract=$2

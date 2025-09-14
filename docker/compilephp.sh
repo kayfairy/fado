@@ -8,7 +8,7 @@ libsdir="$PWD/libs"
 mkdir $libsdir
 cd $libsdir
 
-rmdir  extr/
+rm -r  extr/
 
 if [ "$pak" = true ]; then
    dpkg-statoverride --remove "/etc/ssl/private"

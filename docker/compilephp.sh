@@ -187,6 +187,7 @@ cd "$libsdir/php/php-8.4.11/"
             --with-gnu-ld \
             --enable-libgcc \
 #            --with-curl \
+            --with-sqlite3=$libsdir/sqlite/sqlite-src-3500400 \
             --with-zlib \
 
 make -j $(nproc)

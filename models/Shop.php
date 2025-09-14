@@ -23,10 +23,7 @@ class Shop extends FadoModel {
         if ($page === false) {
             $page = 1
         }
-        $query = $this->query('SELECT COUNT(*) FROM fado_shops'); 
-        $countmax = 0;
-        $query->fetch()['COUNT(*)'];
-        $query = $this->query($this->masterQuery . $this->order() . ' LIMIT ' . ($page - 1) * $pageCount . ', ' . $pageCount);
+        $query = $this->query($this->masterQuery . $this->order());
         return $query->fetchAll(\PDO::FETCH_GROUP | \PDO::FETCH_UNIQUE);
     }
 

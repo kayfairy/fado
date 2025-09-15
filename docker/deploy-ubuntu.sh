@@ -1,14 +1,9 @@
 #!/bin/bash
 
-cwd=$PWD
+cwd=$(dirname "$0")
 
 if [ -f /var/www/isdeployed ]; then
-    service apache2 restart
-    service mariadb restart
-    service php8.3-fpm restart
-    service memcached restart
     service --status-all
-
     tail -f /var/log/apache2/access.log
     exit 0
 fi
@@ -16,7 +11,7 @@ fi
 echo "Download & install packages"
 
 apt update && apt upgrade -y
-apt install -y apache2 php8.3 php8.3-fpm php8.3-intl php8.3-mysql php8.3-mbstring php8.3-cli mariadb-client mariadb-common mariadb-server php-memcache php-memcached memcached htop nano locales curl
+apt install -y apache2 php8.3 php8.3-fpm php8.3-intl php8.3-mysql php8.3-mbstring php8.3-cli mariadb-client mariadb-common mariadb-server php-mariadb-mysql-kbs php-memcache php-memcached memcached htop nano locales curl
 
 echo "Compile locales"
 
@@ -68,20 +63,13 @@ ServerName fado.org
         <IfModule mod_headers.c>
             Header set Access-Control-Allow-Origin "*"
             Header set Access-Control-Allow-Credentials "true"
+            Header set Access-Control-Expose-Headers: *
         </IfModule>
 
-        # map and route delivered by
-        # https://switch2osm.org/
-        #
-        # OSM tile server: https://github.com/gravitystorm/openstreetmap-carto.git
-        # OSRM path finder: https://github.com/Project-OSRM/osrm-backend
-        # HTML frontend: https://github.com/Leaflet/Leaflet
-        #
-        # include /etc/apache2/sites-available/tile.conf
-        <IfModule proxy_fcgi_module.c>
-            <FilesMatch \.php$>
+        <IfModule mod_proxy_fcgi.c>
+            <FilesMatch "\.php$|\.phtml$">
                 SetHandler application/x-httpd-php
-                SetHandler "proxy:unix:/run/php/php8.3-fpm.sock|fcgi://localhost"
+                SetHandler "proxy:unix:/var/run/php/php8.3-fpm.pid|fcgi://localhost/"
             </FilesMatch>
         </IfModule>
 
@@ -115,15 +103,16 @@ ServerName fado.org
         <IfModule mod_headers.c>
             Header set Access-Control-Allow-Origin "*"
             Header set Access-Control-Allow-Credentials "true"
+            Header set Access-Control-Expose-Headers: *
         </IfModule>
 
-
-        <IfModule proxy_fcgi_module.c>
-            <FilesMatch \.php$>
+       <IfModule mod_proxy_fcgi.c>
+            <FilesMatch "\.php$|\.phtml$">
                 SetHandler application/x-httpd-php
-                SetHandler "proxy:unix:/run/php/php8.3-fpm.sock|fcgi://localhost"
+                SetHandler "proxy:unix:/var/run/php/php8.3-fpm.pid|fcgi://localhost/"
             </FilesMatch>
-        </IfModule>
+       </IfModule>
+
         <IfModule mod_rewrite.c>
             RewriteEngine on
             RewriteCond %{REQUEST_FILENAME} !-d

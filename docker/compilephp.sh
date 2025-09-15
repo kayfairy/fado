@@ -103,13 +103,8 @@ export LIBXML_CFLAGS=-I$libsdir/libxml/libxml2-2.14.0/include
 export LIBXML_LIBS=-L$libsdir/libxml/libxml2-2.14.0/lib
 export OPENSSL_CFLAGS=-I$libsdir/openssl/openssl-3.5.1/include
 export OPENSSL_LIBS=-L$libsdir/openssl/openssl-3.5.1/lib
-<<<<<<< HEAD
-export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-src-3500400/include
-export SQLITE_LIBS=-L$libsdir/sqlite/sqlite-src-3500400/lib
-=======
 export PHP_SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-src-3500400/include
 export PHP_SQLITE_LIBS=-L$libsdir/sqlite/sqlite-src-3500400/lib
->>>>>>> 4493e22 (ubuntu 24.04)
 export ICU_CFLAGS=-I$libsdir/icu/icu/source/include
 export ICU_LIBS=-L$libsdir/icu/icu/source/lib
 export ONIG_CFLAGS=-I$libsdir/oniguruma/oniguruma-6.9.10/src/include

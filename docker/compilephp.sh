@@ -24,7 +24,6 @@ if [ "$down" = true ]; then
    wget2 -O oniguruma.zip https://github.com/kkos/oniguruma/archive/refs/tags/v6.9.10.zip
    wget2 -O icu.zip https://github.com/unicode-org/icu/releases/download/release-77-1/icu4c-77_1-src.tgz
    wget2 -O libxml.tar.xz https://download.gnome.org/sources/libxml2/2.14/libxml2-2.14.0.tar.xz
-   wget2 -O sqlite.zip https://sqlite.org/2025/sqlite-src-3500200.zip
    wget2 -O openssl.tar.gz https://github.com/openssl/openssl/releases/download/openssl-3.5.1/openssl-3.5.1.tar.gz
    wget2 -O php.tar.gz https://www.php.net/distributions/php-8.4.11.tar.gz
    wget2 -o gettext.zip https://github.com/autotools-mirror/gettext/archive/refs/tags/v0.26.tar.gz
@@ -104,8 +103,8 @@ export LIBXML_CFLAGS=-I$libsdir/libxml/libxml2-2.14.0/include
 export LIBXML_LIBS=-L$libsdir/libxml/libxml2-2.14.0/lib
 export OPENSSL_CFLAGS=-I$libsdir/openssl/openssl-3.5.1/include
 export OPENSSL_LIBS=-L$libsdir/openssl/openssl-3.5.1/lib
-export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-src-3500200/include
-export SQLITE_LIBS=-L$libsdir/sqlite/sqlite-src-3500200/lib
+export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-src-3500400/include
+export SQLITE_LIBS=-L$libsdir/sqlite/sqlite-src-3500400/lib
 export ICU_CFLAGS=-I$libsdir/icu/icu/source/include
 export ICU_LIBS=-L$libsdir/icu/icu/source/lib
 export ONIG_CFLAGS=-I$libsdir/oniguruma/oniguruma-6.9.10/src/include

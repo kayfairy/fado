@@ -21,7 +21,7 @@ class Shop extends FadoModel {
         }
 	$page = Cache::get('p');
         if ($page === false) {
-            $page = 1
+            $page = 1;
         }
         $query = $this->query($this->masterQuery . $this->order());
         return $query->fetchAll(\PDO::FETCH_GROUP | \PDO::FETCH_UNIQUE);

@@ -272,14 +272,6 @@ CREATE TABLE `fado_user` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
-(6, 1, 0, 'admin', 
-'1dcf823fa422dcd13a55ee34a8a697204a3cd0ee51342f457cbfb3b9818beade', 
-'b1eb2b6481fa3ec2f2220a4b2c5ea683e8fffdaa3ceca1c481313eb7143e4910', 
-'', '', 'admin@fado.com', '\"<p><span 
-style=\\\"color:#c0392b\\\"><em>Administrator&nbsp;<\\/em><\\/span><\\/p>\\r\\n\"', 
-'1971-05-23', '2019-12-10 11:45:49', '2025-06-25 02:28:40', 
-'2025-06-24 22:37:08');
-
 INSERT INTO `fado_user` (`id`, `active`, `online`, `name`, `pwd`, `salt`, `session`, `phone`, `email`, `data`, `birthday`, `created`, `changed`, `last_login`) VALUES
 (1,	1,	1,	'fado',	'c97d276995ea76933457f0dcb166d9ac19617dd935a09a17e6902c359ca14bdb',	'228961714662627273737737337372948738211738',	'f103350b677aeb2f6d23f30c2f4004d8ba156dcdb7a2be711e6e0c489f701896',	'0049111222333',	'fado@fado.com',	'\"<p><span style=\\\"color:#3498db\\\"><em>Superadmin<\\/em><\\/span><\\/p>\\r\\n\"',	'2043-01-22',	'2019-08-09 12:37:03',	'2025-09-15 03:09:12',	'2025-09-15 03:09:12'),
 (6,	1,	0,	'admin',	'1dcf823fa422dcd13a55ee34a8a697204a3cd0ee51342f457cbfb3b9818beade',	'b1eb2b6481fa3ec2f2220a4b2c5ea683e8fffdaa3ceca1c481313eb7143e4910',	'',	'',	'admin@fado.com',	'\"<p><span style=\\\"color:#c0392b\\\"><em>Administrator&nbsp;<\\/em><\\/span><\\/p>\\r\\n\"',	'1971-05-23',	'2019-12-10 11:45:49',	'2025-06-25 02:28:40',	'2025-06-24 22:37:08');

@@ -1,10 +1,10 @@
 # Termux command
-# udocker run --entrypoint="/bin/bash" --volume="/data/data/com.termux/files/home/fado/:/var/www/html/" debian:forky-backports
+# udocker run --entrypoint="/bin/bash" --volume="/data/data/com.termux/files/home/fado/:/var/www/html/" ubuntu:24.04
 version: '3'
 services:
   php:
-    image: debian:bookworm
-    command: "sh /var/www/html/docker/deploy.sh"
+    image: ubuntu:24.04
+    command: "sh /var/www/html/docker/deploy-ubuntu.sh"
     environment:
       ROOT: "/var/www/html"
     ports:

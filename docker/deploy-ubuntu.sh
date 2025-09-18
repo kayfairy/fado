@@ -3,6 +3,10 @@
 cwd=$(dirname "$0")
 
 if [ -f /var/www/isdeployed ]; then
+    service apache2 restart
+    service mariadb restart
+    service php8.3-fpm restart
+    service memcached restart
     service --status-all
     tail -f /var/log/apache2/access.log
     exit 0

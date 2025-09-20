@@ -16,7 +16,7 @@ if [ "$pak" = true ]; then
    dpkg-statoverride --remove "/etc/ssl/private"
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    apt update && apt upgrade -y
-   apt install -y build-essential autoconf libtool bison re2c git wget wget2 unzip tar patch libc6-dev libsqlite3-dev
+   apt install -y build-essential autoconf libtool bison re2c git wget2 tar patch libc6-dev libsqlite3-dev
 fi
 
 if [ "$down" = true ]; then
@@ -26,10 +26,10 @@ if [ "$down" = true ]; then
    wget2 -O libxml.tar.xz https://download.gnome.org/sources/libxml2/2.14/libxml2-2.14.0.tar.xz
    wget2 -O openssl.tar.gz https://github.com/openssl/openssl/releases/download/openssl-3.5.1/openssl-3.5.1.tar.gz
    wget2 -O php.tar.gz https://www.php.net/distributions/php-8.4.11.tar.gz
-   wget2 -o gettext.zip https://github.com/autotools-mirror/gettext/archive/refs/tags/v0.26.tar.gz
+   wget2 -o gettext.tar.gz https://github.com/autotools-mirror/gettext/archive/refs/tags/v0.26.tar.gz
    wget2 -O curl.tar.gz https://curl.se/download/curl-8.15.0.tar.gz
    wget2 -O sqlite.zip https://sqlite.org/2025/sqlite-src-3500400.zip
-   wget2 -o ntp.tar.gz https://downloads.nwtime.org/ntp/ntp-4.2.8p18.tar.gz
+   wget2 -o ntp.tar.gz https://downloads.nwtime.org/ntp/4.2.8/ntp-4.2.8p18.tar.gz
 fi
 
 if [ "$extract" = true ]; then
@@ -44,12 +44,12 @@ if [ "$extract" = true ]; then
    mkdir oniguruma
    cp "$libsdir/oniguruma.zip" oniguruma/
    cd oniguruma/
-   unzip -o oniguruma.zip
+   tar xzvf oniguruma.zip
    cd ..
    mkdir icu
-   cp "$libsdir/icu.zip" uci/
-   cd icu
-   unzip -o icu.zip
+   cp "$libsdir/icu.zip" icu/
+   cd icu/
+   tar xzvf icu.zip
    cd ..
    mkdir libxml
    cp "$libsdir/libxml.tar.xz" libxml/
@@ -57,7 +57,7 @@ if [ "$extract" = true ]; then
    tar xvf libxml.tar.xz
    cd ..
    mkdir ntp
-   cp "$libsdir/ntp/ntp.tar.gz" ntp/
+   cp "$libsdir/ntp.tar.gz" ntp/
    cd ntp/
    tar xzvf ntp.tar.gz
    cd ..
@@ -69,22 +69,22 @@ if [ "$extract" = true ]; then
    mkdir sqlite
    cp "$libsdir/sqlite.zip" sqlite/
    cd sqlite/
-   unzip -o sqlite.zip
+   tar xzvf sqlite.zip
    cd ..
-   mkdir openssl
+   mkdir openssl''
    cp "$libsdir/openssl.tar.gz" openssl/
    cd openssl/
    tar xzvf openssl.tar.gz
    cd ..
    mkdir gettext
-   cp "$libsdir/gettext.zip" gettext/
-   cd gettext
-   unzip -o gettext.zip
+   cp "$libsdir/gettext.tar.gz" gettext/
+   cd gettext/
+   tar xzvf gettext.tar.gz
    cd ..
    mkdir sqlite
    cp "$libsdir/sqlite.zip" sqlite/
    cd sqlite/
-   unzip -o sqlite.zip
+   tar xzvf sqlite.zip
    cd ..
    rm -f php/
    mkdir php
@@ -111,8 +111,8 @@ export ONIG_CFLAGS=-I$libsdir/oniguruma/oniguruma-6.9.10/src/include
 export ONIG_LIBS=-L$libsdir/oniguruma/oniguruma-6.9.10/src/lib
 export ZLIB_CFLAGS=-I$libsdir/zlib/zlib-1.3.1/include
 export ZLIB_LIBS=-L$libsdir/zlib/zlib-1.3.1/lib
-export INTL_CFLAGS=-I$libsdir/gettext/gettext-master/include
-export INTL_LIBS=-L$libsdir/gettext/gettext-master/lib
+export INTL_CFLAGS=-I$libsdir/gettext/gettext-0.26/include
+export INTL_LIBS=-L$libsdir/gettext/gettext-0.26/lib
 export CURL_CFLAGS=-I$libsdir/curl/curl-8.15.0/include
 export CURL_LIBS=-L$libsdir/curl/curl-8.15.0/lib
 export SQLITE_LIBS=-L$libsdir/sqlite/sqlite-src-3500400/lib
@@ -132,7 +132,7 @@ cd "$libsdir/openssl/openssl-3.5.1/"
 
 make -j $(nproc)
 
-cd "$libsdir/gettext/gettext-master"
+cd "$libsdir/gettext/gettext-0.26/"
 
 ./configure --with-gnu-ld
 
@@ -156,7 +156,7 @@ cd "$libsdir/zlib/zlib-1.3.1/"
 
 make -j $(nproc)
 
-cd "$libsdir/oniguruma/oniguruma-6.9.10/"
+cd "$libsdir/oniguruma/oniguruma-6.9.10/src"
 
 ./Configure
 

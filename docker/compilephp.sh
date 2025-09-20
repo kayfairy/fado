@@ -16,7 +16,7 @@ if [ "$pak" = true ]; then
    dpkg-statoverride --remove "/etc/ssl/private"
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    apt update && apt upgrade -y
-   apt install -y build-essential autoconf libtool bison re2c git wget2 tar patch libc6-dev libsqlite3-dev
+   apt install -y build-essential autoconf libtool bison re2c git wget2 tar patch libc6-dev libsqlite3-dev libgnutls28-dev
 fi
 
 if [ "$down" = true ]; then
@@ -146,7 +146,7 @@ make -j $(nproc)
 
 cd "$libsdir/curl/curl-8.15.0/"
 
-./configure --without-python
+./configure --without-python --with-gnutls
 
 make -j $(nproc)
 
@@ -172,7 +172,7 @@ make -j $(nproc)
 
 cd "$libsdir/ntp/ntp-4.2.8p18"
 
-./configure
+./configure --with-gnu-ld --without-threads --with-openssl-libdir=$OPENSSL_LIBS --with-openssl-incdir=$OPENSSL_CFLAGS
 
 make -j $(nproc)
 

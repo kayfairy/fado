@@ -16,7 +16,7 @@ if [ "$pak" = true ]; then
    dpkg-statoverride --remove "/etc/ssl/private"
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    apt update && apt upgrade -y
-   apt install -y build-essential autoconf libtool bison re2c git wget wget2 unzip tar patch libc6-dev libsqlite3-dev
+   apt install -y build-essential autoconf libtool bison re2c git wget wget2 unzip tar patch libc6-dev libsqlite3-dev libnpth0-dev libgnutls28-dev
 fi
 
 if [ "$down" = true ]; then
@@ -47,9 +47,9 @@ if [ "$extract" = true ]; then
    unzip -o oniguruma.zip
    cd ..
    mkdir icu
-   cp "$libsdir/icu.zip" uci/
+   cp "$libsdir/icu.zip" icu/
    cd icu
-   unzip -o icu.zip
+   tar xvf icu.zip
    cd ..
    mkdir libxml
    cp "$libsdir/libxml.tar.xz" libxml/
@@ -77,14 +77,19 @@ if [ "$extract" = true ]; then
    tar xzvf openssl.tar.gz
    cd ..
    mkdir gettext
-   cp "$libsdir/gettext.zip" gettext/
+   cp "$libsdir/gettext.tar.gz" gettext/
    cd gettext
-   unzip -o gettext.zip
+   tar xvf gettext.tar.gz
    cd ..
    mkdir sqlite
    cp "$libsdir/sqlite.zip" sqlite/
    cd sqlite/
    unzip -o sqlite.zip
+   cd ..
+   mkdir curl/
+   cp "$libsdir/curl.tar.gz" curl/
+   cd curl/
+   tar xvf curl.tar.gz
    cd ..
    rm -f php/
    mkdir php
@@ -111,8 +116,8 @@ export ONIG_CFLAGS=-I$libsdir/oniguruma/oniguruma-6.9.10/src/include
 export ONIG_LIBS=-L$libsdir/oniguruma/oniguruma-6.9.10/src/lib
 export ZLIB_CFLAGS=-I$libsdir/zlib/zlib-1.3.1/include
 export ZLIB_LIBS=-L$libsdir/zlib/zlib-1.3.1/lib
-export INTL_CFLAGS=-I$libsdir/gettext/gettext-master/include
-export INTL_LIBS=-L$libsdir/gettext/gettext-master/lib
+export INTL_CFLAGS=-I$libsdir/gettext/gettext-0.26/include
+export INTL_LIBS=-L$libsdir/gettext/gettext-0.26/lib
 export CURL_CFLAGS=-I$libsdir/curl/curl-8.15.0/include
 export CURL_LIBS=-L$libsdir/curl/curl-8.15.0/lib
 export SQLITE_LIBS=-L$libsdir/sqlite/sqlite-src-3500400/lib
@@ -132,7 +137,7 @@ cd "$libsdir/openssl/openssl-3.5.1/"
 
 make -j $(nproc)
 
-cd "$libsdir/gettext/gettext-master"
+cd "$libsdir/gettext/gettext-0.26"
 
 ./configure --with-gnu-ld
 
@@ -146,7 +151,7 @@ make -j $(nproc)
 
 cd "$libsdir/curl/curl-8.15.0/"
 
-./configure --without-python
+./configure --with-gnutls
 
 make -j $(nproc)
 
@@ -158,7 +163,9 @@ make -j $(nproc)
 
 cd "$libsdir/oniguruma/oniguruma-6.9.10/"
 
-./Configure
+autoreconf -vfi
+
+./configure
 
 make -j $(nproc)
 
@@ -171,6 +178,8 @@ make -j $(nproc)
 cd "$libsdir/ntp/ntp-4.2.8p18"
 
 ./configure
+
+#make -j $(nproc)
 
 cd "$libsdir/php/php-8.4.11/"
 
@@ -188,7 +197,7 @@ cd "$libsdir/php/php-8.4.11/"
             --enable-calendar \
             --with-gnu-ld \
             --enable-libgcc \
-#            --with-curl \
+//            --with-curl \
             --with-sqlite3=$libsdir/sqlite/sqlite-src-3500400 \
             --with-zlib \
 

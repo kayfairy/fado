@@ -107,8 +107,8 @@ export PHP_SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-src-3500400/include
 export PHP_SQLITE_LIBS=-L$libsdir/sqlite/sqlite-src-3500400/lib
 export ICU_CFLAGS=-I$libsdir/icu/icu/source/include
 export ICU_LIBS=-L$libsdir/icu/icu/source/lib
-export ONIG_CFLAGS=-I$libsdir/oniguruma/oniguruma-6.9.10/src/include
-export ONIG_LIBS=-L$libsdir/oniguruma/oniguruma-6.9.10/src/lib
+export ONIG_CFLAGS=-I$libsdir/oniguruma/oniguruma-6.9.10/include
+export ONIG_LIBS=-L$libsdir/oniguruma/oniguruma-6.9.10/lib
 export ZLIB_CFLAGS=-I$libsdir/zlib/zlib-1.3.1/include
 export ZLIB_LIBS=-L$libsdir/zlib/zlib-1.3.1/lib
 export INTL_CFLAGS=-I$libsdir/gettext/gettext-0.26/include
@@ -156,9 +156,11 @@ cd "$libsdir/zlib/zlib-1.3.1/"
 
 make -j $(nproc)
 
-cd "$libsdir/oniguruma/oniguruma-6.9.10/src"
+cd "$libsdir/oniguruma/oniguruma-6.9.10/"
 
-./Configure
+autoreconf -vfi
+
+./configure --with-gnu-ld
 
 make -j $(nproc)
 
@@ -171,6 +173,8 @@ make -j $(nproc)
 cd "$libsdir/ntp/ntp-4.2.8p18"
 
 ./configure
+
+make -j $(nproc)
 
 cd "$libsdir/php/php-8.4.11/"
 

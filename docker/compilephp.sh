@@ -9,7 +9,6 @@ extract=$2
 pak=$3
 libsdir="$PWD/libs"
 
-mkdir $libsdir
 cd $libsdir
 
 if [ "$pak" = true ]; then
@@ -20,6 +19,8 @@ if [ "$pak" = true ]; then
 fi
 
 if [ "$down" = true ]; then
+   rm -r "$libsdir"
+   mkdir "$libsdir"
    wget2 -O zlib.tar.gz https://www.zlib.net/zlib-1.3.1.tar.gz
    wget2 -O oniguruma.zip https://github.com/kkos/oniguruma/archive/refs/tags/v6.9.10.zip
    wget2 -O icu.zip https://github.com/unicode-org/icu/releases/download/release-77-1/icu4c-77_1-src.tgz
@@ -91,7 +92,7 @@ if [ "$extract" = true ]; then
    cd curl/
    tar xvf curl.tar.gz
    cd "$libsdir/extr"
-   rm -f php/
+   rm -r php/
    mkdir php
    cp "$libsdir/php.tar.gz" php/
    cd php/
@@ -180,7 +181,7 @@ cd "$libsdir/openssl/openssl-3.5.1/"
 
 ./Configure
 
-make -j $(nproc)
+#make -j $(nproc)
 
 cd "$libsdir/php/php-8.4.11/"
 
@@ -192,13 +193,13 @@ cd "$libsdir/php/php-8.4.11/"
             --with-fpm-user=www-data \
             --with-fpm-group=www-data \
             --enable-mbstring \
-            --with-openssl \
+ #           --with-openssl \
             --with-pdo-mysql=shared \
             --with-mysql-sock=/var/mysql/mysql.sock \
             --enable-calendar \
             --with-gnu-ld \
             --enable-libgcc \
-//            --with-curl \
+#            --with-curl \
             --with-sqlite3=$libsdir/sqlite/sqlite-src-3500400 \
             --with-zlib
 

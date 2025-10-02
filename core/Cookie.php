@@ -28,7 +28,7 @@ final class Cookie {
     }
 
     public static function set($name, $value) {
-        setcookie($name, $value, strtotime('+' . Settings::get('cookielife_hours') . ' hours'), $_SERVER['SERVER_NAME'], true);
+        setcookie($name, $value, strtotime('+' . Settings::get('cookielife_hours') . ' hours'), "/", "", true);
         return static::get($name);
     }
 

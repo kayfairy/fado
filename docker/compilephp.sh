@@ -98,7 +98,7 @@ if [ "$extract" = true ]; then
    tar xzvf php.tar.gz
    cd php-8.4.11/
 elif [ true ]; then
-   libsdir="$PWD/libs"
+   libsdir="$PWD/libs/extr"
    cd "$PWD/libs/extr/php/php-8.4.11/"
 fi
 
@@ -151,7 +151,7 @@ make -j $(nproc)
 
 cd "$libsdir/curl/curl-8.15.0/"
 
-./configure --with-gnutls
+./configure --with-gnutls --without-python
 
 make -j $(nproc)
 
@@ -165,7 +165,7 @@ cd "$libsdir/oniguruma/oniguruma-6.9.10/"
 
 autoreconf -vfi
 
-./configure
+./configure --with-gnu-ld
 
 make -j $(nproc)
 
@@ -177,7 +177,7 @@ make -j $(nproc)
 
 cd "$libsdir/ntp/ntp-4.2.8p18"
 
-./configure
+./configure --with-gnu-ld --without-threads --with-openssl-libdir=$OPENSSL_LIBS --with-openssl-incdir=$OPENSSL_CFLAGS
 
 make -j $(nproc)
 
@@ -187,7 +187,7 @@ cd "$libsdir/php/php-8.4.11/"
 
 ./configure --enable-ftp \
             --with-gettext \
-            --enable-fpm \
+            --enable-fpm=shared \
             --with-fpm-user=www-data \
             --with-fpm-group=www-data \
             --enable-mbstring \
@@ -199,7 +199,7 @@ cd "$libsdir/php/php-8.4.11/"
             --enable-libgcc \
 //            --with-curl \
             --with-sqlite3=$libsdir/sqlite/sqlite-src-3500400 \
-            --with-zlib \
+            --with-zlib
 
 make -j $(nproc)
 

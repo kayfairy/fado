@@ -40,57 +40,57 @@ if [ "$extract" = true ]; then
    cp "$libsdir/zlib.tar.gz" zlib/
    cd zlib/
    tar xzvf zlib.tar.gz
-   cd ..
+   cd "$libsdir/extr"
    mkdir oniguruma
    cp "$libsdir/oniguruma.zip" oniguruma/
    cd oniguruma/
-   unzip -o oniguruma.zip
-   cd ..
+   unzip -u oniguruma.zip
+   cd "$libsdir/extr"
    mkdir icu
    cp "$libsdir/icu.zip" icu/
    cd icu
    tar xvf icu.zip
-   cd ..
+   cd "$libsdir/extr"
    mkdir libxml
    cp "$libsdir/libxml.tar.xz" libxml/
    cd libxml/
    tar xvf libxml.tar.xz
-   cd ..
+   cd "$libsdir/extr"
    mkdir ntp
    cp "$libsdir/ntp/ntp.tar.gz" ntp/
    cd ntp/
    tar xzvf ntp.tar.gz
-   cd ..
+   cd "$libsdir/extr"
    mkdir curl
    cp "$libsdir/curl.tar.bz2" curl/
    cd curl/
    tar xvf curl.tar.bz2
-   cd ..
+   cd "$libsdir/extr"
    mkdir sqlite
    cp "$libsdir/sqlite.zip" sqlite/
    cd sqlite/
-   unzip -o sqlite.zip
-   cd ..
+   unzip -u sqlite.zip
+   cd  "$libsdir/extr"
    mkdir openssl
    cp "$libsdir/openssl.tar.gz" openssl/
    cd openssl/
    tar xzvf openssl.tar.gz
-   cd ..
+   cd "$libsdir/extr"
    mkdir gettext
    cp "$libsdir/gettext.tar.gz" gettext/
    cd gettext
    tar xvf gettext.tar.gz
-   cd ..
+   cd "$libsdir/extr"
    mkdir sqlite
    cp "$libsdir/sqlite.zip" sqlite/
    cd sqlite/
-   unzip -o sqlite.zip
-   cd ..
+   unzip -u sqlite.zip
+   cd "$libsdir/extr"
    mkdir curl/
    cp "$libsdir/curl.tar.gz" curl/
    cd curl/
    tar xvf curl.tar.gz
-   cd ..
+   cd "$libsdir/extr"
    rm -f php/
    mkdir php
    cp "$libsdir/php.tar.gz" php/
@@ -179,7 +179,7 @@ cd "$libsdir/ntp/ntp-4.2.8p18"
 
 ./configure
 
-#make -j $(nproc)
+make -j $(nproc)
 
 cd "$libsdir/php/php-8.4.11/"
 

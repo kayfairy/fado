@@ -15,7 +15,7 @@ if [ "$pak" = true ]; then
    dpkg-statoverride --remove "/etc/ssl/private"
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    apt update && apt upgrade -y
-   apt install -y build-essential autoconf libtool bison re2c git wget wget2 unzip tar patch libc6-dev libsqlite3-dev libnpth0-dev libgnutls28-dev
+   apt install -y build-essential autoconf libtool bison re2c git wget wget2 unzip tar patch libc6-dev pkgconf libsqlite3-dev libnpth0-dev libgnutls28-dev
 fi
 
 if [ "$down" = true ]; then
@@ -176,7 +176,6 @@ cd "$libsdir/ntp/ntp-4.2.8p18"
 
 make -j $(nproc)
 
-
 cd "$libsdir/openssl/openssl-3.5.1/"
 
 ./Configure
@@ -193,13 +192,13 @@ cd "$libsdir/php/php-8.4.11/"
             --with-fpm-user=www-data \
             --with-fpm-group=www-data \
             --enable-mbstring \
- #           --with-openssl \
+            --with-openssl \
             --with-pdo-mysql=shared \
             --with-mysql-sock=/var/mysql/mysql.sock \
             --enable-calendar \
             --with-gnu-ld \
             --enable-libgcc \
-#            --with-curl \
+            --with-curl \
             --with-sqlite3=$libsdir/sqlite/sqlite-src-3500400 \
             --with-zlib
 

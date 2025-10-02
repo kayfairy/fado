@@ -67,7 +67,7 @@ ServerName fado.org
         <IfModule mod_headers.c>
             Header set Access-Control-Allow-Origin "*"
             Header set Access-Control-Allow-Credentials "true"
-            Header set Access-Control-Expose-Headers: *
+            Header set Access-Control-Expose-Headers: "*"
         </IfModule>
 
         <IfModule mod_proxy_fcgi.c>
@@ -107,7 +107,7 @@ ServerName fado.org
         <IfModule mod_headers.c>
             Header set Access-Control-Allow-Origin "*"
             Header set Access-Control-Allow-Credentials "true"
-            Header set Access-Control-Expose-Headers: *
+            Header set Access-Control-Expose-Headers: "*"
         </IfModule>
 
        <IfModule mod_proxy_fcgi.c>

@@ -9,15 +9,15 @@ trait HttpRequest {
     }
 
     public static function getHostLink() {
-        return static::getProtocol() . $_SERVER['HTTP_HOST'] . ':' . $_SERVER['SERVER_PORT'];
+        return static::getProtocol() . $_SERVER['HTTP_HOST'];
     }
 
     public static function getSelfLink() {
-        return static::getProtocol() . $_SERVER['HTTP_HOST']  . ':' . $_SERVER['SERVER_PORT'] . $_SERVER['PHP_SELF'];
+        return static::getProtocol() . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
     }
 
     public static function getFullLink() {
-        return static::getProtocol() . $_SERVER['HTTP_HOST']  . ':' . $_SERVER['SERVER_PORT'] . $_SERVER['REQUEST_URI'];
+        return static::getProtocol() . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
     }
 
     public static function getReferer() {

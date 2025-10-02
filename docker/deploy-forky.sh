@@ -3,6 +3,12 @@
 cwd=$(dirname "$0")
 
 if [ -f /var/www/isdeployed ]; then
+    dpkg-reconfigure --force mariadb-server
+    dpkg-reconfigure --force memcached
+    service apache2 restart
+    service mariadb restart
+    service php8.4-fpm restart
+    service memcached restart
     service --status-all
     tail -f /var/log/apache2/access.log
     exit 0
@@ -63,6 +69,7 @@ ServerName fado.org
         <IfModule mod_headers.c>
             Header set Access-Control-Allow-Origin "*"
             Header set Access-Control-Allow-Credentials "true"
+            Header set Access-Control-Max-Age "3600"
         </IfModule>
 
         # map and route delivered by
@@ -81,6 +88,7 @@ ServerName fado.org
                 RewriteRule "^/?(.*)" "https://%{SERVER_NAME}/$1" [L,R=301]
             </IfModule>
         </IfModule>
+
         <IfModule mod_rewrite.c>
             RewriteCond %{REQUEST_FILENAME} !-d
             RewriteCond %{REQUEST_FILENAME} !-f

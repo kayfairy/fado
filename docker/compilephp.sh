@@ -131,12 +131,6 @@ cd "$libsdir/libxml/libxml2-2.14.0/"
 
 make -j $(nproc)
 
-cd "$libsdir/openssl/openssl-3.5.1/"
-
-./Configure
-
-make -j $(nproc)
-
 cd "$libsdir/gettext/gettext-0.26"
 
 ./configure --with-gnu-ld
@@ -178,6 +172,13 @@ make -j $(nproc)
 cd "$libsdir/ntp/ntp-4.2.8p18"
 
 ./configure --with-gnu-ld --without-threads --with-openssl-libdir=$OPENSSL_LIBS --with-openssl-incdir=$OPENSSL_CFLAGS
+
+make -j $(nproc)
+
+
+cd "$libsdir/openssl/openssl-3.5.1/"
+
+./Configure
 
 make -j $(nproc)
 

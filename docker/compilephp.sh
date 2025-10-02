@@ -1,3 +1,4 @@
+
 #!/bin/bash
 #
 # sh docker/compilephp.sh true true true
@@ -99,8 +100,7 @@ if [ "$extract" = true ]; then
    tar xzvf php.tar.gz
    cd php-8.4.11/
 elif [ true ]; then
-   libsdir="$PWD/libs/extr"
-   cd "$PWD/libs/extr/php/php-8.4.11/"
+   cd "$libsdir/php/php-8.4.11/"
 fi
 
 libsdir="$libsdir/extr"
@@ -178,7 +178,7 @@ make -j $(nproc)
 
 cd "$libsdir/sqlite/sqlite-src-3500400"
 
-./configure --with-icu-ldflags=$ICU_LIBS --with-icu-cflags=$ICU_CFLAGS --icu-collations
+./configure --with-icu-ldflags=$ICU_LIBS --with-icu-cflags=$ICU_CFLAGS --icu-collations --without-icu
 
 make -j $(nproc)
 

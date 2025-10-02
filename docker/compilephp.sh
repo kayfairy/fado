@@ -2,7 +2,7 @@
 #
 # sh docker/compilephp.sh true true true
 #
-# Ferda Kamkov <ferda@fado.org>
+# Ferda Kamakov <ferda@fado.org>
 
 down=$1
 extract=$2
@@ -15,7 +15,7 @@ if [ "$pak" = true ]; then
    dpkg-statoverride --remove "/etc/ssl/private"
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    apt update && apt upgrade -y
-   apt install -y build-essential autoconf libtool bison re2c git wget wget2 unzip tar patch libc6-dev pkgconf libsqlite3-dev libnpth0-dev libgnutls28-dev
+   apt install -y build-essential autoconf libtool bison re2c git wget wget2 unzip tar patch libc6-dev pkgconf libsqlite3-dev libnpth0-dev libgnutls28-dev libsqlite3-dev libcppdb-dev
 fi
 
 if [ "$down" = true ]; then
@@ -132,6 +132,24 @@ cd "$libsdir/libxml/libxml2-2.14.0/"
 
 make -j $(nproc)
 
+cd "$libsdir/openssl/openssl-3.5.1/"
+
+./Configure
+
+#make -j $(nproc)
+
+cd "$libsdir/zlib/zlib-1.3.1/"
+
+./configure
+
+make -j $(nproc)
+
+cd "$libsdir/ntp/ntp-4.2.8p18"
+
+./configure --with-gnu-ld --without-threads --with-openssl
+
+make -j $(nproc)
+
 cd "$libsdir/gettext/gettext-0.26"
 
 ./configure --with-gnu-ld
@@ -150,12 +168,6 @@ cd "$libsdir/curl/curl-8.15.0/"
 
 make -j $(nproc)
 
-cd "$libsdir/zlib/zlib-1.3.1/"
-
-./configure
-
-make -j $(nproc)
-
 cd "$libsdir/oniguruma/oniguruma-6.9.10/"
 
 autoreconf -vfi
@@ -170,36 +182,25 @@ cd "$libsdir/sqlite/sqlite-src-3500400"
 
 make -j $(nproc)
 
-cd "$libsdir/ntp/ntp-4.2.8p18"
-
-./configure --with-gnu-ld --without-threads --with-openssl-libdir=$OPENSSL_LIBS --with-openssl-incdir=$OPENSSL_CFLAGS
-
-make -j $(nproc)
-
-cd "$libsdir/openssl/openssl-3.5.1/"
-
-./Configure
-
-#make -j $(nproc)
-
 cd "$libsdir/php/php-8.4.11/"
 
 ./buildconf
 
 ./configure --enable-ftp \
             --with-gettext \
-            --enable-fpm=shared \
+            --enable-fpm \
             --with-fpm-user=www-data \
             --with-fpm-group=www-data \
-            --enable-mbstring \
-            --with-openssl \
+            --enable-mbstring=shared \
+#            --with-openssl \
             --with-pdo-mysql=shared \
             --with-mysql-sock=/var/mysql/mysql.sock \
             --enable-calendar \
             --with-gnu-ld \
+            --with-intl=shared
             --enable-libgcc \
-            --with-curl \
-            --with-sqlite3=$libsdir/sqlite/sqlite-src-3500400 \
+#            --with-curl \
+            --with-sqlite3=shared \
             --with-zlib
 
 make -j $(nproc)

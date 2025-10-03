@@ -200,8 +200,9 @@ cd "$libsdir/php/php-8.4.11/"
             --with-intl=shared
             --enable-libgcc \
 #            --with-curl \
-            --with-sqlite3=shared \
-            --with-zlib
+#            --with-sqlite3=shared \
+            --with-zlib \
+            --without-libxml
 
 make -j $(nproc)
 

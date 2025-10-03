@@ -195,18 +195,24 @@ sed -i 's/<oniguruma.h>/"..\/..\/..\/..\/..\/oniguruma\/oniguruma-6.9.10\/src\/o
             --with-pdo-mysql=shared \
             --with-mysql-sock=/var/mysql/mysql.sock \
             --enable-calendar \
-            --with-intl
+            --with-intl \
             --with-gnu-ld \
+            --enable-libgcc \
             --disable-xmlwriter \
             --disable-xmlreader \
             --disable-xml \
             --disable-simplexml \
             --with-fpm-systemd \
             --disable-cgi \
-            --disable-phpdbg \
+            --enable-phpdbg-debug \
             --disable-xmlreader \
             --disable-xmlwriter \
-            --enable-soap
+            --enable-soap \
+            --disable-cli \
+            --with-fpm-apparmor \
+            --with-fpm-selinux \
+            --enable-debug \
+            --disable-option-checking
 
 make -j $(nproc)
 

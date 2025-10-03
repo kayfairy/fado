@@ -183,6 +183,9 @@ make -j $(nproc)
 
 cd "$libsdir/php/php-8.4.11/"
 
+sed -i 's/<zlib.h>/"..\/..\/..\/..\/..\/zlib\/zlib-1.3.1\/zlib.h"/g' /var/www/html/libs/extr/php/php-8.4.11/ext/mysqlnd/mysqlnd_protocol_frame_codec.c
+sed -i 's/<oniguruma.h>/"..\/..\/..\/..\/..\/oniguruma\/oniguruma-6.9.10\/src\/oniguruma.h"/g' /var/www/html/libs/extr/php/php-8.4.11/ext/mbstring/php_mbregex.c
+
 ./buildconf
 
 ./configure --enable-fpm \
@@ -200,7 +203,10 @@ cd "$libsdir/php/php-8.4.11/"
             --disable-simplexml \
             --with-fpm-systemd \
             --disable-cgi \
-            --disable-phpdbg
+            --disable-phpdbg \
+            --disable-xmlreader \
+            --disable-xmlwriter \
+            --enable-soap
 
 make -j $(nproc)
 

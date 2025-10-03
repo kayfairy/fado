@@ -191,12 +191,12 @@ sed -i 's/<oniguruma.h>/"..\/..\/..\/..\/..\/oniguruma\/oniguruma-6.9.10\/src\/o
 ./configure --enable-fpm \
             --with-fpm-user=www-data \
             --with-fpm-group=www-data \
-            --enable-mbstring=shared \
+            --enable-mbstring \
             --with-pdo-mysql=shared \
             --with-mysql-sock=/var/mysql/mysql.sock \
             --enable-calendar \
-            --with-intl=shared
-            --with-gnuld \
+            --with-intl
+            --with-gnu-ld \
             --disable-xmlwriter \
             --disable-xmlreader \
             --disable-xml \

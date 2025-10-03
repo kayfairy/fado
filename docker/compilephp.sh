@@ -1,4 +1,3 @@
-
 #!/bin/bash
 #
 # sh docker/compilephp.sh true true true
@@ -130,7 +129,7 @@ cd "$libsdir/libxml/libxml2-2.14.0/"
 
 ./configure --without-python --without-debug --with-gnu-ld
 
-make -j $(nproc)
+#make -j $(nproc)
 
 cd "$libsdir/openssl/openssl-3.5.1/"
 
@@ -186,23 +185,22 @@ cd "$libsdir/php/php-8.4.11/"
 
 ./buildconf
 
-./configure --enable-ftp \
-            --with-gettext \
-            --enable-fpm \
+./configure --enable-fpm \
             --with-fpm-user=www-data \
             --with-fpm-group=www-data \
             --enable-mbstring=shared \
-#            --with-openssl \
             --with-pdo-mysql=shared \
             --with-mysql-sock=/var/mysql/mysql.sock \
             --enable-calendar \
-            --with-gnu-ld \
             --with-intl=shared
-            --enable-libgcc \
-#            --with-curl \
-#            --with-sqlite3=shared \
-            --with-zlib \
-            --without-libxml
+            --with-gnuld \
+            --disable-xmlwriter \
+            --disable-xmlreader \
+            --disable-xml \
+            --disable-simplexml \
+            --with-fpm-systemd \
+            --disable-cgi \
+            --disable-phpdbg
 
 make -j $(nproc)
 

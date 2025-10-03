@@ -207,12 +207,11 @@ sed -i 's/<oniguruma.h>/"..\/..\/..\/..\/..\/oniguruma\/oniguruma-6.9.10\/src\/o
             --enable-phpdbg-debug \
             --disable-xmlreader \
             --disable-xmlwriter \
-            --enable-soap \
+#            --enable-soap \
             --disable-cli \
             --with-fpm-apparmor \
             --with-fpm-selinux \
-            --enable-debug \
-            --disable-option-checking
+            --enable-debug
 
 make -j $(nproc)
 

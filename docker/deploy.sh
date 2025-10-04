@@ -9,7 +9,7 @@ if [ -f /var/www/isdeployed ]; then
     service memcached restart
     service --status-all
 
-    tail -f /var/log/apache2/access.log
+    tail -f /var/log/apache2/other_vhosts_access.log
     exit 0
 fi
 
@@ -150,6 +150,5 @@ service --status-all
 
 touch /var/www/isdeployed
 echo "true" > /var/www/isdeployed
-tail -f /var/log/apache2/access.log
-
+tail -f /var/log/apache2/other_vhosts_access.log
 exit 0

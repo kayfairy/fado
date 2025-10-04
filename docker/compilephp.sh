@@ -7,6 +7,8 @@
 down=$1
 extract=$2
 pak=$3
+op=$4
+
 libsdir="$PWD/libs"
 
 cd $libsdir
@@ -26,7 +28,7 @@ if [ "$down" = true ]; then
    wget2 -O icu.zip https://github.com/unicode-org/icu/releases/download/release-77-1/icu4c-77_1-src.tgz
    wget2 -O libxml.tar.xz https://download.gnome.org/sources/libxml2/2.14/libxml2-2.14.0.tar.xz
    wget2 -O openssl.tar.gz https://github.com/openssl/openssl/releases/download/openssl-3.5.1/openssl-3.5.1.tar.gz
-   wget2 -O php.tar.gz https://www.php.net/distributions/php-8.2.29.tar.bz2
+   wget2 -O php.tar.bz2 https://www.php.net/distributions/php-8.2.29.tar.bz2
    wget2 -o gettext.zip https://github.com/autotools-mirror/gettext/archive/refs/tags/v0.26.tar.gz
    wget2 -O curl.tar.gz https://curl.se/download/curl-8.15.0.tar.gz
    wget2 -O sqlite.zip https://sqlite.org/2025/sqlite-src-3500400.zip
@@ -94,10 +96,10 @@ if [ "$extract" = true ]; then
    cd "$libsdir/extr"
    rm -r php/
    mkdir php
-   cp "$libsdir/php.tar.gz" php/
+   cp "$libsdir/php.tar.bz2" php/
    cd php/
-   tar xzvf php.tar.gz
-   cd php-8.4.11/
+   tar xzvf php.tar.bz2
+   cd php-8.2.29/
 elif [ true ]; then
    cd "$libsdir/php/php-8.2.29/"
 fi
@@ -125,95 +127,97 @@ export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-src-3500400/include
 export NTP_LIBS=-L$libsdir/ntp/ntp-4.2.8p18/lib
 export NTP_CFLAGS=-I$libsdir/ntp/ntp-4.2.8p18/include
 
-cd "$libsdir/libxml/libxml2-2.14.0/"
 
-./configure --without-python --without-debug --with-gnu-ld
+if [ $op != true ]; then
+    cd "$libsdir/libxml/libxml2-2.14.0/"
 
-#make -j $(nproc)
+    ./configure --without-python --without-debug --with-gnu-ld
 
-cd "$libsdir/openssl/openssl-3.5.1/"
+    make -j $(nproc)
 
-./Configure
+    cd "$libsdir/openssl/openssl-3.5.1/"
 
-#make -j $(nproc)
+    ./Configure
 
-cd "$libsdir/zlib/zlib-1.3.1/"
+    make -j $(nproc)
 
-./configure
+    cd "$libsdir/zlib/zlib-1.3.1/"
 
-make -j $(nproc)
+    ./configure
 
-cd "$libsdir/ntp/ntp-4.2.8p18"
+    make -j $(nproc)
 
-./configure --with-gnu-ld --without-threads --with-openssl
+    cd "$libsdir/ntp/ntp-4.2.8p18"
 
-make -j $(nproc)
+    ./configure --with-gnu-ld --without-threads --with-openssl
 
-cd "$libsdir/gettext/gettext-0.26"
+    make -j $(nproc)
 
-./configure --with-gnu-ld
+    cd "$libsdir/gettext/gettext-0.26"
 
-make -j $(nproc)
+    $./configure --with-gnu-ld
 
-cd "$libsdir/icu/icu/source"
+    make -j $(nproc)
 
-./configure
+    cd "$libsdir/icu/icu/source"
 
-make -j $(nproc)
+    ./configure
 
-cd "$libsdir/curl/curl-8.15.0/"
+    make -j $(nproc)
 
-./configure --with-gnutls --without-python
+    cd "$libsdir/curl/curl-8.15.0/"
 
-make -j $(nproc)
+    ./configure --with-gnutls --without-python
 
-cd "$libsdir/oniguruma/oniguruma-6.9.10/"
+     make -j $(nproc)
 
-autoreconf -vfi
+    cd "$libsdir/oniguruma/oniguruma-6.9.10/"
 
-./configure --with-gnu-ld
+    autoreconf -vfi
 
-make -j $(nproc)
+    ./configure --with-gnu-ld
 
-cd "$libsdir/sqlite/sqlite-src-3500400"
+    make -j $(nproc)
 
-./configure --with-icu-ldflags=$ICU_LIBS --with-icu-cflags=$ICU_CFLAGS --icu-collations --without-icu
+    cd "$libsdir/sqlite/sqlite-src-3500400"
 
-make -j $(nproc)
+    ./configure --with-icu-ldflags=$ICU_LIBS --with-icu-cflags=$ICU_CFLAGS --icu-collations --without-icu
 
-cd "$libsdir/php/php-8.2.29/"
+    make -j $(nproc)
 
-sed -i 's/<zlib.h>/"..\/..\/..\/..\/..\/zlib\/zlib-1.3.1\/zlib.h"/g' /var/www/html/libs/extr/php/php-8.4.11/ext/mysqlnd/mysqlnd_protocol_frame_codec.c
-sed -i 's/<oniguruma.h>/"..\/..\/..\/..\/..\/oniguruma\/oniguruma-6.9.10\/src\/oniguruma.h"/g' /var/www/html/libs/extr/php/php-8.4.11/ext/mbstring/php_mbregex.c
+elif [ true ]; then
 
-./buildconf
+    cd "$libsdir/php/php-8.2.29/"
 
-./configure --enable-fpm \
+    sed -i 's/<zlib.h>/"..\/..\/..\/..\/..\/zlib\/zlib-1.3.1\/zlib.h"/g' /var/www/html/libs/extr/php/php-8.4.11/ext/mysqlnd/mysqlnd_protocol_frame_codec.c
+    sed -i 's/<oniguruma.h>/"..\/..\/..\/..\/..\/oniguruma\/oniguruma-6.9.10\/src\/oniguruma.h"/g' /var/www/html/libs/extr/php/php-8.4.11/ext/mbstring/php_mbregex.c
+
+    ./buildconf
+
+    ./configure --enable-fpm=shared \
             --with-fpm-user=www-data \
             --with-fpm-group=www-data \
+            --with-fpm-systemd
             --enable-mbstring \
             --with-pdo-mysql=shared \
             --with-mysql-sock=/var/mysql/mysql.sock \
             --enable-calendar \
-            --with-intl \
+            --with-intl=shared \
             --with-gnu-ld \
             --enable-libgcc \
             --disable-xmlwriter \
             --disable-xmlreader \
             --disable-xml \
             --disable-simplexml \
-            --with-fpm-systemd \
             --disable-cgi \
             --enable-phpdbg-debug \
 #            --enable-soap \
-            --disable-cli \
-            --with-fpm-apparmor \
-            --with-fpm-selinux \
             --enable-debug
 
-make -j $(nproc)
+     make -j $(nproc)
 
-make install
+     make install
+fi
 
 php -v
 

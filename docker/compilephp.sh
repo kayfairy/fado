@@ -98,7 +98,7 @@ if [ "$extract" = true ]; then
    mkdir php
    cp "$libsdir/php.tar.bz2" php/
    cd php/
-   tar xzvf php.tar.bz2
+   tar xvf php.tar.bz2
    cd php-8.2.29/
 elif [ true ]; then
    cd "$libsdir/php/php-8.2.29/"

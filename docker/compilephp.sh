@@ -13,11 +13,11 @@ libsdir="$PWD/libs"
 
 cd $libsdir
 
-if [ "$pak" = true ]; then
+if [ "$pak" = "true" ]; then
    dpkg-statoverride --remove "/etc/ssl/private"
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    apt update && apt upgrade -y
-   apt install -y build-essential autoconf libtool bison re2c git wget wget2 unzip tar patch libc6-dev pkgconf libsqlite3-dev libnpth0-dev libgnutls28-dev libsqlite3-dev libcppdb-dev libapparmor-dev libselinux-dev
+   apt install -y build-essential autoconf libtool bison re2c git wget wget2 unzip tar patch libc6-dev pkgconf libsqlite3-dev libnpth0-dev libgnutls28-dev libsqlite3-dev libcppdb-dev libapparmor-dev libselinux-dev libsystemd-dev libxml2-dev
 fi
 
 if [ "$down" = true ]; then
@@ -26,16 +26,16 @@ if [ "$down" = true ]; then
    wget2 -O zlib.tar.gz https://www.zlib.net/zlib-1.3.1.tar.gz
    wget2 -O oniguruma.zip https://github.com/kkos/oniguruma/archive/refs/tags/v6.9.10.zip
    wget2 -O icu.zip https://github.com/unicode-org/icu/releases/download/release-77-1/icu4c-77_1-src.tgz
-   wget2 -O libxml.tar.xz https://download.gnome.org/sources/libxml2/2.14/libxml2-2.14.0.tar.xz
+   wget2 -O libxml.tar.xz https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.1.tar.xz
    wget2 -O openssl.tar.gz https://github.com/openssl/openssl/releases/download/openssl-3.5.1/openssl-3.5.1.tar.gz
-   wget2 -O php.tar.bz2 https://www.php.net/distributions/php-8.2.27.tar.bz2
+   wget2 -O php.tar.bz2 https://www.php.net/distributions/php-8.5.0.tar.bz2
    wget2 -o gettext.zip https://github.com/autotools-mirror/gettext/archive/refs/tags/v0.26.tar.gz
    wget2 -O curl.tar.gz https://curl.se/download/curl-8.15.0.tar.gz
    wget2 -O sqlite.zip https://sqlite.org/2025/sqlite-src-3500400.zip
    wget2 -o ntp.tar.gz https://downloads.nwtime.org/ntp/ntp-4.2.8p18.tar.gz
 fi
 
-if [ "$extract" = true ]; then
+if [ "$extract" = "true" ]; then
    rm -r "$libsdir/extr"
    mkdir "$libsdir/extr"
    cd "$libsdir/extr"
@@ -99,15 +99,15 @@ if [ "$extract" = true ]; then
    cp "$libsdir/php.tar.bz2" php/
    cd php/
    tar xvf php.tar.bz2
-   cd php-8.2.27/
+   cd php-8.5.0/
 elif [ true ]; then
-   cd "$libsdir/php/php-8.2.27/"
+   cd "$libsdir/php/php-8.5.0/"
 fi
 
 libsdir="$libsdir/extr"
 
-export LIBXML_CFLAGS=-I$libsdir/libxml/libxml2-2.14.0/include
-export LIBXML_LIBS=-L$libsdir/libxml/libxml2-2.14.0/lib
+export LIBXML_CFLAGS=-I$libsdir/libxml/libxml2-2.15.1/include
+export LIBXML_LIBS=-L$libsdir/libxml/libxml2-2.15.1/lib
 export OPENSSL_CFLAGS=-I$libsdir/openssl/openssl-3.5.1/include
 export OPENSSL_LIBS=-L$libsdir/openssl/openssl-3.5.1/lib
 export PHP_SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-src-3500400/include
@@ -128,8 +128,8 @@ export NTP_LIBS=-L$libsdir/ntp/ntp-4.2.8p18/lib
 export NTP_CFLAGS=-I$libsdir/ntp/ntp-4.2.8p18/include
 
 
-if [ $op != true ]; then
-    cd "$libsdir/libxml/libxml2-2.14.0/"
+if [ "$op" = "true" ]; then
+    cd "$libsdir/libxml/libxml2-2.15.1/"
 
     ./configure --without-python --without-debug --with-gnu-ld
 
@@ -185,10 +185,13 @@ if [ $op != true ]; then
 
     make -j $(nproc)
 
-elif [ true ]; then
+fi
 
-    cd "$libsdir/php/php-8.2.27/"
+if [ true ]; then
 
+    cd "$libsdir/php/php-8.5.0/"
+
+    sed -i 's/<libxml\/xmlversion.h>/"..\/..\/..\/..\/..\/libxml\/libxml2-2.15.1\/include\/libxml\/xmlversion.h"/g' /var/www/html/libs/extr/php/php-8.2.27/include/libxml/parser.h
     sed -i 's/<zlib.h>/"..\/..\/..\/..\/..\/zlib\/zlib-1.3.1\/zlib.h"/g' /var/www/html/libs/extr/php/php-8.2.27/ext/mysqlnd/mysqlnd_protocol_frame_codec.c
     sed -i 's/<oniguruma.h>/"..\/..\/..\/..\/..\/oniguruma\/oniguruma-6.9.10\/src\/oniguruma.h"/g' /var/www/html/libs/extr/php/php-8.2.27/ext/mbstring/php_mbregex.c
 
@@ -208,7 +211,7 @@ elif [ true ]; then
             --disable-xmlwriter \
             --disable-xmlreader \
             --disable-simplexml \
-            --with-libxml \
+            --with-libxml=shared \
             --enable-soap \
             --disable-cgi \
 #            --enable-phpdbg-debug \ 

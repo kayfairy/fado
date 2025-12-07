@@ -23,7 +23,7 @@ fi
 if [ "$down" = true ]; then
    rm -r "$libsdir"
    mkdir "$libsdir"
-   wget2 -O zlib.tar.gzhttps://zlib.net/zlib-1.3.1.tar.xz
+   wget2 -O zlib.tar.gz https://zlib.net/zlib-1.3.1.tar.xz
    wget2 -O oniguruma.zip https://github.com/kkos/oniguruma/archive/refs/tags/v6.9.10.zip
    wget2 -O icu.zip https://github.com/unicode-org/icu/releases/download/release-77-1/icu4c-77_1-src.tgz
    wget2 -O libxml.tar.xz https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.1.tar.xz

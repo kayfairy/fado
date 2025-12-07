@@ -126,7 +126,7 @@ export SQLITE_LIBS=-L$libsdir/sqlite/sqlite-src-3500400/lib
 export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-src-3500400/include
 export NTP_LIBS=-L$libsdir/ntp/ntp-4.2.8p18/lib
 export NTP_CFLAGS=-I$libsdir/ntp/ntp-4.2.8p18/include
-
+export LD_LIBRARY_PATH=/usr/local/lib:$libsdir/openssl/openssl-3.5.1/lib:$libsdir/sqlite/sqlite-src-3500400/lib
 
 if [ "$op" = "true" ]; then
     cd "$libsdir/libxml/libxml2-2.15.1/"

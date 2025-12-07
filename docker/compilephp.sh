@@ -23,7 +23,7 @@ fi
 if [ "$down" = true ]; then
    rm -r "$libsdir"
    mkdir "$libsdir"
-   wget2 -O zlib.tar.gz https://www.zlib.net/zlib-1.3.1.tar.gz
+   wget2 -O zlib.tar.gzhttps://zlib.net/zlib-1.3.1.tar.xz
    wget2 -O oniguruma.zip https://github.com/kkos/oniguruma/archive/refs/tags/v6.9.10.zip
    wget2 -O icu.zip https://github.com/unicode-org/icu/releases/download/release-77-1/icu4c-77_1-src.tgz
    wget2 -O libxml.tar.xz https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.1.tar.xz
@@ -191,9 +191,9 @@ if [ true ]; then
 
     cd "$libsdir/php/php-8.5.0/"
 
-    sed -i 's/<libxml\/xmlversion.h>/"..\/..\/..\/..\/..\/libxml\/libxml2-2.15.1\/include\/libxml\/xmlversion.h"/g' /var/www/html/libs/extr/php/php-8.2.27/include/libxml/parser.h
-    sed -i 's/<zlib.h>/"..\/..\/..\/..\/..\/zlib\/zlib-1.3.1\/zlib.h"/g' /var/www/html/libs/extr/php/php-8.2.27/ext/mysqlnd/mysqlnd_protocol_frame_codec.c
-    sed -i 's/<oniguruma.h>/"..\/..\/..\/..\/..\/oniguruma\/oniguruma-6.9.10\/src\/oniguruma.h"/g' /var/www/html/libs/extr/php/php-8.2.27/ext/mbstring/php_mbregex.c
+    sed -i 's/<libxml\/xmlversion.h>/"..\/..\/..\/..\/..\/libxml\/libxml2-2.15.1\/include\/libxml\/xmlversion.h"/g' /var/www/html/libs/extr/php/php-8.5.0/include/libxml/parser.h
+    sed -i 's/<zlib.h>/"..\/..\/..\/..\/..\/zlib\/zlib-1.3.1\/zlib.h"/g' /var/www/html/libs/extr/php/php-8.5.0/ext/mysqlnd/mysqlnd_protocol_frame_codec.c
+    sed -i 's/<oniguruma.h>/"..\/..\/..\/..\/..\/oniguruma\/oniguruma-6.9.10\/src\/oniguruma.h"/g' /var/www/html/libs/extr/php/php-8.5.0/ext/mbstring/php_mbregex.c
 
     ./buildconf
 

@@ -214,6 +214,7 @@ if [ true ]; then
             --with-libxml=shared \
             --enable-soap \
             --disable-cgi \
+            --with-libdir \
 #            --enable-phpdbg-debug \ 
 #            --enable-debug
 

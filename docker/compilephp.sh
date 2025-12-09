@@ -25,6 +25,7 @@ fi
 if [ "$down" = "true" ]; then
    rm -r "$libsdir"
    mkdir "$libsdir"
+   cd "$libsdir"
    curl --output zlib.tar.gz https://zlib.net/zlib-1.3.1.tar.xz
    curl --output oniguruma.zip https://github.com/kkos/oniguruma/archive/refs/tags/v6.9.10.zip
    curl --output icu.zip https://github.com/unicode-org/icu/releases/download/release-77-1/icu4c-77_1-src.tgz

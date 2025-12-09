@@ -19,22 +19,22 @@ if [ "$pak" = "true" ]; then
    dpkg-statoverride --remove "/etc/ssl/private"
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    apt update && apt upgrade -y
-   apt install -y build-essential autoconf libtool bison re2c wget unzip tar patch libc6-dev pkgconf libsqlite3-dev libnpth0-dev libgnutls28-dev libsqlite3-dev libselinux-dev libsystemd-dev libxml2-dev
+   apt install -y build-essential autoconf libtool bison re2c curl unzip tar patch libc6-dev pkgconf libsqlite3-dev libnpth0-dev libgnutls28-dev libsqlite3-dev libselinux-dev libsystemd-dev libxml2-dev
 fi
 
 if [ "$down" = "true" ]; then
    rm -r "$libsdir"
    mkdir "$libsdir"
-   wget -O zlib.tar.gz https://zlib.net/zlib-1.3.1.tar.xz
-   wget -O oniguruma.zip https://github.com/kkos/oniguruma/archive/refs/tags/v6.9.10.zip
-   wget -O icu.zip https://github.com/unicode-org/icu/releases/download/release-77-1/icu4c-77_1-src.tgz
-   wget -O libxml.tar.xz https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.1.tar.xz
-   wget -O openssl.tar.gz https://github.com/openssl/openssl/releases/download/openssl-3.5.1/openssl-3.5.1.tar.gz
-   wget -O php.tar.bz2 https://www.php.net/distributions/php-8.5.0.tar.bz2
-   wget -o gettext.zip https://github.com/autotools-mirror/gettext/archive/refs/tags/v0.26.tar.gz
-   wget -O curl.tar.gz https://curl.se/download/curl-8.15.0.tar.gz
-   wget -O sqlite.zip https://sqlite.org/2025/sqlite-src-3500400.zip
-   wget -o ntp.tar.gz https://downloads.nwtime.org/ntp/ntp-4.2.8p18.tar.gz
+   curl --output zlib.tar.gz https://zlib.net/zlib-1.3.1.tar.xz
+   curl --output oniguruma.zip https://github.com/kkos/oniguruma/archive/refs/tags/v6.9.10.zip
+   curl --output icu.zip https://github.com/unicode-org/icu/releases/download/release-77-1/icu4c-77_1-src.tgz
+   curl --output libxml.tar.xz https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.1.tar.xz
+   curl --output openssl.tar.gz https://github.com/openssl/openssl/releases/download/openssl-3.5.1/openssl-3.5.1.tar.gz
+   curl --output php.tar.bz2 https://www.php.net/distributions/php-8.5.0.tar.bz2
+   curl --output gettext.zip https://github.com/autotools-mirror/gettext/archive/refs/tags/v0.26.tar.gz
+   curl --output curl.tar.gz https://curl.se/download/curl-8.15.0.tar.gz
+   curl --output sqlite.zip https://sqlite.org/2025/sqlite-src-3500400.zip
+   curl --output ntp.tar.gz https://downloads.nwtime.org/ntp/ntp-4.2.8p18.tar.gz
 fi
 
 if [ "$extract" = "true" ]; then

@@ -2,9 +2,10 @@
 #
 # sh docker/compilephp.sh true true true
 #
-# Ferda K <ferda@fado.org>
 #
 # ubuntu:25.04 debian:forky kalilinux/kali-last-release:latest
+#
+
 down=$1
 extract=$2
 pak=$3
@@ -127,7 +128,7 @@ export SQLITE_LIBS=-L$libsdir/sqlite/sqlite-src-3500400/lib
 export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-src-3500400/include
 export NTP_LIBS=-L$libsdir/ntp/ntp-4.2.8p18/lib
 export NTP_CFLAGS=-I$libsdir/ntp/ntp-4.2.8p18/include
-export LD_LIBRARY_PATH=/usr/lib:$libsdir/openssl/openssl-3.5.1/lib:$libsdir/sqlite/sqlite-src-3500400/lib
+export LD_LIBRARY_PATH=/usr/lib
 
 if [ "$op" = "true" ]; then
 
@@ -210,9 +211,9 @@ if [ true ]; then
             --with-intl=shared \
             --with-gnu-ld \
             --enable-libgcc \
-            --disable-xmlwriter \
-            --disable-xmlreader \
-            --disable-simplexml \
+#            --disable-xmlwriter \
+#            --disable-xmlreader \
+#            --disable-simplexml \
             --with-libxml=shared \
             --enable-soap \
             --disable-cgi \

@@ -108,7 +108,6 @@ fi
 
 libsdir="$libsdir/extr"
 
-export CPPFLAGS="D_GLIBCXX_USE_CXX12_ABI=0"
 export LIBXML_CFLAGS=-I$libsdir/libxml/libxml2-2.15.1/include
 export LIBXML_LIBS=-L$libsdir/libxml/libxml2-2.15.1/lib
 export OPENSSL_CFLAGS=-I$libsdir/openssl/openssl-3.5.1/include

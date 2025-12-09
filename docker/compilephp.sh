@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# sh docker/compilephp.sh true true true
+# sh docker/compilephp.sh true true true true
 #
 #
 # ubuntu:25.04 debian:forky kalilinux/kali-last-release:latest
@@ -22,7 +22,7 @@ if [ "$pak" = "true" ]; then
    apt install -y build-essential autoconf libtool bison re2c git wget wget2 unzip tar patch libc6-dev pkgconf libsqlite3-dev libnpth0-dev libgnutls28-dev libsqlite3-dev libcppdb-dev libapparmor-dev libselinux-dev libsystemd-dev libxml2-dev
 fi
 
-if [ "$down" = true ]; then
+if [ "$down" = "true" ]; then
    rm -r "$libsdir"
    mkdir "$libsdir"
    wget2 -O zlib.tar.gz https://zlib.net/zlib-1.3.1.tar.xz

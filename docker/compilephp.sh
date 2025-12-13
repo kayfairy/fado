@@ -19,23 +19,23 @@ if [ "$pak" = "true" ]; then
    dpkg-statoverride --remove "/etc/ssl/private"
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    apt update && apt upgrade -y
-   apt install -y build-essential autoconf libtool bison re2c curl unzip tar patch libc6-dev pkgconf libsqlite3-dev libnpth0-dev libgnutls28-dev libsqlite3-dev libselinux-dev libsystemd-dev libxml2-dev
+   apt install -y build-essential autoconf libtool bison re2c wget2 unzip tar libc6-dev pkgconf libsqlite3-dev libnpth0-dev libgnutls28-dev libsqlite3-dev libselinux-dev libsystemd-dev libxml2-dev
 fi
 
 if [ "$down" = "true" ]; then
    rm -r "$libsdir"
    mkdir "$libsdir"
    cd "$libsdir"
-   curl --output zlib.tar.gz https://zlib.net/zlib-1.3.1.tar.xz
-   curl --output oniguruma.zip https://github.com/kkos/oniguruma/archive/refs/tags/v6.9.10.zip
-   curl --output icu.zip https://github.com/unicode-org/icu/releases/download/release-77-1/icu4c-77_1-src.tgz
-   curl --output libxml.tar.xz https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.1.tar.xz
-   curl --output openssl.tar.gz https://github.com/openssl/openssl/releases/download/openssl-3.5.1/openssl-3.5.1.tar.gz
-   curl --output php.tar.bz2 https://www.php.net/distributions/php-8.5.0.tar.bz2
-   curl --output gettext.zip https://github.com/autotools-mirror/gettext/archive/refs/tags/v0.26.tar.gz
-   curl --output curl.tar.gz https://curl.se/download/curl-8.15.0.tar.gz
-   curl --output sqlite.zip https://sqlite.org/2025/sqlite-src-3500400.zip
-   curl --output ntp.tar.gz https://downloads.nwtime.org/ntp/ntp-4.2.8p18.tar.gz
+   wget2 -O zlib.tar.gz https://zlib.net/zlib-1.3.1.tar.xz
+   wget2 -O oniguruma.zip https://github.com/kkos/oniguruma/archive/refs/tags/v6.9.10.zip
+   wget2 -O icu.zip https://github.com/unicode-org/icu/releases/download/release-77-1/icu4c-77_1-src.tgz
+   wget2 -O libxml.tar.xz https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.1.tar.xz
+   wget2 -O openssl.tar.gz https://github.com/openssl/openssl/releases/download/openssl-3.5.1/openssl-3.5.1.tar.gz
+   wget2 -O php.tar.bz2 https://www.php.net/distributions/php-8.5.0.tar.bz2
+   wget2 -O gettext.zip https://github.com/autotools-mirror/gettext/archive/refs/tags/v0.26.tar.gz
+   wget2 -O wget2.tar.gz https://wget2.se/download/wget2-8.15.0.tar.gz
+   wget2 -O sqlite.zip https://sqlite.org/2025/sqlite-src-3500400.zip
+   wget2 -O ntp.tar.gz https://downloads.nwtime.org/ntp/ntp-4.2.8p18.tar.gz
 fi
 
 if [ "$extract" = "true" ]; then
@@ -67,10 +67,10 @@ if [ "$extract" = "true" ]; then
    cd ntp/
    tar xzvf ntp.tar.gz
    cd "$libsdir/extr"
-   mkdir curl
-   cp "$libsdir/curl.tar.bz2" curl/
-   cd curl/
-   tar xvf curl.tar.bz2
+   mkdir wget2
+   cp "$libsdir/wget2.tar.bz2" wget2/
+   cd wget2/
+   tar xvf wget2.tar.bz2
    cd "$libsdir/extr"
    mkdir sqlite
    cp "$libsdir/sqlite.zip" sqlite/
@@ -92,10 +92,10 @@ if [ "$extract" = "true" ]; then
    cd sqlite/
    unzip -u sqlite.zip
    cd "$libsdir/extr"
-   mkdir curl/
-   cp "$libsdir/curl.tar.gz" curl/
-   cd curl/
-   tar xvf curl.tar.gz
+   mkdir wget2/
+   cp "$libsdir/wget2.tar.gz" wget2/
+   cd wget2/
+   tar xvf wget2.tar.gz
    cd "$libsdir/extr"
    rm -r php/
    mkdir php
@@ -124,8 +124,8 @@ export ZLIB_CFLAGS=-I$libsdir/zlib/zlib-1.3.1/include
 export ZLIB_LIBS=-L$libsdir/zlib/zlib-1.3.1/lib
 export INTL_CFLAGS=-I$libsdir/gettext/gettext-0.26/include
 export INTL_LIBS=-L$libsdir/gettext/gettext-0.26/lib
-export CURL_CFLAGS=-I$libsdir/curl/curl-8.15.0/include
-export CURL_LIBS=-L$libsdir/curl/curl-8.15.0/lib
+export wget2_CFLAGS=-I$libsdir/wget2/wget2-8.15.0/include
+export wget2_LIBS=-L$libsdir/wget2/wget2-8.15.0/lib
 export SQLITE_LIBS=-L$libsdir/sqlite/sqlite-src-3500400/lib
 export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-src-3500400/include
 export NTP_LIBS=-L$libsdir/ntp/ntp-4.2.8p18/lib
@@ -169,7 +169,7 @@ if [ "$op" = "true" ]; then
 
     make -j $(nproc)
 
-    cd "$libsdir/curl/curl-8.15.0/"
+    cd "$libsdir/wget2/wget2-8.15.0/"
 
     ./configure --with-gnutls --without-python
 

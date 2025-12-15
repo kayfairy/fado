@@ -61,7 +61,7 @@ class DatabaseSQL extends FadoController {
             // Get all of the tables
             if ($tables == '*') {
                 $tables = [];
-                $query = $pdo->query('SHOW TABLES');
+                $query = $pdo->query('SELECT TABLE_NAME AS nom FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_SCHEMA='fado' ORDER BY nom DESC');
                 while ($row = $query->fetch()) {
                     $tables[] = $row[0];
                 }

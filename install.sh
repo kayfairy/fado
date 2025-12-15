@@ -72,16 +72,12 @@ ServerName fado.org
             <IfModule mod_rewrite.c>
                 RewriteEngine on
                 RewriteCond "%{HTTPS}" on
-                RewriteCond "%{SSL_PROTOCOL}" "(SSLv3|TLSv1|TLSv1.1|TLSv1.2)"             
-                RewriteRule ".?" "-" [S=2]
-                    RewriteRule "^/?(.*)" "https://%{SERVER_NAME}/$1" [L,R=301]                 
-                    RewriteRule ".?" "-" [S=3]
-                    RewriteCond %{REQUEST_FILENAME} !-d
-                    RewriteCond %{REQUEST_FILENAME} !-f
-                    RewriteRule "/(.*)/$" "/index.php?page=$1" [L,QSA]
+                RewriteRule "^/?(.*)" "https://%{SERVER_NAME}/$1" [L,R=301]                 
             </IfModule>
         </IfModule>
+
         <IfModule mod_rewrite.c>
+            RewriteEngine on
             RewriteCond %{REQUEST_FILENAME} !-d
             RewriteCond %{REQUEST_FILENAME} !-f
             RewriteRule "/(.*)/$" "/index.php?page=$1" [L,QSA]

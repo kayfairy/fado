@@ -72,24 +72,16 @@ ServerName fado.org
             Header set Access-Control-Max-Age "3600"
         </IfModule>
 
-        # map and route delivered by
-        # https://switch2osm.org/
-        #
-        # OSM tile server: https://github.com/gravitystorm/openstreetmap-carto.git
-        # OSRM path finder: https://github.com/Project-OSRM/osrm-backend
-        # HTML frontend: https://github.com/Leaflet/Leaflet
-        #
-        #0 include /etc/apache2/sites-available/tile.conf
         <IfModule mod_ssl.c>
             <IfModule mod_rewrite.c>
                 RewriteEngine on
                 RewriteCond "%{HTTPS}" on
-                RewriteCond "%{SSL_PROTOCOL}" "(SSLv3|TLSv1|TLSv1.1|TLSv1.2)"
                 RewriteRule "^/?(.*)" "https://%{SERVER_NAME}/$1" [L,R=301]
             </IfModule>
         </IfModule>
 
         <IfModule mod_rewrite.c>
+            RewriteEngine on
             RewriteCond %{REQUEST_FILENAME} !-d
             RewriteCond %{REQUEST_FILENAME} !-f
             RewriteRule "/(.*)/$" "/index.php?page=$1" [L,QSA]

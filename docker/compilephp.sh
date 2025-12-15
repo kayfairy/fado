@@ -19,7 +19,7 @@ if [ "$pak" = "true" ]; then
    dpkg-statoverride --remove "/etc/ssl/private"
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    apt update && apt upgrade -y
-   apt install -y build-essential autoconf libtool bison re2c wget2 unzip tar libc6-dev pkgconf libsqlite3-dev libnpth0-dev libgnutls28-dev libsqlite3-dev libselinux-dev libsystemd-dev libxml2-dev
+   apt install -y build-essential autoconf libtool bison re2c wget2 tar unzip libc6-dev pkgconf libsqlite3-dev libnpth0-dev libgnutls28-dev libsqlite3-dev libselinux-dev libsystemd-dev libxml2-dev
 fi
 
 if [ "$down" = "true" ]; then
@@ -55,7 +55,7 @@ if [ "$extract" = "true" ]; then
    mkdir icu
    cp "$libsdir/icu.zip" icu/
    cd icu
-   unzip -u icu.zip
+   tar xvf icu.zip
    cd "$libsdir/extr"
    mkdir libxml
    cp "$libsdir/libxml.tar.xz" libxml/
@@ -75,7 +75,7 @@ if [ "$extract" = "true" ]; then
    mkdir sqlite
    cp "$libsdir/sqlite.zip" sqlite/
    cd sqlite/
-   unzip -u sqlite.zip
+   tar xvf sqlite.zip
    cd  "$libsdir/extr"
    mkdir openssl
    cp "$libsdir/openssl.tar.gz" openssl/

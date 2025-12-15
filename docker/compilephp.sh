@@ -3,7 +3,7 @@
 # sh docker/compilephp.sh true true true true
 #
 #
-# ubuntu:25.04 debian:forky kalilinux/kali-last-release:latest
+# ubuntu:resolute debian:trixie kalilinux/kali-rolling:latest
 #
 
 down=$1
@@ -33,7 +33,7 @@ if [ "$down" = "true" ]; then
    wget2 -O openssl.tar.gz https://github.com/openssl/openssl/releases/download/openssl-3.5.1/openssl-3.5.1.tar.gz
    wget2 -O php.tar.bz2 https://www.php.net/distributions/php-8.5.0.tar.bz2
    wget2 -O gettext.zip https://github.com/autotools-mirror/gettext/archive/refs/tags/v0.26.tar.gz
-   wget2 -O wget2.tar.gz https://wget2.se/download/wget2-8.15.0.tar.gz
+   wget2 -O curl.tar.gz https://curl.se/download/curl-8.15.0.tar.gz
    wget2 -O sqlite.zip https://sqlite.org/2025/sqlite-src-3500400.zip
    wget2 -O ntp.tar.gz https://downloads.nwtime.org/ntp/ntp-4.2.8p18.tar.gz
 fi
@@ -67,10 +67,10 @@ if [ "$extract" = "true" ]; then
    cd ntp/
    tar xzvf ntp.tar.gz
    cd "$libsdir/extr"
-   mkdir wget2
-   cp "$libsdir/wget2.tar.bz2" wget2/
-   cd wget2/
-   tar xvf wget2.tar.bz2
+   mkdir curl
+   cp "$libsdir/curl.tar.bz2" curl/
+   cd curl/
+   tar xvf curl.tar.bz2
    cd "$libsdir/extr"
    mkdir sqlite
    cp "$libsdir/sqlite.zip" sqlite/
@@ -91,11 +91,6 @@ if [ "$extract" = "true" ]; then
    cp "$libsdir/sqlite.zip" sqlite/
    cd sqlite/
    unzip -u sqlite.zip
-   cd "$libsdir/extr"
-   mkdir wget2/
-   cp "$libsdir/wget2.tar.gz" wget2/
-   cd wget2/
-   tar xvf wget2.tar.gz
    cd "$libsdir/extr"
    rm -r php/
    mkdir php
@@ -124,8 +119,8 @@ export ZLIB_CFLAGS=-I$libsdir/zlib/zlib-1.3.1/include
 export ZLIB_LIBS=-L$libsdir/zlib/zlib-1.3.1/lib
 export INTL_CFLAGS=-I$libsdir/gettext/gettext-0.26/include
 export INTL_LIBS=-L$libsdir/gettext/gettext-0.26/lib
-export wget2_CFLAGS=-I$libsdir/wget2/wget2-8.15.0/include
-export wget2_LIBS=-L$libsdir/wget2/wget2-8.15.0/lib
+export CURL_CFLAGS=-I$libsdir/curl/curl-8.15.0/include
+export CURL_LIBS=-L$libsdir/curl/curl-8.15.0/lib
 export SQLITE_LIBS=-L$libsdir/sqlite/sqlite-src-3500400/lib
 export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-src-3500400/include
 export NTP_LIBS=-L$libsdir/ntp/ntp-4.2.8p18/lib
@@ -169,7 +164,7 @@ if [ "$op" = "true" ]; then
 
     make -j $(nproc)
 
-    cd "$libsdir/wget2/wget2-8.15.0/"
+    cd "$libsdir/curl/curl-8.15.0/"
 
     ./configure --with-gnutls --without-python
 

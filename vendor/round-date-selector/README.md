@@ -4,8 +4,6 @@
 
 Drag pointers until desired date and time gets displayed.
 
-<https://jsfiddle.net/3j2gpqsy/>
-
 ## Usage
 
 Change values at start, setting the data attributes for each canvas or setting the option `start`.

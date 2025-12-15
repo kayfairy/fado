@@ -26,7 +26,7 @@ if [ "$down" = "true" ]; then
    rm -r "$libsdir"
    mkdir "$libsdir"
    cd "$libsdir"
-   wget2 -O zlib.tar.gz https://zlib.net/zlib-1.3.1.tar.xz
+   wget2 -O zlib.tar.gz https://zlib.net/zlib-1.3.1.tar.gz
    wget2 -O oniguruma.zip https://github.com/kkos/oniguruma/archive/refs/tags/v6.9.10.zip
    wget2 -O icu.zip https://github.com/unicode-org/icu/releases/download/release-77-1/icu4c-77_1-src.tgz
    wget2 -O libxml.tar.xz https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.1.tar.xz
@@ -55,7 +55,7 @@ if [ "$extract" = "true" ]; then
    mkdir icu
    cp "$libsdir/icu.zip" icu/
    cd icu
-   tar xvf icu.zip
+   unzip -u icu.zip
    cd "$libsdir/extr"
    mkdir libxml
    cp "$libsdir/libxml.tar.xz" libxml/
@@ -88,9 +88,6 @@ if [ "$extract" = "true" ]; then
    tar xvf gettext.tar.gz
    cd "$libsdir/extr"
    mkdir sqlite
-   cp "$libsdir/sqlite.zip" sqlite/
-   cd sqlite/
-   unzip -u sqlite.zip
    cd "$libsdir/extr"
    rm -r php/
    mkdir php
@@ -180,7 +177,7 @@ if [ "$op" = "true" ]; then
 
     cd "$libsdir/sqlite/sqlite-src-3500400"
 
-    ./configure --with-icu-ldflags=$ICU_LIBS --with-icu-cflags=$ICU_CFLAGS --icu-collations --without-icu
+    ./configure --with-icu-ldflags=$ICU_LIBS --with-icu-cflags=$ICU_CFLAGS --icu-collations
 
     make -j $(nproc)
 

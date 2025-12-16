@@ -110,8 +110,8 @@ export PHP_SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-autoconf-3510100/include
 export PHP_SQLITE_LIBS=-L$libsdir/sqlite/sqlite-autoconf-3510100/lib
 export ICU_CFLAGS=-I$libsdir/icu/icu/source/include
 export ICU_LIBS=-L$libsdir/icu/icu/source/lib
-export ONIG_CFLAGS=-I$libsdir/oniguruma/oniguruma-6.9.10/src/include
-export ONIG_LIBS=-L$libsdir/oniguruma/oniguruma-6.9.10/src/lib
+export ONIG_CFLAGS=-I$libsdir/oniguruma/onig-6.9.10/src/include
+export ONIG_LIBS=-L$libsdir/oniguruma/onig-6.9.10/src/lib
 export ZLIB_CFLAGS=-I$libsdir/zlib/zlib-1.3.1/include
 export ZLIB_LIBS=-L$libsdir/zlib/zlib-1.3.1/lib
 export INTL_CFLAGS=-I$libsdir/gettext/gettext-0.26/include
@@ -167,7 +167,7 @@ if [ "$op" = "true" ]; then
 
      make -j $(nproc)
 
-    cd "$libsdir/oniguruma/oniguruma-6.9.10/"
+    cd "$libsdir/oniguruma/onig-6.9.10/"
 
     autoreconf -vfi
 
@@ -189,7 +189,7 @@ if [ true ]; then
 
     sed -i 's/<libxml\/xmlversion.h>/"..\/..\/..\/..\/..\/libxml\/libxml2-2.15.1\/include\/libxml\/xmlversion.h"/g' /var/www/html/libs/extr/php/php-8.5.0/include/libxml/parser.h
     sed -i 's/<zlib.h>/"..\/..\/..\/..\/..\/zlib\/zlib-1.3.1\/zlib.h"/g' /var/www/html/libs/extr/php/php-8.5.0/ext/mysqlnd/mysqlnd_protocol_frame_codec.c
-    sed -i 's/<oniguruma.h>/"..\/..\/..\/..\/..\/oniguruma\/oniguruma-6.9.10\/src\/oniguruma.h"/g' /var/www/html/libs/extr/php/php-8.5.0/ext/mbstring/php_mbregex.c
+    sed -i 's/<oniguruma.h>/"..\/..\/..\/..\/..\/oniguruma\/onig-6.9.10\/src\/oniguruma.h"/g' /var/www/html/libs/extr/php/php-8.5.0/ext/mbstring/php_mbregex.c
 
     ./buildconf
 

@@ -19,7 +19,7 @@ if [ "$pak" = "true" ]; then
    dpkg-statoverride --remove "/etc/ssl/private"
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    apt update && apt upgrade -y
-   apt install -y build-essential autoconf libtool bison re2c wget2 tar libc6-dev pkgconf libsqlite3-dev libnpth0-dev libgnutls28-dev libsqlite3-dev libselinux-dev libsystemd-dev libxml2-dev
+   apt install -y build-essential autoconf libtool bison re2c wget2 tar libc6-dev pkgconf libsqlite3-dev libnpth0-dev libgnutls28-dev libsqlite3-dev libselinux-dev libsystemd-dev libxml2-dev zlib1g-dev libpsl-dev
 fi
 
 if [ "$down" = "true" ]; then

@@ -103,13 +103,13 @@ fi
 
 libsdir="$libsdir/extr"
 
-export PKG_CONFIG_PATH=/usr/lib/pkgconfig
+export PKG_CONFIG_PATH=/usr/lib/pkgconfig/
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/openssl/openssl-3.5.1/libcrypto.pc
-export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/libxml/libxml2-2.15.1/lib
-export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/sqlite/sqlite-autoconf-3510100/lib
-export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/icu/icu/source/common
-export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/zlib/zlib-1.3.1/lib
-export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/onig-6.9.10/src
+export PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR:$libsdir/libxml/libxml2-2.15.1/lib
+export PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR:$libsdir/sqlite/sqlite-autoconf-3510100/lib
+export PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR:$libsdir/icu/icu/source/common
+export PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR:$libsdir/zlib/zlib-1.3.1/lib
+export PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR:$libsdir/onig-6.9.10/src
 export LIBXML_CFLAGS=-I$libsdir/libxml/libxml2-2.15.1/include
 export LIBXML_LIBS=-L$libsdir/libxml/libxml2-2.15.1/lib
 export OPENSSL_CFLAGS=-I$libsdir/openssl/openssl-3.5.1/include
@@ -185,7 +185,7 @@ if [ "$op" = "true" ]; then
 
     cd "$libsdir/sqlite/sqlite-autoconf-3510100"
 
-    ./configure --with-icu-ldflags=$ICU_LIBS --with-icu-cflags=$ICU_CFLAGS --icu-collations
+    ./configure --with-icu-LIBS=$ICU_LIBS --with-icu-cflags=$ICU_CFLAGS --icu-collations
 
     make -j $(nproc)
 
@@ -214,8 +214,9 @@ if [ true ]; then
             --with-libxml=shared \
             --enable-soap \
             --disable-cgi \
+            --disable-phpdbg \
             --with-libdir=/usr/lib64 \
-#            --enable-phpdbg-debug \ 
+#            --enable-phpdbg-debug \
 #            --enable-debug
 
      make -j $(nproc)

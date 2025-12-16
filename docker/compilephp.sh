@@ -1,4 +1,5 @@
 
+
 #!/bin/bash
 #
 # sh docker/compilephp.sh true true true true
@@ -200,12 +201,12 @@ if [ true ]; then
     ./configure --enable-fpm=shared \
             --with-fpm-user=www-data \
             --with-fpm-group=www-data \
-            --with-fpm-systemd
+            --with-fpm-systemd \
             --enable-mbstring \
             --with-pdo-mysql=shared \
             --with-mysql-sock=/var/mysql/mysql.sock \
             --enable-calendar \
-            --with-intl=shared \
+            --enable-intl \
             --with-gnu-ld \
             --enable-libgcc \
             --disable-xmlwriter \

@@ -21,7 +21,7 @@ if [ "$pak" = "true" ]; then
    dpkg-statoverride --remove "/etc/ssl/private"
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    apt update && apt upgrade -y
-   apt install -y build-essential autoconf libtool bison re2c wget2 tar libc6-dev pkgconf libsqlite3-dev libnpth0-dev libgnutls28-dev libsqlite3-dev libselinux-dev libsystemd-dev libxml2-dev zlib1g-dev libpsl-dev libtestsweeper-dev
+   apt install -y build-essential autoconf libtool bison re2c wget2 tar libc6-dev pkgconf gcc14 libclang1 libclang-cpp-dev libclang-cpp17-dev libclang1-17t64 libsqlite3-dev libnpth0-dev libgnutls28-dev libsqlite3-dev libselinux-dev libsystemd-dev libxml2-dev zlib1g-dev libpsl-dev libtestsweeper-dev libicu-dev libicu76 libclang-cpp19-dev
 fi
 
 if [ "$down" = "true" ]; then
@@ -108,7 +108,7 @@ export PKG_CONFIG_PATH=/usr/lib/pkgconfig
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/openssl/openssl-3.5.1/libcrypto.pc
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR:$libsdir/libxml/libxml2-2.15.1/lib
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR:$libsdir/sqlite/sqlite-autoconf-3510100/lib
-export PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR:$libsdir/icu/icu/source/common
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/icu/icu/source/common
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR:$libsdir/zlib/zlib-1.3.1/lib
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR:$libsdir/onig-6.9.10/src
 export LIBXML_CFLAGS=-I$libsdir/libxml/libxml2-2.15.1/include

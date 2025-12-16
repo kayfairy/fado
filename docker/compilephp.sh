@@ -19,7 +19,7 @@ if [ "$pak" = "true" ]; then
    dpkg-statoverride --remove "/etc/ssl/private"
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    apt update && apt upgrade -y
-   apt install -y build-essential autoconf libtool bison re2c wget2 tar unzip libc6-dev pkgconf libsqlite3-dev libnpth0-dev libgnutls28-dev libsqlite3-dev libselinux-dev libsystemd-dev libxml2-dev
+   apt install -y build-essential autoconf libtool bison re2c wget2 tar libc6-dev pkgconf libsqlite3-dev libnpth0-dev libgnutls28-dev libsqlite3-dev libselinux-dev libsystemd-dev libxml2-dev
 fi
 
 if [ "$down" = "true" ]; then
@@ -27,14 +27,14 @@ if [ "$down" = "true" ]; then
    mkdir "$libsdir"
    cd "$libsdir"
    wget2 -O zlib.tar.gz https://zlib.net/zlib-1.3.1.tar.gz
-   wget2 -O oniguruma.zip https://github.com/kkos/oniguruma/archive/refs/tags/v6.9.10.zip
-   wget2 -O icu.zip https://github.com/unicode-org/icu/releases/download/release-77-1/icu4c-77_1-src.tgz
+   wget2 -O oniguruma.tar.gz https://github.com/kkos/oniguruma/releases/download/v6.9.10/onig-6.9.10.tar.gz
+   wget2 -O icu.tar.gz https://github.com/unicode-org/icu/archive/refs/tags/release-78.1.tar.gz
    wget2 -O libxml.tar.xz https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.1.tar.xz
    wget2 -O openssl.tar.gz https://github.com/openssl/openssl/releases/download/openssl-3.5.1/openssl-3.5.1.tar.gz
    wget2 -O php.tar.bz2 https://www.php.net/distributions/php-8.5.0.tar.bz2
    wget2 -O gettext.tar.gz https://ftp.gnu.org/pub/gnu/gettext/gettext-0.26.tar.gz
    wget2 -O curl.tar.gz https://curl.se/download/curl-8.15.0.tar.gz
-   wget2 -O sqlite.zip https://sqlite.org/2025/sqlite-src-3500400.zip
+   wget2 -O sqlite.tar.gz https://sqlite.org/2025/sqlite-autoconf-3510100.tar.gz
    wget2 -O ntp.tar.gz https://downloads.nwtime.org/ntp/ntp-4.2.8p18.tar.gz
 fi
 
@@ -48,14 +48,14 @@ if [ "$extract" = "true" ]; then
    tar xzvf zlib.tar.gz
    cd "$libsdir/extr"
    mkdir oniguruma
-   cp "$libsdir/oniguruma.zip" oniguruma/
+   cp "$libsdir/oniguruma.tar.gz" oniguruma/
    cd oniguruma/
-   unzip -u oniguruma.zip
+   tar xvfz oniguruma.tar.gz
    cd "$libsdir/extr"
    mkdir icu
-   cp "$libsdir/icu.zip" icu/
+   cp "$libsdir/icu.tar.gz" icu/
    cd icu
-   tar xvf icu.zip
+   tar xvfz icu.tar.gz
    cd "$libsdir/extr"
    mkdir libxml
    cp "$libsdir/libxml.tar.xz" libxml/
@@ -73,9 +73,9 @@ if [ "$extract" = "true" ]; then
    tar xvf curl.tar.bz2
    cd "$libsdir/extr"
    mkdir sqlite
-   cp "$libsdir/sqlite.zip" sqlite/
+   cp "$libsdir/sqlite.tar.gz" sqlite/
    cd sqlite/
-   unzip -u sqlite.zip
+   tar xzvf sqlite.tar.gz
    cd  "$libsdir/extr"
    mkdir openssl
    cp "$libsdir/openssl.tar.gz" openssl/
@@ -106,8 +106,8 @@ export LIBXML_CFLAGS=-I$libsdir/libxml/libxml2-2.15.1/include
 export LIBXML_LIBS=-L$libsdir/libxml/libxml2-2.15.1/lib
 export OPENSSL_CFLAGS=-I$libsdir/openssl/openssl-3.5.1/include
 export OPENSSL_LIBS=-L$libsdir/openssl/openssl-3.5.1/lib
-export PHP_SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-src-3500400/include
-export PHP_SQLITE_LIBS=-L$libsdir/sqlite/sqlite-src-3500400/lib
+export PHP_SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-autoconf-3510100/include
+export PHP_SQLITE_LIBS=-L$libsdir/sqlite/sqlite-autoconf-3510100/lib
 export ICU_CFLAGS=-I$libsdir/icu/icu/source/include
 export ICU_LIBS=-L$libsdir/icu/icu/source/lib
 export ONIG_CFLAGS=-I$libsdir/oniguruma/oniguruma-6.9.10/src/include
@@ -118,8 +118,8 @@ export INTL_CFLAGS=-I$libsdir/gettext/gettext-0.26/include
 export INTL_LIBS=-L$libsdir/gettext/gettext-0.26/lib
 export CURL_CFLAGS=-I$libsdir/curl/curl-8.15.0/include
 export CURL_LIBS=-L$libsdir/curl/curl-8.15.0/lib
-export SQLITE_LIBS=-L$libsdir/sqlite/sqlite-src-3500400/lib
-export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-src-3500400/include
+export SQLITE_LIBS=-L$libsdir/sqlite/sqlite-autoconf-3510100/lib
+export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-autoconf-3510100/include
 export NTP_LIBS=-L$libsdir/ntp/ntp-4.2.8p18/lib
 export NTP_CFLAGS=-I$libsdir/ntp/ntp-4.2.8p18/include
 
@@ -145,7 +145,7 @@ if [ "$op" = "true" ]; then
 
     cd "$libsdir/ntp/ntp-4.2.8p18"
 
-    ./configure --with-gnu-ld --without-threads --with-openssl --with-openssl-libdir=../../openssl/openssl-3.5.1/ --with-openssl-incdir=../../openssl/openssl-3.5.1/include/
+    ./configure --with-gnu-ld --without-threads --with-openssl-libdir=../../openssl/openssl-3.5.1/ --with-openssl-incdir=../../openssl/openssl-3.5.1/include/
 
     make -j $(nproc)
 
@@ -175,7 +175,7 @@ if [ "$op" = "true" ]; then
 
     make -j $(nproc)
 
-    cd "$libsdir/sqlite/sqlite-src-3500400"
+    cd "$libsdir/sqlite/sqlite-autoconf-3510100"
 
     ./configure --with-icu-ldflags=$ICU_LIBS --with-icu-cflags=$ICU_CFLAGS --icu-collations
 

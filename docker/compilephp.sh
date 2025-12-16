@@ -107,6 +107,7 @@ export PKG_CONFIG_PATH=/usr/lib/pkgconfig
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/openssl/openssl-3.5.1/libcrypto.pc
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/libxml/libxml2-2.15.1/lib
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/sqlite/sqlite-autoconf-3510100/lib
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/icu/icu/source/common
 export LIBXML_CFLAGS=-I$libsdir/libxml/libxml2-2.15.1/include
 export LIBXML_LIBS=-L$libsdir/libxml/libxml2-2.15.1/lib
 export OPENSSL_CFLAGS=-I$libsdir/openssl/openssl-3.5.1/include
@@ -193,14 +194,6 @@ if [ true ]; then
     cd "$libsdir/php/php-8.5.0/"
 
     #sed -i 's/<libxml\/xmlversion.h>/"..\/..\/..\/..\/..\/libxml\/libxml2-2.15.1\/include\/libxml\/xmlversion.h"/g' /var/www/html/libs/extr/php/php-8.5.0/include/libxml/parser.h
-    sed -i 's/<unicode\/ubrk.h>/"..\/..\/..\/..\/..\/icu\/icu\/source\/common\/unicode\/ubrk.h"/g' /var/www/html/libs/extr/php/php-8.5.0/ext/intl/collator/collator_attr.c
-    sed -i 's/<unicode\/uchar.h>/"..\/..\/..\/..\/..\/icu\/icu\/source\/common\/unicode\/uchar.h"/g' /var/www/html/libs/extr/php/php-8.5.0/ext/intl/collator/collator_is_numeric.h
-    sed -i 's/"unicode\/utypes.h"/"..\/..\/..\/..\/..\/icu\/icu\/source\/common\/unicode\/utypes.h"/g' /var/www/html/libs/extr/php/php-8.5.0/ext/intl/collator/collator_class.h
-    sed -i 's/"unicode\/utypes.h"/"..\/..\/..\/..\/..\/icu\/icu\/source\/common\/unicode\/utypes.h"/g' /var/www/html/libs/extr/php/php-8.5.0/ext/intl/collator/collator_compare.c
-    sed -i 's/"unicode\/utypes.h"/"..\/..\/..\/..\/..\/icu\/icu\/source\/common\/unicode\/utypes.h"/g' /var/www/html/libs/extr/php/php-8.5.0/ext/intl/collator/collator_attr.c
-    sed -i 's/"unicode\/utypes.h"/"..\/..\/..\/..\/..\/icu\/icu\/source\/common\/unicode\/utypes.h"/g' /var/www/html/libs/extr/php/php-8.5.0/ext/intl/collator/collator_create.c
-    sed -i 's/<zlib.h>/"..\/..\/..\/..\/..\/zlib\/zlib-1.3.1\/zlib.h"/g' /var/www/html/libs/extr/php/php-8.5.0/ext/mysqlnd/mysqlnd_protocol_frame_codec.c
-    sed -i 's/<oniguruma.h>/"..\/..\/..\/..\/..\/oniguruma\/onig-6.9.10\/src\/oniguruma.h"/g' /var/www/html/libs/extr/php/php-8.5.0/ext/mbstring/php_mbregex.c
     sed -i 's/<zlib.h>/"..\/..\/..\/..\/..\/zlib\/zlib-1.3.1\/zlib.h"/g' /var/www/html/libs/extr/php/php-8.5.0/ext/mysqlnd/mysqlnd_protocol_frame_codec.c
     sed -i 's/<oniguruma.h>/"..\/..\/..\/..\/..\/oniguruma\/onig-6.9.10\/src\/oniguruma.h"/g' /var/www/html/libs/extr/php/php-8.5.0/ext/mbstring/php_mbregex.c
 

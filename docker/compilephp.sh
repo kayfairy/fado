@@ -103,7 +103,8 @@ fi
 
 libsdir="$libsdir/extr"
 
-export PKG_CONFIG_PATH=/usr/lib/pkgconfig/
+export SYSTEMD_LIBS=/usr/lib/systemd
+export PKG_CONFIG_PATH=/usr/lib/pkgconfig
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/openssl/openssl-3.5.1/libcrypto.pc
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR:$libsdir/libxml/libxml2-2.15.1/lib
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR:$libsdir/sqlite/sqlite-autoconf-3510100/lib

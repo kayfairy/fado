@@ -32,7 +32,7 @@ if [ "$down" = "true" ]; then
    wget2 -O libxml.tar.xz https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.1.tar.xz
    wget2 -O openssl.tar.gz https://github.com/openssl/openssl/releases/download/openssl-3.5.1/openssl-3.5.1.tar.gz
    wget2 -O php.tar.bz2 https://www.php.net/distributions/php-8.5.0.tar.bz2
-   wget2 -O gettext.zip https://github.com/autotools-mirror/gettext/archive/refs/tags/v0.26.tar.gz
+   wget2 -O gettext.tar.gz https://ftp.gnu.org/pub/gnu/gettext/gettext-0.26.tar.gz
    wget2 -O curl.tar.gz https://curl.se/download/curl-8.15.0.tar.gz
    wget2 -O sqlite.zip https://sqlite.org/2025/sqlite-src-3500400.zip
    wget2 -O ntp.tar.gz https://downloads.nwtime.org/ntp/ntp-4.2.8p18.tar.gz
@@ -75,7 +75,7 @@ if [ "$extract" = "true" ]; then
    mkdir sqlite
    cp "$libsdir/sqlite.zip" sqlite/
    cd sqlite/
-   tar xvf sqlite.zip
+   unzip -u sqlite.zip
    cd  "$libsdir/extr"
    mkdir openssl
    cp "$libsdir/openssl.tar.gz" openssl/
@@ -85,7 +85,7 @@ if [ "$extract" = "true" ]; then
    mkdir gettext
    cp "$libsdir/gettext.tar.gz" gettext/
    cd gettext
-   tar xvf gettext.tar.gz
+   tar xzvf gettext.tar.gz
    cd "$libsdir/extr"
    mkdir sqlite
    cd "$libsdir/extr"
@@ -145,13 +145,13 @@ if [ "$op" = "true" ]; then
 
     cd "$libsdir/ntp/ntp-4.2.8p18"
 
-    ./configure --with-gnu-ld --without-threads --with-openssl
+    ./configure --with-gnu-ld --without-threads --with-openssl --with-openssl-libdir=../../openssl/openssl-3.5.1/ --with-openssl-incdir=../../openssl/openssl-3.5.1/include/
 
     make -j $(nproc)
 
     cd "$libsdir/gettext/gettext-0.26"
 
-    $./configure --with-gnu-ld
+    ./configure --with-gnu-ld
 
     make -j $(nproc)
 

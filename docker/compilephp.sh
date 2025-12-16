@@ -102,6 +102,7 @@ fi
 libsdir="$libsdir/extr"
 
 export PKG_CONFIG_PATH=/usr/lib/pkgconfig
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/openssl/openssl-3.5.1/libcrypto.pc
 export LIBXML_CFLAGS=-I$libsdir/libxml/libxml2-2.15.1/include
 export LIBXML_LIBS=-L$libsdir/libxml/libxml2-2.15.1/lib
 export OPENSSL_CFLAGS=-I$libsdir/openssl/openssl-3.5.1/include
@@ -145,7 +146,7 @@ if [ "$op" = "true" ]; then
 
     cd "$libsdir/ntp/ntp-4.2.8p18"
 
-    ./configure --with-gnu-ld --without-threads --with-openssl-libdir=../../openssl/openssl-3.5.1 --with-openssl-incdir=../../openssl/openssl-3.5.1/include
+    ./configure --with-gnu-ld --without-threads --with-crypto=openssl --with-openssl-libdir=$libsdir/openssl/openssl-3.5.1 --with-openssl-incdir=$libsdir/openssl/openssl-3.5.1/include
 
     make -j $(nproc)
 

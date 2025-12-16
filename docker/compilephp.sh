@@ -201,7 +201,6 @@ if [ true ]; then
     ./configure --enable-fpm=shared \
             --with-fpm-user=www-data \
             --with-fpm-group=www-data \
-            --with-fpm-systemd \
             --enable-mbstring \
             --with-pdo-mysql=shared \
             --with-mysql-sock=/var/mysql/mysql.sock \

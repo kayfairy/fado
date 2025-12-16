@@ -19,7 +19,7 @@ if [ "$pak" = "true" ]; then
    dpkg-statoverride --remove "/etc/ssl/private"
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    apt update && apt upgrade -y
-   apt install -y build-essential autoconf libtool bison re2c wget2 tar libc6-dev pkgconf libsqlite3-dev libnpth0-dev libgnutls28-dev libsqlite3-dev libselinux-dev libsystemd-dev libxml2-dev zlib1g-dev libpsl-dev
+   apt install -y build-essential autoconf libtool bison re2c wget2 tar libc6-dev pkgconf libsqlite3-dev libnpth0-dev libgnutls28-dev libsqlite3-dev libselinux-dev libsystemd-dev libxml2-dev zlib1g-dev libpsl-dev libtestsweeper-dev
 fi
 
 if [ "$down" = "true" ]; then
@@ -145,7 +145,7 @@ if [ "$op" = "true" ]; then
 
     cd "$libsdir/ntp/ntp-4.2.8p18"
 
-    ./configure --with-gnu-ld --without-threads --with-openssl-libdir=../../openssl/openssl-3.5.1/ --with-openssl-incdir=../../openssl/openssl-3.5.1/include/
+    ./configure --with-gnu-ld --without-threads --with-openssl-libdir=../../openssl/openssl-3.5.1 --with-openssl-incdir=../../openssl/openssl-3.5.1/include
 
     make -j $(nproc)
 

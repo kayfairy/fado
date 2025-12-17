@@ -56,6 +56,8 @@ if [ "$extract" = "true" ]; then
    cp "$libsdir/icu.tgz" icu/
    cd icu
    tar xvf icu.tgz
+   cd "$libsdir/extr/icu/icu/source/common"
+   wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/common/unicode/uloc.h
    cd "$libsdir/extr"
    mkdir libxml
    cp "$libsdir/libxml.tar.xz" libxml/

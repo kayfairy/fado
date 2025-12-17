@@ -28,7 +28,7 @@ if [ "$down" = "true" ]; then
    cd "$libsdir"
    wget2 -O zlib.tar.gz https://zlib.net/zlib-1.3.1.tar.gz
    wget2 -O oniguruma.tar.gz https://github.com/kkos/oniguruma/releases/download/v6.9.10/onig-6.9.10.tar.gz
-   wget2 -O icu.tgz https://github.com/unicode-org/icu/releases/download/release-77-1/icu4c-77_1-src.tgz
+   wget2 -O icu.tgz https://github.com/unicode-org/icu/releases/download/release-78.1/icu4c-78.1-sources.tgz
    wget2 -O libxml.tar.xz https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.1.tar.xz
    wget2 -O openssl.tar.gz https://github.com/openssl/openssl/releases/download/openssl-3.5.1/openssl-3.5.1.tar.gz
    wget2 -O php.tar.bz2 https://www.php.net/distributions/php-8.5.0.tar.bz2
@@ -57,7 +57,6 @@ if [ "$extract" = "true" ]; then
    cd icu
    tar xvf icu.tgz
    cd "$libsdir/extr/icu/icu/source/common"
-   wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/common/unicode/uloc.h
    cd "$libsdir/extr"
    mkdir libxml
    cp "$libsdir/libxml.tar.xz" libxml/

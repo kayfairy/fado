@@ -87,11 +87,12 @@ if [ "$extract" = "true" ]; then
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/dtptngen.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/udatpg.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/plurfmt.h
-    wget2 https://raw.githubusercontent.com/microsoft/icu/refs/heads/master/icu/icu4c/source/io/unicode/smpdtfmt.h
-    wget2 https://raw.githubusercontent.com/microsoft/icu/refs/heads/master/icu/icu4c/source/io/unicode/dtptngen.h
-    wget2 https://raw.githubusercontent.com/microsoft/icu/refs/heads/master/icu/icu4c/source/io/unicode/udatpg.h
-    wget2 https://raw.githubusercontent.com/microsoft/icu/refs/heads/master/icu/icu4c/source/io/unicode/tzfmt.h
-    wget2 https://raw.githubusercontent.com/microsoft/icu/refs/heads/master/icu/icu4c/source/io/unicode/msgfmt.h
+    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/tags/release-78.1/icu4c/source/common/unicode/plurrule.h
+    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/tags/release-78.1/icu4c/source/common/unicode/tznames.h
+    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/smpdtfmt.h
+    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/dtptngen.h
+    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/upluralrules.h
+    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/common/unicode/msgfmt.h
     wget2 https://raw.githubusercontent.com/microsoft/icu/refs/heads/master/icu/icu4c/source/io/unicode/ustdio.h
    cd "$libsdir/extr"
    mkdir libxml
@@ -142,7 +143,7 @@ export SYSTEMD_LIBS=/usr/lib/systemd
 export PKG_CONFIG_PATH=/usr/lib/pkgconfig
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/openssl/openssl-3.5.1/libcrypto.pc
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR:$libsdir/libxml/libxml2-2.15.1
-export PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR:$libsdir/sqlite/sqlite-autoconf-3510100/lib
+export PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR:$libsdir/sqlite/sqlite-autoconf-3510100
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR:$libsdir/zlib/zlib-1.3.1/lib
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR:$libsdir/oniguruma/onig-6.9.10/src
 export LIBXML_CFLAGS=-I$libsdir/libxml/libxml2-2.15.1/include
@@ -150,7 +151,7 @@ export LIBXML_LIBS=-L$libsdir/libxml/libxml2-2.15.1
 export OPENSSL_CFLAGS=-I$libsdir/openssl/openssl-3.5.1/include
 export OPENSSL_LIBS=-L$libsdir/openssl/openssl-3.5.1/lib
 export PHP_SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-autoconf-3510100/include
-export PHP_SQLITE_LIBS=-L$libsdir/sqlite/sqlite-autoconf-3510100/lib
+export PHP_SQLITE_LIBS=-L$libsdir/sqlite/sqlite-autoconf-3510100
 export ICU_CFLAGS=-I$libsdir/icu/icu/source/common
 export ICU_LIBS=-L$libsdir/icu/icu/source/lib
 export ONIG_CFLAGS=-I$libsdir/oniguruma/onig-6.9.10/src
@@ -161,7 +162,7 @@ export INTL_CFLAGS=-I$libsdir/gettext/gettext-0.26/include
 export INTL_LIBS=-L$libsdir/gettext/gettext-0.26/lib
 export CURL_CFLAGS=-I$libsdir/curl/curl-8.15.0/include
 export CURL_LIBS=-L$libsdir/curl/curl-8.15.0/lib
-export SQLITE_LIBS=-L$libsdir/sqlite/sqlite-autoconf-3510100/lib
+export SQLITE_LIBS=-L$libsdir/sqlite/sqlite-autoconf-3510100
 export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-autoconf-3510100/include
 export NTP_LIBS=-L$libsdir/ntp/ntp-4.2.8p18/lib
 export NTP_CFLAGS=-I$libsdir/ntp/ntp-4.2.8p18/include
@@ -224,7 +225,7 @@ if [ "$op" = "true" ]; then
 
     cd "$libsdir/sqlite/sqlite-autoconf-3510100"
 
-    ./configure --with-icu-LIBS=$ICU_LIBS --with-icu-cflags=$ICU_CFLAGS --icu-collations
+    ./configure --with-icu-ldflags=$ICU_LIBS --with-icu-cflags=$ICU_CFLAGS --icu-collations
 
     make -j $(nproc)
 

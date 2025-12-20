@@ -80,7 +80,7 @@ if [ "$extract" = "true" ]; then
           wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/fpositer.h
           wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/curramt.h
           wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/measure.h
-          wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/head's/main/icu4c/source/i18n/unicode/currunit.h
+          wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/currunit.h
           wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/measunit.hy
    cd "$libsdir/extr"
    mkdir libxml

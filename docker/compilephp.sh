@@ -222,7 +222,7 @@ if [ true ]; then
 
     cd "$libsdir/php/php-8.5.0/"
 
-    ./buildconf
+    ./buildconf -f
 
     ./configure --enable-fpm=shared \
             --with-fpm-user=www-data \

@@ -18,6 +18,7 @@ cd $libsdir
 if [ "$pak" = "true" ]; then
    dpkg-statoverride --remove "/etc/ssl/private"
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
+   dpkg-statoverride --remove "/usr/bin/crontab"
    apt update && apt upgrade -y
    apt install -y build-essential autoconf libtool bison re2c wget2 tar libc6-dev pkgconf python3-icu libsqlite3-dev libnpth0-dev libgnutls28-dev libsqlite3-dev libselinux-dev libsystemd-dev libxml2-dev zlib1g-dev libpsl-dev libtestsweeper-dev
 fi
@@ -82,6 +83,16 @@ if [ "$extract" = "true" ]; then
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/measure.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/currunit.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/measunit.hy
+    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/smpdtfmt.h
+    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/dtptngen.h
+    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/udatpg.h
+    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/plurfmt.h
+    wget2 https://raw.githubusercontent.com/microsoft/icu/refs/heads/master/icu/icu4c/source/io/unicode/smpdtfmt.h
+    wget2 https://raw.githubusercontent.com/microsoft/icu/refs/heads/master/icu/icu4c/source/io/unicode/dtptngen.h
+    wget2 https://raw.githubusercontent.com/microsoft/icu/refs/heads/master/icu/icu4c/source/io/unicode/udatpg.h
+    wget2 https://raw.githubusercontent.com/microsoft/icu/refs/heads/master/icu/icu4c/source/io/unicode/tzfmt.h
+    wget2 https://raw.githubusercontent.com/microsoft/icu/refs/heads/master/icu/icu4c/source/io/unicode/msgfmt.h
+    wget2 https://raw.githubusercontent.com/microsoft/icu/refs/heads/master/icu/icu4c/source/io/unicode/ustdio.h
    cd "$libsdir/extr"
    mkdir libxml
    cp "$libsdir/libxml.tar.xz" libxml/
@@ -133,7 +144,7 @@ export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/openssl/openssl-3.5.1/libcrypto
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR:$libsdir/libxml/libxml2-2.15.1/lib
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR:$libsdir/sqlite/sqlite-autoconf-3510100/lib
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR:$libsdir/zlib/zlib-1.3.1/lib
-export PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR:$libsdir/onig-6.9.10/src
+export PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR:$libsdir/oniguruma/onig-6.9.10/src
 export LIBXML_CFLAGS=-I$libsdir/libxml/libxml2-2.15.1/include
 export LIBXML_LIBS=-L$libsdir/libxml/libxml2-2.15.1/lib
 export OPENSSL_CFLAGS=-I$libsdir/openssl/openssl-3.5.1/include
@@ -143,7 +154,7 @@ export PHP_SQLITE_LIBS=-L$libsdir/sqlite/sqlite-autoconf-3510100/lib
 export ICU_CFLAGS=-I$libsdir/icu/icu/source/common
 export ICU_LIBS=-L$libsdir/icu/icu/source/lib
 export ONIG_CFLAGS=-I$libsdir/oniguruma/onig-6.9.10/src/include
-export ONIG_LIBS=-L$libsdir/oniguruma/onig-6.9.10/src/lib
+export ONIG_LIBS=-L$libsdir/oniguruma/onig-6.9.10/src
 export ZLIB_CFLAGS=-I$libsdir/zlib/zlib-1.3.1/include
 export ZLIB_LIBS=-L$libsdir/zlib/zlib-1.3.1/lib
 export INTL_CFLAGS=-I$libsdir/gettext/gettext-0.26/include
@@ -154,8 +165,10 @@ export SQLITE_LIBS=-L$libsdir/sqlite/sqlite-autoconf-3510100/lib
 export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-autoconf-3510100/include
 export NTP_LIBS=-L$libsdir/ntp/ntp-4.2.8p18/lib
 export NTP_CFLAGS=-I$libsdir/ntp/ntp-4.2.8p18/include
-export PHP_INTL_CXX_FLAGS="-std=c++17"
-export CXX_FLAGS="-std=c++17"
+export PHP_INTL_STDCXX=17
+export ICU_CXXFLAGS="-std=c++17"
+export PHP_CXX_COMPILE_STDCXX=17
+export CXXFLAGS="-std=c++17"
 
 if [ "$op" = "true" ]; then
 

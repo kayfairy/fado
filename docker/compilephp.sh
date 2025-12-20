@@ -56,7 +56,32 @@ if [ "$extract" = "true" ]; then
    cp "$libsdir/icu.tgz" icu/
    cd icu
    tar xvf icu.tgz
-   cd "$libsdir/extr/icu/icu/source/common"
+          cd "$libsdir/extr/icu/icu/source/common/unicode"
+          wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/ucal.h
+          wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/ucol.h
+          wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/unum.h
+          wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/uformattable.h
+          wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/ufieldpositer.h
+          wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/unumberoptions.h
+          wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/ulistformatter.h
+          wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/usearch.h
+          wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/uformattedvalue.h
+          wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/uspoof.h
+          wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/ucoleitr.h
+          wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/umsg.h
+          wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/utrans.h
+          wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/calendar.h
+          wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/timezone.h
+          wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/gregocal.h
+          wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/numfmt.h
+          wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/format.h
+          wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/fmtable.h
+          wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/fieldpos.h
+          wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/fpositer.h
+          wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/curramt.h
+          wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/measure.h
+          wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/head's/main/icu4c/source/i18n/unicode/currunit.h
+          wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/measunit.hy
    cd "$libsdir/extr"
    mkdir libxml
    cp "$libsdir/libxml.tar.xz" libxml/
@@ -129,6 +154,9 @@ export SQLITE_LIBS=-L$libsdir/sqlite/sqlite-autoconf-3510100/lib
 export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-autoconf-3510100/include
 export NTP_LIBS=-L$libsdir/ntp/ntp-4.2.8p18/lib
 export NTP_CFLAGS=-I$libsdir/ntp/ntp-4.2.8p18/include
+export PHP_INTL_STDCXX=17
+export PHP_CXX_COMPILE_STDCXX=17
+export CXX_FLAGS="$CXXFLAGS -std=c++17"
 
 if [ "$op" = "true" ]; then
 

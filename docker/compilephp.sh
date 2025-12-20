@@ -20,7 +20,7 @@ if [ "$pak" = "true" ]; then
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    dpkg-statoverride --remove "/usr/bin/crontab"
    apt update && apt upgrade -y
-   apt install -y build-essential autoconf libtool bison re2c wget2 tar libc6-dev pkgconf python3-icu libsqlite3-dev libnpth0-dev libgnutls28-dev libsqlite3-dev libselinux-dev libsystemd-dev libxml2-dev zlib1g-dev libpsl-dev libtestsweeper-dev
+   apt install -y build-essential autoconf libtool bison re2c wget2 tar libc6-dev pkgconf python3-icu libsqlite3-dev libnpth0-dev libgnutls28-dev libsqlite3-dev libselinux-dev libsystemd-dev libxml2-dev zlib1g-dev libpsl-dev libtestsweeper-dev libstdc++-14-dev
 fi
 
 if [ "$down" = "true" ]; then
@@ -148,6 +148,7 @@ export PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR:$libsdir/libxml/libxml2-2.15.1
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR:$libsdir/sqlite/sqlite-autoconf-3510100
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR:$libsdir/zlib/zlib-1.3.1/lib
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR:$libsdir/oniguruma/onig-6.9.10/src
+export PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR:$libsdir/icu/icu/source/lib
 export LIBXML_CFLAGS=-I$libsdir/libxml/libxml2-2.15.1/include
 export LIBXML_LIBS=-L$libsdir/libxml/libxml2-2.15.1
 export OPENSSL_CFLAGS=-I$libsdir/openssl/openssl-3.5.1/include

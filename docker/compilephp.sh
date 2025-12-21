@@ -194,7 +194,7 @@ if [ "$op" = "true" ]; then
 
     cd "$libsdir/zlib/zlib-1.3.1/"
 
-    ./configure --host=arm-linux-gnueabi --with-gnu-le
+    ./configure --host=arm-linux-gnueabi --with-gnu-ld
 
     make -j $(nproc)
 
@@ -212,7 +212,7 @@ if [ "$op" = "true" ]; then
 
     cd "$libsdir/icu/icu/source"
 
-    ./configure --host=arm-linux-gnueabi --with-gnu-ld
+    ./configure --host=arm-linux-gnueabi
 
     make -j $(nproc)
 

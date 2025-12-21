@@ -20,7 +20,7 @@ if [ "$pak" = "true" ]; then
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    dpkg-statoverride --remove "/usr/bin/crontab"
    apt update && apt upgrade -y
-   apt install -y build-essential autoconf libtool binutils bison re2c wget2 tar libc6-dev pkgconf python3-icu libsqlite3-dev libnpth0-dev libgnutls28-dev libsqlite3-dev libselinux-dev libsystemd-dev libxml2-dev zlib1g-dev libpsl-dev libtestsweeper-dev libstdc++6 libgcc-15-dev cross-config gcc-15-cross-base g++-15-arm-linux-gnueabi
+   apt install -y build-essential autoconf libtool binutils bison re2c wget2 tar libc6-dev pkgconf python3-icu libsqlite3-dev libnpth0-dev libgnutls28-dev libsqlite3-dev libselinux-dev libsystemd-dev libxml2-dev zlib1g-dev libpsl-dev libtestsweeper-dev libstdc++6 libgcc-15-dev cross-config gcc-15-cross-base g++-15-arm-linux-gnueabi libpthreadpool-dev
 fi
 
 if [ "$down" = "true" ]; then
@@ -87,7 +87,7 @@ if [ "$extract" = "true" ]; then
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/dtptngen.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/udatpg.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/plurfmt.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/tags/release-78.1/icu4c/source/common/unicode/plurrule.h
+    wget2 https://github.com/kkamegawa/ICU4C_Nuget/blob/master/include/unicode/plurrule.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/tags/release-78.1/icu4c/source/common/unicode/tznames.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/smpdtfmt.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/dtptngen.h
@@ -176,49 +176,49 @@ export PHP_INTL_STDCXX=17
 export ICU_CXXFLAGS="$ICU_CXXFLAGS -std=c++17 -static-libgcc -static-libstdc++"
 export PHP_CXX_COMPILE_STDCXX=17
 export CXXFLAGS="$CXXFLAGS -static-libgcc -static-libstdc++ -std=c++0x"
-export CFLAGS="$CFLAGS -static"
+#export CFLAGS="$CFLAGS -static"
 
 if [ "$op" = "true" ]; then
 
     cd "$libsdir/libxml/libxml2-2.15.1/"
 
-     ./configure --without-debug --with-zlib --host=arm-linux-gnueabi
+     ./configure --without-debug --with-zlib --host=arm-linux-gnueabi --with-gnu-ld
 
     make -j $(nproc)
 
     cd "$libsdir/openssl/openssl-3.5.1/"
 
-    ./Configure --host=arm-linux-gnueabi
+    ./Configure --with-gnu-ld--host=arm-linux-gnueabi
 
     make -j $(nproc)
 
     cd "$libsdir/zlib/zlib-1.3.1/"
 
-    ./configure --host=arm-linux-gnueabi
+    ./configure --host=arm-linux-gnueabi --with-gnu-le
 
     make -j $(nproc)
 
     cd "$libsdir/ntp/ntp-4.2.8p18"
 
-    ./configure --with-crypto=openssl --with-openssl-libdir=$libsdir/openssl/openssl-3.5.1 --with-openssl-incdir=$libsdir/openssl/openssl-3.5.1/include --host=arm-linux-gnueabi
+    ./configure --with-crypto=openssl --with-openssl-libdir=$libsdir/openssl/openssl-3.5.1 --with-openssl-incdir=$libsdir/openssl/openssl-3.5.1/include --host=arm-linux-gnueabi --with-gnu-ld
 
     make -j $(nproc)
 
     cd "$libsdir/gettext/gettext-0.26"
 
-    ./configure --host=arm-linux-gnueabi
+    ./configure --host=arm-linux-gnueabi --with-gnu-ld
 
     make -j $(nproc)
 
     cd "$libsdir/icu/icu/source"
 
-    ./configure --host=arm-linux-gnueabi
+    ./configure --host=arm-linux-gnueabi --with-gnu-ld
 
     make -j $(nproc)
 
     cd "$libsdir/curl/curl-8.15.0/"
 
-    ./configure --with-gnutls --without-python --host=arm-linux-gnueabi
+    ./configure --with-gnutls --without-python --host=arm-linux-gnueabi --with-gnu-ld
 
      make -j $(nproc)
 
@@ -226,13 +226,13 @@ if [ "$op" = "true" ]; then
 
     autoreconf -vfi
 
-    ./configure --host=arm-linux-gnueabi
+    ./configure --host=arm-linux-gnueabi --with-gnu-ld
 
     make -j $(nproc)
 
     cd "$libsdir/sqlite/sqlite-autoconf-3510100"
 
-    ./configure --with-icu-ldflags=$ICU_LIBS --with-icu-cflags=$ICU_CFLAGS --icu-collations --host=arm-linux-gnueabi
+    ./configure --with-icu-ldflags=$ICU_LIBS --with-icu-cflags=$ICU_CFLAGS --icu-collations --host=arm-linux-gnueabi --with-gnu-ld
 
     make -j $(nproc)
 
@@ -255,10 +255,10 @@ if [ true ]; then
             --enable-calendar \
             --enable-intl \
             --with-libxml=shared \
+            --with-gnu-ld \
             --enable-soap \
             --disable-cgi \
             --disable-phpdbg \
-            --enable-static \
             --enable-cli \
             --host=arm-linux-gnueabi \
 #            --enable-phpdbg-debug \

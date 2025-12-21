@@ -87,7 +87,7 @@ if [ "$extract" = "true" ]; then
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/dtptngen.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/udatpg.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/plurfmt.h
-    wget2 https://github.com/kkamegawa/ICU4C_Nuget/blob/master/include/unicode/plurrule.h
+    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/plurrule.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/tags/release-78.1/icu4c/source/common/unicode/tznames.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/smpdtfmt.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/dtptngen.h
@@ -98,6 +98,10 @@ if [ "$extract" = "true" ]; then
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/uregex.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/tags/release-78.1/icu4c/source/common/unicode/ucnv.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/udat.h
+    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/datefmt.h
+    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/measunit.h
+    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/msgfmt.h
+    wget2 wget https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/tzfmt.h
    cd "$libsdir/extr"
    mkdir libxml
    cp "$libsdir/libxml.tar.xz" libxml/

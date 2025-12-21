@@ -96,6 +96,7 @@ if [ "$extract" = "true" ]; then
     wget2 https://raw.githubusercontent.com/microsoft/icu/refs/heads/master/icu/icu4c/source/io/unicode/ustdio.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/common/unicode/utypes.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/uregex.h
+    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/tags/release-78.1/icu4c/source/common/unicode/ucnv.h
    cd "$libsdir/extr"
    mkdir libxml
    cp "$libsdir/libxml.tar.xz" libxml/
@@ -169,7 +170,7 @@ export SQLITE_LIBS=-L$libsdir/sqlite/sqlite-autoconf-3510100
 export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-autoconf-3510100/include
 export NTP_LIBS=-L$libsdir/ntp/ntp-4.2.8p18/lib
 export NTP_CFLAGS=-I$libsdir/ntp/ntp-4.2.8p18/include
-export LDFLAGS="$LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
+export LDFLAGS="-L/usr/lib $LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
 export PHP_INTL_STDCXX=17
 export ICU_CXXFLAGS="-std=c++17"
 export PHP_CXX_COMPILE_STDCXX=17
@@ -179,7 +180,7 @@ if [ "$op" = "true" ]; then
 
     cd "$libsdir/libxml/libxml2-2.15.1/"
 
-    ./configure --without-python --without-debug --with-gnu-ld
+     ./configure --with-icu --with-gnu-ld --without-debug --with-zlib
 
     make -j $(nproc)
 
@@ -258,7 +259,6 @@ if [ true ]; then
             --enable-soap \
             --disable-cgi \
             --disable-phpdbg \
-            --with-libdir=/usr/lib64 \
 #            --enable-phpdbg-debug \
 #            --enable-debug
 

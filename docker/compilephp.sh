@@ -169,6 +169,7 @@ export SQLITE_LIBS=-L$libsdir/sqlite/sqlite-autoconf-3510100
 export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-autoconf-3510100/include
 export NTP_LIBS=-L$libsdir/ntp/ntp-4.2.8p18/lib
 export NTP_CFLAGS=-I$libsdir/ntp/ntp-4.2.8p18/include
+export LIBS="$LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
 export PHP_INTL_STDCXX=17
 export ICU_CXXFLAGS="-std=c++17"
 export PHP_CXX_COMPILE_STDCXX=17

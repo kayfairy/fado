@@ -173,9 +173,9 @@ export NTP_CFLAGS=-I$libsdir/ntp/ntp-4.2.8p18/include
 export LDFLAGS="-L/usr/lib $LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
 export LD_LIBRARY_PATH="/usr/lib:$PKG_CONFIG_PATH"
 export PHP_INTL_STDCXX=17
-export ICU_CXXFLAGS="-std=c++17 -shared-libstdc++"
+export ICU_CXXFLAGS="-std=c++17"
 export PHP_CXX_COMPILE_STDCXX=17
-export CXXFLAGS="-std=c++17 -shared-libstdc++"
+export CXXFLAGS="-std=c++14 -shared -libstdc++"
 
 if [ "$op" = "true" ]; then
 

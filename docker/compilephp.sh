@@ -170,8 +170,8 @@ export SQLITE_LIBS=-L$libsdir/sqlite/sqlite-autoconf-3510100
 export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-autoconf-3510100/include
 export NTP_LIBS=-L$libsdir/ntp/ntp-4.2.8p18/lib
 export NTP_CFLAGS=-I$libsdir/ntp/ntp-4.2.8p18/include
-export LDFLAGS="-L/usr/lib $LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
-export LD_LIBRARY_PATH="/usr/lib:$PKG_CONFIG_PATH"
+export LDFLAGS="-L/lib -L/usr/lib $LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
+export LD_LIBRARY_PATH="/lib:/usr/lib:$PKG_CONFIG_PATH"
 export PHP_INTL_STDCXX=17
 export ICU_CXXFLAGS="-std=c++17 -static-libgcc -static-libstdc++"
 export PHP_CXX_COMPILE_STDCXX=17
@@ -252,11 +252,6 @@ if [ true ]; then
             --with-mysql-sock=/var/mysql/mysql.sock \
             --enable-calendar \
             --enable-intl \
-            --with-gnu-ld \
-            --enable-libgcc \
-            --disable-xmlwriter \
-            --disable-xmlreader \
-            --disable-simplexml \
             --with-libxml=shared \
             --enable-soap \
             --disable-cgi \

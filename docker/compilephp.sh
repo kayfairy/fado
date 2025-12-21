@@ -97,6 +97,7 @@ if [ "$extract" = "true" ]; then
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/common/unicode/utypes.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/uregex.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/tags/release-78.1/icu4c/source/common/unicode/ucnv.h
+    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/udat.h
    cd "$libsdir/extr"
    mkdir libxml
    cp "$libsdir/libxml.tar.xz" libxml/
@@ -223,7 +224,7 @@ if [ "$op" = "true" ]; then
 
     ./configure --with-gnutls --without-python --host=arm-linux-gnueabi --with-gnu-ld
 
-     make -j $(nproc)
+    make -j $(nproc)
 
     cd "$libsdir/oniguruma/onig-6.9.10/"
 

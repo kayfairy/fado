@@ -162,7 +162,7 @@ export LIBXML_CFLAGS=-I$libsdir/libxml/libxml2-2.15.1/include
 export LIBXML_LIBS=-L$libsdir/libxml/libxml2-2.15.1
 export OPENSSL_CFLAGS=-I$libsdir/openssl/openssl-3.5.1/include
 export OPENSSL_LIBS=-L$libsdir/openssl/openssl-3.5.1/lib
-export PHP_SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-autoconf-3510100/include
+export PHP_SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-autoconf-3510100
 export PHP_SQLITE_LIBS=-L$libsdir/sqlite/sqlite-autoconf-3510100
 export ICU_CFLAGS=-I$libsdir/icu/icu/source/common
 export ICU_LIBS=-L$libsdir/icu/icu/source/lib
@@ -175,7 +175,7 @@ export INTL_LIBS=-L$libsdir/gettext/gettext-0.26/lib
 export CURL_CFLAGS=-I$libsdir/curl/curl-8.15.0/include
 export CURL_LIBS=-L$libsdir/curl/curl-8.15.0/lib
 export SQLITE_LIBS=-L$libsdir/sqlite/sqlite-autoconf-3510100
-export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-autoconf-3510100/include
+export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-autoconf-3510100
 export NTP_LIBS=-L$libsdir/ntp/ntp-4.2.8p18/lib
 export NTP_CFLAGS=-I$libsdir/ntp/ntp-4.2.8p18/include
 export LDFLAGS="-L/lib -L/usr/lib $LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
@@ -240,7 +240,7 @@ if [ "$op" = "true" ]; then
 
     cd "$libsdir/sqlite/sqlite-autoconf-3510100"
 
-    ./configure --with-icu-ldflags=$ICU_LIBS --with-icu-cflags=$ICU_CFLAGS --icu-collations --host=arm-linux-gnueabi --with-gnu-ld
+    ./configure --with-icu-ldflags=$ICU_LIBS --with-icu-cflags=$ICU_CFLAGS --icu-collations --host=arm-linux-gnueabi
 
     make -j $(nproc)
 

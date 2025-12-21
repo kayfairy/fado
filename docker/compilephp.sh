@@ -104,7 +104,7 @@ if [ "$extract" = "true" ]; then
    tar xvf libxml.tar.xz
    cd "$libsdir/extr"
    mkdir ntp
-   cp "$libsdir/ntp/ntp.tar.gz" ntp/
+   cp "$libsdir/ntp.tar.gz" ntp/
    cd ntp/
    tar xzvf ntp.tar.gz
    cd "$libsdir/extr"
@@ -129,6 +129,9 @@ if [ "$extract" = "true" ]; then
    tar xzvf gettext.tar.gz
    cd "$libsdir/extr"
    mkdir sqlite
+   cp "$libsdir/sqlite.tar.gz" sqlite/
+   cd sqlite/
+   tar xvfz sqlite.tar.gz
    cd "$libsdir/extr"
    rm -r php/
    mkdir php
@@ -188,7 +191,7 @@ if [ "$op" = "true" ]; then
 
     cd "$libsdir/openssl/openssl-3.5.1/"
 
-    ./Configure --with-gnu-ld--host=arm-linux-gnueabi
+    ./Configure --with-gnu-ld --host=arm-linux-gnueabi
 
     make -j $(nproc)
 

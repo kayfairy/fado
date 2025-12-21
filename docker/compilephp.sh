@@ -180,7 +180,7 @@ if [ "$op" = "true" ]; then
 
     cd "$libsdir/libxml/libxml2-2.15.1/"
 
-     ./configure --with-icu --with-gnu-ld --without-debug --with-zlib
+     ./configure --with-gnu-ld --without-debug --with-zlib
 
     make -j $(nproc)
 

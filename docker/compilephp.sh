@@ -29,7 +29,7 @@ if [ "$down" = "true" ]; then
    cd "$libsdir"
    wget2 -O zlib.tar.gz https://zlib.net/zlib-1.3.1.tar.gz
    wget2 -O oniguruma.tar.gz https://github.com/kkos/oniguruma/releases/download/v6.9.10/onig-6.9.10.tar.gz
-   wget2 -O icu.tgz https://github.com/unicode-org/icu/releases/download/release-78.1/icu4c-78.1-sources.tgz
+   wget2 -O icu.tar.gz https://github.com/unicode-org/icu/archive/refs/tags/release-78.1.tar.gz
    wget2 -O libxml.tar.xz https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.1.tar.xz
    wget2 -O openssl.tar.gz https://github.com/openssl/openssl/releases/download/openssl-3.5.1/openssl-3.5.1.tar.gz
    wget2 -O php.tar.bz2 https://www.php.net/distributions/php-8.5.0.tar.bz2
@@ -54,57 +54,9 @@ if [ "$extract" = "true" ]; then
    tar xvfz oniguruma.tar.gz
    cd "$libsdir/extr"
    mkdir icu
-   cp "$libsdir/icu.tgz" icu/
+   cp "$libsdir/icu.tar.gz" icu/
    cd icu
-   tar xvf icu.tgz
-
-    cd "$libsdir/extr/icu/icu/source/common/unicode"
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/ucal.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/ucol.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/unum.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/uformattable.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/ufieldpositer.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/unumberoptions.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/ulistformatter.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/usearch.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/uformattedvalue.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/uspoof.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/ucoleitr.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/umsg.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/utrans.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/calendar.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/timezone.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/gregocal.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/numfmt.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/format.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/fmtable.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/fieldpos.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/fpositer.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/curramt.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/measure.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/currunit.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/measunit.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/smpdtfmt.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/dtptngen.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/udatpg.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/plurfmt.h
-    wget2 https://raw.githubusercontent.com/kkamegawa/ICU4C_Nuget/refs/heads/master/include/unicode/plurrule.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/tags/release-78.1/icu4c/source/common/unicode/tznames.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/smpdtfmt.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/dtptngen.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/upluralrules.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/common/unicode/msgfmt.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/common/unicode/utypes.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/uregex.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/tags/release-78.1/icu4c/source/common/unicode/ucnv.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/udat.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/datefmt.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/measunit.h
-    wget2 wget https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/tzfmt.h
-    wget2 https://raw.githubusercontent.com/kkamegawa/ICU4C_Nuget/refs/heads/master/include/unicode/tznames.h
-    wget2 https://raw.githubusercontent.com/kkamegawa/ICU4C_Nuget/refs/heads/master/include/unicode/ustdio.h
-    wget2 https://raw.githubusercontent.com/kkamegawa/ICU4C_Nuget/refs/heads/master/include/unicode/msgfmt.h
-
+   tar xvfz icu.tar.gz
    cd "$libsdir/extr"
    mkdir libxml
    cp "$libsdir/libxml.tar.xz" libxml/
@@ -160,15 +112,15 @@ export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/libxml/libxml2-2.15.1
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/sqlite/sqlite-autoconf-3510100
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/zlib/zlib-1.3.1/lib
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/oniguruma/onig-6.9.10/src
-export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/icu/icu/source/lib
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/icu/icu/icu-release-78.1/icu4c/source/lib
 export LIBXML_CFLAGS=-I$libsdir/libxml/libxml2-2.15.1/include
 export LIBXML_LIBS=-L$libsdir/libxml/libxml2-2.15.1
 export OPENSSL_CFLAGS=-I$libsdir/openssl/openssl-3.5.1/include
 export OPENSSL_LIBS=-L$libsdir/openssl/openssl-3.5.1/lib
 export PHP_SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-autoconf-3510100
 export PHP_SQLITE_LIBS=-L$libsdir/sqlite/sqlite-autoconf-3510100
-export ICU_CFLAGS=-I$libsdir/icu/icu/source/common
-export ICU_LIBS=-L$libsdir/icu/icu/source/lib
+export ICU_CFLAGS=-I$libsdir/icu/icu/icu-release-78.1/icu4c/sourc//common
+export ICU_LIBS=-L$libsdir/icu/icu/icu-release-78.1/icu4c/source/lib
 export ONIG_CFLAGS=-I$libsdir/oniguruma/onig-6.9.10/src
 export ONIG_LIBS=-L$libsdir/oniguruma/onig-6.9.10/src
 export ZLIB_CFLAGS=-I$libsdir/zlib/zlib-1.3.1/include
@@ -221,7 +173,7 @@ if [ "$op" = "true" ]; then
 
     make -j $(nproc)
 
-    cd "$libsdir/icu/icu/source"
+    cd "$libsdir/icu/icu/icu-release-78.1/icu4c/source/"
 
     ./configure --host=arm-linux-gnueabi
 
@@ -250,6 +202,14 @@ if [ "$op" = "true" ]; then
 fi
 
 if [ true ]; then
+
+    cd "$libsdir/openssl/openssl-3.5.1/"
+
+    ./Configure --with-gnu-ld --host=arm-linux-gnueabi
+
+    cd "$libsdir/libxml/libxml2-2.15.1/"
+
+    ./configure --without-debug --with-zlib --host=arm-linux-gnueabi --with-gnu-ld
 
     cd "$libsdir/php/php-8.5.0/"
 

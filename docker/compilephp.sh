@@ -22,7 +22,7 @@ if [ "$pak" = "true" ]; then
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    dpkg-statoverride --remove "/usr/bin/crontab"
    apt update && apt upgrade -y
-   apt install -y build-essential autoconf libtool binutils bison re2c wget2 tar gnulib gcc-15 libstdc++-15-dev libgcc-15-dev libstdc++6 libc6-dev pkgconf python3-icu libnpth0-dev libgnutls28-dev libpsl-dev libtestsweeper-dev libpthreadpool-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl
+   apt install -y build-essential autoconf libtool binutils bison re2c wget2 tar gnulib gcc-15 libstdc++-15-dev libgcc-15-dev libstdc++6 libc6-dev clang  pkgconf python3-icu libnpth0-dev libgnutls28-dev libpsl-dev libtestsweeper-dev libpthreadpool-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl
 fi
 
 if [ "$down" = "true" ]; then
@@ -138,9 +138,9 @@ export NTP_CFLAGS=-I$libsdir/ntp/ntp-4.2.8p18/include
 export LDFLAGS="-L/lib -L/usr/lib $LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
 export LD_LIBRARY_PATH="/lib:/usr/lib:$PKG_CONFIG_PATH"
 export PHP_INTL_STDCXX=17
-export ICU_CXXFLAGS="$ICU_CXXFLAGS -std=c++17 -shared-libgcc -shared-libstdc++"
+export ICU_CXXFLAGS="$ICU_CXXFLAGS -std=gnu17 -shared-libgcc -shared-libstdc++"
 export PHP_CXX_COMPILE_STDCXX=11
-export CXXFLAGS="$CXXFLAGS -shared-libgcc -shared-libstdc++ -std=c++11"
+export CXXFLAGS="$CXXFLAGS -shared-libgcc -shared-libstdc++ -std=gnu17"
 
 if [ "$op" = "true" ]; then
 

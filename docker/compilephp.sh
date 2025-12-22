@@ -151,7 +151,7 @@ if [ "$op" = "true" ]; then
 
     cd "$libsdir/openssl/openssl-3.5.1/"
 
-    ./Configure --with-gnu-ld --host=arm-linux-gnueabi
+    ./Configure
 
     make -j $(nproc)
 
@@ -205,7 +205,7 @@ if [ true ]; then
 
     cd "$libsdir/openssl/openssl-3.5.1/"
 
-    ./Configure --with-gnu-ld --host=arm-linux-gnueabi
+    ./Configure
 
     cd "$libsdir/libxml/libxml2-2.15.1/"
 

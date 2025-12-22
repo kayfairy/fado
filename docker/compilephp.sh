@@ -20,7 +20,7 @@ if [ "$pak" = "true" ]; then
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    dpkg-statoverride --remove "/usr/bin/crontab"
    apt update && apt upgrade -y
-   apt install -y build-essential autoconf libtool binutils bison re2c wget2 tar libc6-dev pkgconf python3-icu libnpth0-dev libgnutls28-dev libpsl-dev libtestsweeper-dev libstdc++6 libgcc-15-dev g++-15-arm-linux-gnueabi libpthreadpool-dev g++-arm-linux-gnueabi cpp-arm-linux-gnueabi
+   apt install -y build-essential autoconf libtool binutils bison re2c wget2 tar libc6-dev pkgconf python3-icu libnpth0-dev libgnutls28-dev libpsl-dev libtestsweeper-dev libstdc++6 libgcc-15-dev g++-15-arm-linux-gnueabi libpthreadpool-dev g++-arm-linux-gnueabi cpp-arm-linux-gnueabi libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl
 fi
 
 if [ "$down" = "true" ]; then
@@ -57,6 +57,7 @@ if [ "$extract" = "true" ]; then
    cp "$libsdir/icu.tgz" icu/
    cd icu
    tar xvf icu.tgz
+
     cd "$libsdir/extr/icu/icu/source/common/unicode"
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/ucal.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/ucol.h
@@ -82,7 +83,7 @@ if [ "$extract" = "true" ]; then
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/curramt.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/measure.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/currunit.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/measunit.hy
+    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/measunit.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/smpdtfmt.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/dtptngen.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/udatpg.h
@@ -93,15 +94,17 @@ if [ "$extract" = "true" ]; then
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/dtptngen.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/upluralrules.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/common/unicode/msgfmt.h
-    wget2 https://raw.githubusercontent.com/microsoft/icu/refs/heads/master/icu/icu4c/source/io/unicode/ustdio.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/common/unicode/utypes.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/uregex.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/tags/release-78.1/icu4c/source/common/unicode/ucnv.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/udat.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/datefmt.h
     wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/measunit.h
-    wget2 https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/msgfmt.h
     wget2 wget https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/i18n/unicode/tzfmt.h
+    wget2 https://raw.githubusercontent.com/kkamegawa/ICU4C_Nuget/refs/heads/master/include/unicode/tznames.h
+    wget2 https://raw.githubusercontent.com/kkamegawa/ICU4C_Nuget/refs/heads/master/include/unicode/ustdio.h
+    wget2 https://raw.githubusercontent.com/kkamegawa/ICU4C_Nuget/refs/heads/master/include/unicode/msgfmt.h
+
    cd "$libsdir/extr"
    mkdir libxml
    cp "$libsdir/libxml.tar.xz" libxml/
@@ -257,18 +260,23 @@ if [ true ]; then
     ./configure --enable-fpm=shared \
             --with-fpm-user=www-data \
             --with-fpm-group=www-data \
-            --enable-mbstring \
+            --with-fpm-systemd \
+            --with-fpm-acl \
+            --with-fpm-selinux \
+            --with-fpm-apparmor \
             --with-pdo-mysql=shared \
             --with-mysql-sock=/var/mysql/mysql.sock \
-            --enable-calendar \
-            --enable-intl \
             --with-libxml=shared \
             --with-gnu-ld \
+            --enable-calendar \
+            --enable-intl \
+            --enable-mbstring \
+            --enable-cli \
             --enable-soap \
             --disable-cgi \
             --disable-phpdbg \
-            --enable-cli \
             --host=arm-linux-gnueabi \
+            --with-libdir=lib64 \
 #            --enable-phpdbg-debug \
 #            --enable-debug
 

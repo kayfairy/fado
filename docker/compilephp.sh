@@ -22,7 +22,7 @@ if [ "$pak" = "true" ]; then
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    dpkg-statoverride --remove "/usr/bin/crontab"
    apt update && apt upgrade -y
-   apt install -y build-essential autoconf libtool binutils bison re2c wget2 tar gcc-12 libstdc++-12-dev gcc-13 libstdc++-13-dev gcc-15 libstdc++-15-dev libstdc++6 libc6-dev pkgconf python3-icu libnpth0-dev libgnutls28-dev libpsl-dev libtestsweeper-dev libpthreadpool-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl
+   apt install -y build-essential autoconf libtool binutils bison re2c wget2 tar gnulib gcc-15 libstdc++-15-dev libgcc-15-dev libstdc++6 libc6-dev pkgconf python3-icu libnpth0-dev libgnutls28-dev libpsl-dev libtestsweeper-dev libpthreadpool-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl
 fi
 
 if [ "$down" = "true" ]; then
@@ -204,7 +204,7 @@ fi
 
 if [ true ]; then
 
-    cd "$libsdir/extr/php/php-8.5.1/"
+    cd "$libsdir/php/php-8.5.1/"
 
     make clean
 

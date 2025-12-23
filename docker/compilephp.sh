@@ -22,7 +22,7 @@ if [ "$pak" = "true" ]; then
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    dpkg-statoverride --remove "/usr/bin/crontab"
    apt update && apt upgrade -y
-   apt install -y build-essential autoconf libtool binutils bison re2c wget2 tar gnulib gcc-15 glibc-source libstdc++-15-dev libgcc-15-dev libstdc++6 libc6-dev clang  pkgconf python3-icu libgnutls28-dev libpsl-dev libtestsweeper-dev libpthreadpool-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl
+   apt install -y build-essential autoconf libtool binutils bison re2c wget2 tar unzip gnulib gcc-15 glibc-source libstdc++-15-dev libgcc-15-dev libstdc++6 libc6-dev clang  pkgconf python3-icu libgnutls28-dev libpsl-dev libtestsweeper-dev libpthreadpool-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl
 fi
 
 if [ "$down" = "true" ]; then
@@ -31,7 +31,7 @@ if [ "$down" = "true" ]; then
    cd "$libsdir"
    wget2 -O zlib.tar.gz https://zlib.net/zlib-1.3.1.tar.gz
    wget2 -O oniguruma.tar.gz https://github.com/kkos/oniguruma/releases/download/v6.9.10/onig-6.9.10.tar.gz
-   wget2 -O icu.tar.gz https://github.com/unicode-org/icu/archive/refs/tags/release-78.1.tar.gz
+   wget2 -O icu.zip https://github.com/unicode-org/icu/archive/refs/tags/release-78.1.zip
    wget2 -O libxml.tar.xz https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.1.tar.xz
    wget2 -O openssl.tar.gz https://github.com/openssl/openssl/releases/download/openssl-3.5.1/openssl-3.5.1.tar.gz
    wget2 -O php.tar.bz2 https://www.php.net/distributions/php-8.5.1.tar.bz2
@@ -56,9 +56,9 @@ if [ "$extract" = "true" ]; then
    tar xvfz oniguruma.tar.gz
    cd "$libsdir/extr"
    mkdir icu
-   cp "$libsdir/icu.tar.gz" icu/
+   cp "$libsdir/icu.zip" icu/
    cd icu
-   tar xvfz icu.tar.gz
+   unzip icu.zip
    cd "$libsdir/extr"
    mkdir libxml
    cp "$libsdir/libxml.tar.xz" libxml/

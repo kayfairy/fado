@@ -10,7 +10,7 @@
  *
  */
 
-$lang = מערך(
+$lang = array(
     'PROGRAM_NAME' => 'פאדו',
     'PROGRAM_TITLE' => 'פאדו',
     'PROGRAM_TITLE_LOGIN' => 'פאדו - כניסה',

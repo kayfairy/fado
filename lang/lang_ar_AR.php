@@ -10,7 +10,7 @@
  *
  */
 
-$ لانج = صفيف(
+$lang  = array(
     'PROGRAM_NAME' => 'فادو',
     'PROGRAM_TITLE' => 'فادو',
     'PROGRAM_TITLE_LOGIN' => 'فادو - تسجيل الدخول',

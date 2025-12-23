@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Fichier de langue pour le Fado
  *
@@ -11,7 +10,7 @@
  *
  */
 
-$lang = tableau(
+$lang = array(
     'PROGRAM_NAME' => 'Fado',
     'PROGRAM_TITLE' => 'Fado',
     'PROGRAM_TITLE_LOGIN' => 'Fado - Connexion',

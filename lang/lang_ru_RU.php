@@ -10,7 +10,7 @@
  *
  */
 
-$lang = массив(
+$lang = array(
     'PROGRAM_NAME' => 'Фадо',
     'PROGRAM_TITLE' => 'Фадо',
     'PROGRAM_TITLE_LOGIN' => 'Фаду - Вход',

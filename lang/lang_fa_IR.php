@@ -10,7 +10,7 @@
  *
  */
 
-$lang = آرایه(
+$lang = array(
     'PROGRAM_NAME' => 'فادو',
     'PROGRAM_TITLE' => 'فادو',
     'PROGRAM_TITLE_LOGIN' => 'فادو - ورود به سیستم',

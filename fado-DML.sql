@@ -148,7 +148,7 @@ CREATE TABLE `fado_settings` (
 
 INSERT INTO `fado_settings` (`id`, `name`, `value`, `changed`, `created`) VALUES
 (1,	'encoding',	'UTF-8',	NULL,	'2023-05-07 12:40:28'),
-(2,	'lang_available',	'[\"en_GB\",\"de_DE\",\"tr_TR\",\"es_ES\",\"nl_NL\"]',	NULL,	'2023-05-07 12:40:28'),
+(2,	'lang_available',	'[\"en_GB\",\"de_DE\",\"tr_TR\",\"es_ES\",\"nl_NL\",\"fr_FR\",\"fa_IR\",\"ru_RU\",\"iw_IL\",\"ar_AR\"]',	NULL,	'2023-05-07 12:40:28'),
 (3,	'date_time_format_available',	'{\"lang\":\"%c\",\"en_GB\":\"%Y/%m/%d %H:%M:%S\",\"en_US\":\"%d-%m-%Y %H:%M:%S\",\"UTC\":\"%x %H:%M:%S\",\"UTC2\":\"%a, %d. %b %Y %H:%M:%S\",\"UTC3\":\"%A %d. %B %Y %H:%M:%S\",\"de_DE\":\"%d.%m.%Y %H:%M:%S\"}',	NULL,	'2023-05-07 12:40:28'),
 (4,	'cookiename',	'FADO',	NULL,	'2023-05-07 12:40:28'),
 (5,	'cookielife_hours',	'8',	NULL,	'2023-05-07 12:40:28'),

@@ -39,6 +39,8 @@ if [ "$down" = "true" ]; then
    wget2 -O curl.tar.gz https://curl.se/download/curl-8.15.0.tar.gz
    wget2 -O sqlite.tar.gz https://sqlite.org/2025/sqlite-autoconf-3510100.tar.gz
    wget2 -O ntp.tar.gz https://downloads.nwtime.org/ntp/ntp-4.2.8p18.tar.gz
+   wget2 -O httpd.tar.bz2 https://dlcdn.apache.org/httpd/httpd-2.4.66.tar.bz2
+   wget2 -O httpdfcgi.tar.bz2 https://dlcdn.apache.org/httpd/mod_fcgid/mod_fcgid-2.3.9.tar.bz2
 fi
 
 if [ "$extract" = "true" ]; then
@@ -94,6 +96,14 @@ if [ "$extract" = "true" ]; then
    cp "$libsdir/sqlite.tar.gz" sqlite/
    cd sqlite/
    tar xvfz sqlite.tar.gz
+   mkdir httpd
+   cp "$libsdir/httpd.tar.bz2" httpd/
+   cd httpd/
+   tar xvf httpd.tar.bz2
+mkdir httpd
+   cp "$libsdir/httpdfcgi.tar.bz2" httpdfcgi/
+   cd httpdfcgi/
+   tar xvf httpdfcgi.tar.bz2
    cd "$libsdir/extr"
    rm -r php/
    mkdir php
@@ -235,6 +245,25 @@ if [ true ]; then
      make -j $(nproc)
 
      make install
+
+     cd "$libsdir/httpd/httpd-2.4.66"
+
+     ./configure --prefix=/opt/apache \
+     --enable-rewrite=shared \
+     --enable-speling=shared
+
+     make -j 7
+
+     make install
+
+     cd "$libsdir/httpdfcgi/mod_fcgid-2.3.9"
+
+    ./configure.apxs
+
+    make
+
+    make install
+
 fi
 
 php -v

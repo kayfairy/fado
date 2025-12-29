@@ -259,6 +259,6 @@ $lang = array(
     'ERROR_403' => 'خطای 403',
     'ERROR_403_TEXT' => 'مجوز رد شد.',
 /***/
-)
+);
 
 return $lang;

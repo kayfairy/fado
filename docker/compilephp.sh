@@ -22,7 +22,7 @@ if [ "$pak" = "true" ]; then
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    dpkg-statoverride --remove "/usr/bin/crontab"
    apt update && apt upgrade -y
-   apt install -y build-essential autoconf libtool binutils bison re2c wget2 tar unzip gnulib gcc-15 glibc-source libstdc++-15-dev libgcc-15-dev libstdc++6 libc6-dev clang  pkgconf python3-icu libgnutls28-dev libpsl-dev libtestsweeper-dev libpthreadpool-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl libpthreadpool-dev libevent-dev libgclib-dev
+   apt install -y build-essential autoconf libtool binutils bison re2c wget2 tar unzip gnulib gcc-15 glibc-source libstdc++-15-dev libgcc-15-dev libstdc++6 libc6-dev clang  pkgconf python3-icu libgnutls28-dev libpsl-dev libtestsweeper-dev libpthreadpool-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl libpthreadpool-dev libevent-dev libgclib-dev libnpth0-dev
 fi
 
 if [ "$down" = "true" ]; then
@@ -41,6 +41,7 @@ if [ "$down" = "true" ]; then
    wget2 -O ntp.tar.gz https://downloads.nwtime.org/ntp/ntp-4.2.8p18.tar.gz
    wget2 -O httpd.tar.bz2 https://dlcdn.apache.org/httpd/httpd-2.4.66.tar.bz2
    wget2 -O httpdfcgi.tar.bz2 https://dlcdn.apache.org/httpd/mod_fcgid/mod_fcgid-2.3.9.tar.bz2
+   wget2 -O gnupth.tar.gz ftp://ftp.gnu.org/gnu/pth/pth-2.0.7.tar.gz
 fi
 
 if [ "$extract" = "true" ]; then
@@ -72,6 +73,11 @@ if [ "$extract" = "true" ]; then
    cd ntp/
    tar xzvf ntp.tar.gz
    cd "$libsdir/extr"
+   mkdir gnupth
+   cp "$libsdir/gnupth.tar.gz" gnupth/
+   cd gnupth/
+   tar xvfz gnupth.tar.gz
+   cd "$libsdir/extr"
    mkdir curl
    cp "$libsdir/curl.tar.bz2" curl/
    cd curl/
@@ -100,7 +106,7 @@ if [ "$extract" = "true" ]; then
    cp "$libsdir/httpd.tar.bz2" httpd/
    cd httpd/
    tar xvf httpd.tar.bz2
-mkdir httpd
+   mkdir httpd
    cp "$libsdir/httpdfcgi.tar.bz2" httpdfcgi/
    cd httpdfcgi/
    tar xvf httpdfcgi.tar.bz2
@@ -145,8 +151,9 @@ export SQLITE_LIBS=-L$libsdir/sqlite/sqlite-autoconf-3510100
 export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-autoconf-3510100
 export NTP_LIBS=-L$libsdir/ntp/ntp-4.2.8p18/lib
 export NTP_CFLAGS=-I$libsdir/ntp/ntp-4.2.8p18/include
-export LDFLAGS="-L/lib -L/usr/lib $LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
-export LD_LIBRARY_PATH="/lib:/usr/lib:$PKG_CONFIG_PATH"
+export GNU_PTH=-L$libsdir/gnupth/pth-2.0.7
+export LDFLAGS="-L/lib -L/usr/lib -I/usr/local/include -lpthread -lm $GNU_PTH $LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
+export LD_LIBRARY_PATH="/lib:/usr/lib:/usr/local/include:$PKG_CONFIG_PATH"
 export PHP_INTL_STDCXX=17
 export ICU_CXXFLAGS="$ICU_CXXFLAGS -std=c++17"
 export PHP_CXX_COMPILE_STDCXX=11
@@ -160,9 +167,15 @@ if [ "$op" = "true" ]; then
 
     make -j $(nproc)
 
+    cd "$libsdir/gnupth/pth-2.0.7"
+
+    ./configure --host=armv4l --enable-pthread --build=armv4l
+
+    make -j $(nproc)
+
     cd "$libsdir/zlib/zlib-1.3.1/"
 
-    ./configure
+   ./configure
 
     make -j $(nproc)
 

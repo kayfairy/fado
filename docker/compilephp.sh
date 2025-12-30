@@ -22,7 +22,7 @@ if [ "$pak" = "true" ]; then
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    dpkg-statoverride --remove "/usr/bin/crontab"
    apt update && apt upgrade -y
-   apt install -y build-essential autoconf libtool binutils bison re2c wget2 tar unzip gnulib gcc-15 glibc-source libstdc++-15-dev libgcc-15-dev libstdc++6 libc6-dev clang  pkgconf python3-icu libgnutls28-dev libpsl-dev libtestsweeper-dev libpthreadpool-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl libpthreadpool-dev libevent-dev libgclib-dev libnpth0-dev
+   apt install -y build-essential autoconf libtool binutils bison re2c wget2 tar unzip gnulib gcc-15 glibc-source libstdc++-15-dev libgcc-15-dev libstdc++6 libc6-dev clang  pkgconf python3-icu libgnutls28-dev libpsl-dev libtestsweeper-dev libpthreadpool-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl libpthreadpool-dev libevent-dev libgclib-dev libnpth0-dev libglib2.0-dev
 fi
 
 if [ "$down" = "true" ]; then

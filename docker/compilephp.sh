@@ -22,26 +22,26 @@ if [ "$pak" = "true" ]; then
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    dpkg-statoverride --remove "/usr/bin/crontab"
    apt update && apt upgrade -y
-   apt install -y build-essential autoconf libtool binutils bison re2c wget2 tar unzip gnulib gcc-15 glibc-source libstdc++-15-dev libgcc-15-dev libstdc++6 libc6-dev clang  pkgconf python3-icu libgnutls28-dev libpsl-dev libtestsweeper-dev libpthreadpool-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl libpthreadpool-dev libevent-dev libgclib-dev libnpth0-dev libglib2.0-dev
+   apt install -y build-essential autoconf libtool binutils bison re2c curl tar unzip gnulib gcc-15 glibc-source libstdc++-15-dev libgcc-15-dev libstdc++6 libc6-dev clang pkgconf python3-icu libgnutls28-dev libpsl-dev libtestsweeper-dev libpthreadpool-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl libpthreadpool-dev libevent-dev libgclib-dev libnpth0-dev libglib2.0-dev
 fi
 
 if [ "$down" = "true" ]; then
    rm -r "$libsdir"
    mkdir "$libsdir"
    cd "$libsdir"
-   wget2 -O zlib.tar.gz https://zlib.net/zlib-1.3.1.tar.gz
-   wget2 -O oniguruma.tar.gz https://github.com/kkos/oniguruma/releases/download/v6.9.10/onig-6.9.10.tar.gz
-   wget2 -O icu.zip https://github.com/unicode-org/icu/archive/refs/tags/release-78.1.zip
-   wget2 -O libxml.tar.xz https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.1.tar.xz
-   wget2 -O openssl.tar.gz https://github.com/openssl/openssl/releases/download/openssl-3.5.1/openssl-3.5.1.tar.gz
-   wget2 -O php.tar.bz2 https://www.php.net/distributions/php-8.5.1.tar.bz2
-   wget2 -O gettext.tar.gz https://ftp.gnu.org/pub/gnu/gettext/gettext-0.26.tar.gz
-   wget2 -O curl.tar.gz https://curl.se/download/curl-8.15.0.tar.gz
-   wget2 -O sqlite.tar.gz https://sqlite.org/2025/sqlite-autoconf-3510100.tar.gz
-   wget2 -O ntp.tar.gz https://downloads.nwtime.org/ntp/ntp-4.2.8p18.tar.gz
-   wget2 -O httpd.tar.bz2 https://dlcdn.apache.org/httpd/httpd-2.4.66.tar.bz2
-   wget2 -O httpdfcgi.tar.bz2 https://dlcdn.apache.org/httpd/mod_fcgid/mod_fcgid-2.3.9.tar.bz2
-   wget2 -O gnupth.tar.gz ftp://ftp.gnu.org/gnu/pth/pth-2.0.7.tar.gz
+   curl --output zlib.tar.gz -X http --url https://zlib.net/zlib-1.3.1.tar.gz
+   curl --output oniguruma.tar.gz -X http --url https://github.com/kkos/oniguruma/releases/download/v6.9.10/onig-6.9.10.tar.gz
+   curl --output icu.zip -X http --url https://github.com/unicode-org/icu/archive/refs/tags/release-78.1.zip
+   curl --output libxml.tar.xz -X http --url https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.1.tar.xz
+   curl --output openssl.tar.gz -X http --url https://github.com/openssl/openssl/releases/download/openssl-3.5.1/openssl-3.5.1.tar.gz
+   curl --output php.tar.bz2 -X http --url https://www.php.net/distributions/php-8.5.1.tar.bz2
+   curl --output gettext.tar.gz -X http --url https://ftp.gnu.org/pub/gnu/gettext/gettext-0.26.tar.gz
+   curl --output curl.tar.gz --url https://curl.se/download/curl-8.17.0.tar.gz
+   curl --output sqlite.tar.gz -X http --url https://sqlite.org/2025/sqlite-autoconf-3510100.tar.gz
+   curl --output ntp.tar.gz curl -X http --url https://downloads.nwtime.org/ntp/ntp-4.2.8p18.tar.gz
+   curl --output httpd.tar.bz2 -X http --url https://dlcdn.apache.org/httpd/httpd-2.4.66.tar.bz2
+   curl --output httpdfcgi.tar.bz2 -X http --url https://dlcdn.apache.org/httpd/mod_fcgid/mod_fcgid-2.3.9.tar.bz2
+   curl --output gnupth.tar.gz -X ftp --url ftp://ftp.gnu.org/gnu/pth/pth-2.0.7.tar.gz
 fi
 
 if [ "$extract" = "true" ]; then
@@ -163,9 +163,9 @@ if [ "$op" = "true" ]; then
 
     cd "$libsdir/openssl/openssl-3.5.1/"
 
-    ./Configure
+#    ./Configure
 
-    make -j $(nproc)
+ #   make -j $(nproc)
 
     cd "$libsdir/gnupth/pth-2.0.7"
 
@@ -173,17 +173,17 @@ if [ "$op" = "true" ]; then
 
     make -j $(nproc)
 
-    cd "$libsdir/zlib/zlib-1.3.1/"
+#    cd "$libsdir/zlib/zlib-1.3.1/"
 
-   ./configure
+ #   ./configure
 
-    make -j $(nproc)
+  #  make -j $(nproc)
 
     cd "$libsdir/libxml/libxml2-2.15.1/"
 
-    ./configure --without-debug --with-zlib --with-gnu-ld
+  #  ./configure --without-debug --with-zlib --with-gnu-ld
 
-    make -j $(nproc)
+   # make -j $(nproc)
 
     cd "$libsdir/ntp/ntp-4.2.8p18"
 
@@ -193,15 +193,15 @@ if [ "$op" = "true" ]; then
 
     cd "$libsdir/gettext/gettext-0.26"
 
-    ./configure
+   # ./configure
 
-    make -j $(nproc)
+   # make -j $(nproc)
 
-    cd "$libsdir/icu/icu-release-78.1/icu4c/source/"
+#    cd "$libsdir/icu/icu-release-78.1/icu4c/source/"
 
-    ./configure
+ #   ./configure
 
-    make -j $(nproc)
+  #  make -j $(nproc)
 
     cd "$libsdir/curl/curl-8.15.0/"
 
@@ -251,6 +251,8 @@ if [ true ]; then
             --enable-soap \
             --disable-cgi \
             --disable-phpdbg \
+            --disable-xmlreader \
+            --disable-xmlwriter \
             --with-libdir=lib64 \
 #            --enable-phpdbg-debug \
 #            --enable-debug

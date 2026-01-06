@@ -250,6 +250,8 @@ if [ true ]; then
             --enable-mbstring \
             --enable-cli \
             --enable-soap \
+            --disable-xmlwriter \
+            --disable-xmlreader \
             --disable-cgi \
             --disable-phpdbg \
             --prefix="/usr/local/bin" \

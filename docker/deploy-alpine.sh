@@ -4,6 +4,8 @@
 # cd /var/www/html/docker
 # busybox sh deploy-alpine.sh
 
+export XDG_RUNTIME_DIR=/run/$(id -u)
+
 cwd=$(dirname "$0")
 
 if [ -f /var/www/isdeployed ]; then
@@ -21,34 +23,22 @@ fi
 
 echo "Download & install packages"
 
-apk add openrc udev-init-scripts-openrc apache2 php php-fpm php-intl php-pdo_mysql php-mbstring php-cli mariadb php-memcache memcached htop nano clang
+apk add openrc udev-init-scripts-openrc apache2 php php-fpm php-intl php-pdo_mysql php-mbstring php-cli mariadb php-memcache memcached htop nano musl-locales mariadb-common mariadb-openrc mariadb-connector-c
 
-echo "Compile locales"
-
-localedef -f UTF-8 -i tr_TR tr_TR.utf8
-localedef -f UTF-8 -i de_DE de_DE.utf8
-localedef -f UTF-8 -i en_GB en_GB.utf8
-localedef -f UTF-8 -i es_ES es_ES.utf8
-localedef -f UTF-8 -i fr_FR fr_FR.utf8
-localedef -f UTF-8 -i fa_IR fa_IR.utf8
-localedef -f UTF-8 -i iw_IL iw_IL.utf8
-localedef -f UTF-8 -i ar_AR ar_AR.utf8
-localedef -f UTF-8 -i ru_RU ru_RU.utf8
-
-
+adduser -D www-data
 chown -R www-data $cwd/*
 chmod -R 770 $cwd/*
-chgrp -R www-data $cwd/*
 
 echo "Start & prepare MariaDB"
 
-service mariadb restart
+adduser -D mariadbd
+/etc/init.d/mariadb -U start
 
-mariadb -u root -e "CREATE USER IF NOT EXISTS fado@localhost IDENTIFIED BY 'rood';"
-mariadb -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'fado'@'localhost' WITH GRANT OPTION; FLUSH PRIVILEGES;"
-mariadb -u root -e "DROP DATABASE IF EXISTS fado; CREATE DATABASE fado DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;"
-mariadb -u root -e "GRANT ALL PRIVILEGES ON fado.* TO 'fado'@'localhost' WITH GRANT OPTION; FLUSH PRIVILEGES;"
-mariadb -u fado -prood fado < /var/www/html/fado-DML.sql
+mariadbd -u root -e "CREATE USER IF NOT EXISTS fado@localhost IDENTIFIED BY 'rood';"
+mariadbd -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'fado'@'localhost' WITH GRANT OPTION; FLUSH PRIVILEGES;"
+mariadbd -u root -e "DROP DATABASE IF EXISTS fado; CREATE DATABASE fado DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;"
+mariadbd -u root -e "GRANT ALL PRIVILEGES ON fado.* TO 'fado'@'localhost' WITH GRANT OPTION; FLUSH PRIVILEGES;"
+mariadbd -u fado -prood fado < /var/www/html/fado-DML.sql
 
 rm /var/www/html/database.csv
 
@@ -139,7 +129,6 @@ EOF
 rm /var/www/html/index.html
 ln -s /etc/apache2/sites-available/fado.conf /etc/apache2/sites-enabled/fado.conf
 
-export XDG_RUNTIME_DIR=/run/$(id -u)
 mkdir -p /run/0/openrc
 touch /run/0/openrc/softlevel
 
@@ -150,7 +139,6 @@ touch /run/0/openrc/softlevel
 /usr/sbin/a2enconf php-fpm
 
 adduser -D apache
-adduser -D mariadb
 adduser -D memcached
 
 /etc/init.d/apache2 -U restart

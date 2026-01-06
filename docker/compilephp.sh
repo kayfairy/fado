@@ -21,8 +21,8 @@ if [ "$pak" = "true" ]; then
    dpkg-statoverride --remove "/etc/ssl/private"
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    dpkg-statoverride --remove "/usr/bin/crontab"
-   apt update && apt upgrade -y
-   apt install -y build-essential autoconf libtool binutils bison re2c wget wget2 tar unzip gnulib gcc glibc-source libstdc++-15-dev libgcc-15-dev libstdc++-14-dev libgcc-14-dev libstdc++6 libc6-dev clang pkgconf python3-icu libgnutls28-dev libpsl-dev libtestsweeper-dev libpthreadpool-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl libpthreadpool-dev libevent-dev libgclib-dev libnpth0-dev libglib2.0-dev libxml2-dev python3-libxml2
+   apt update && apt upgrade -y && apt install -y fish
+   apt install -y make build-essential autoconf libtool binutils bison re2c wget wget2 tar unzip gnulib gcc glibc-source lld llvm-dev libstdc++-14-dev libgcc-14-dev libstdc++6 libc6-dev clang pkgconf python3-icu libgnutls28-dev libpsl-dev libtestsweeper-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl libpthreadpool-dev libevent-dev libgclib-dev libnpth0-dev libglib2.0-dev libxml2-dev python3-libxml2
 fi
 
 if [ "$down" = "true" ]; then
@@ -152,14 +152,14 @@ export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-autoconf-3510100
 export NTP_LIBS=-L$libsdir/ntp/ntp-4.2.8p18/lib
 export NTP_CFLAGS=-I$libsdir/ntp/ntp-4.2.8p18/include
 export GNU_PTH=-L$libsdir/gnupth/pth-2.0.7
-export LDFLAGS="-L/lib -L/usr/lib -I/usr/local/include -lpthread -lm $GNU_PTH $LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
+export LDFLAGS="-rdynamic -pthread -lm -L/lib -L/usr/lib -I/usr/local/include $GNU_PTH $LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
+export LIBS="$LIBS $LDFLAGS"
 export LD_LIBRARY_PATH="/lib:/usr/lib:/usr/local/include:$PKG_CONFIG_PATH"
-export PHP_INTL_STDCXX=17
+export PATH="$PATH $LD_LIBRARY_PATH"
 export ICU_CXXFLAGS="$ICU_CXXFLAGS -std=c++17"
-export PHP_CXX_COMPILE_STDCXX=11
-export CXXFLAGS="$CXXFLAGS -std=c++17"
-export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
-export CC="/usr/bin/gcc"
+export CXXFLAGS="$CXXFLAGS -std=c++17 -std=gnu99 -std=c99"
+export CC=$(which gcc)
+export LD=$(which ld)
 
 if [ "$op" = "true" ]; then
 
@@ -189,7 +189,7 @@ if [ "$op" = "true" ]; then
 
     cd "$libsdir/ntp/ntp-4.2.8p18"
 
-    ./configure --with-crypto=openssl --with-openssl-libdir=$libsdir/openssl/openssl-3.5.1 --with-openssl-incdir=$libsdir/openssl/openssl-3.5.1/include --with-gnu-ld
+    ./configure --with-crypto=openssl --with-openssl-libdir=$libsdir/openssl/openssl-3.5.1 --with-openssl-incdir=$libsdir/openssl/openssl-3.5.1/include
 
     make -j $(nproc)
 
@@ -243,7 +243,7 @@ if [ true ]; then
             --with-fpm-selinux \
             --with-fpm-apparmor \
             --with-pdo-mysql=shared \
-            --with-mysql-sock=/var/mysqld/mysqld.pid \
+            --with-mysql-sock="/var/mysqld/mysqld.pid" \
             --with-libxml=shared \
             --enable-calendar \
             --enable-intl \
@@ -252,7 +252,7 @@ if [ true ]; then
             --enable-soap \
             --disable-cgi \
             --disable-phpdbg \
-            --prefix=/usr/local/bin \
+            --prefix="/usr/local/bin" \
             --with-libdir=lib64 \
 #            --enable-phpdbg-debug \
 #            --enable-debug
@@ -273,11 +273,11 @@ if [ true ]; then
 
      cd "$libsdir/httpdfcgi/mod_fcgid-2.3.9"
 
-    ./configure.apxs
+     ./configure
 
-    make
+     make
 
-    make install
+     make install
 
 fi
 

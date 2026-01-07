@@ -23,7 +23,7 @@ fi
 
 echo "Download & install packages"
 
-apk add openrc udev-init-scripts-openrc apache2 php php-fpm php-intl php-pdo_mysql php-mbstring php-cli mariadb php-memcache memcached htop nano musl-locales mariadb-common mariadb-openrc mariadb-connector-c
+apk add openrc udev-init-scripts-openrc apache2 php php-fpm php-intl php-pdo_mysql php-mbstring php-cli mariadb php-memcache memcached htop nano musl-locales mariadb-common mariadb-openrc mariadb-connector-c apache2-ssl
 
 adduser -D www-data
 chown -R www-data $cwd/*
@@ -31,7 +31,8 @@ chmod -R 770 $cwd/*
 
 echo "Start & prepare MariaDB"
 
-adduser -D mariadbd
+adduser -D mariadb
+
 /etc/init.d/mariadb -U start
 
 mariadbd -u root -e "CREATE USER IF NOT EXISTS fado@localhost IDENTIFIED BY 'rood';"
@@ -54,6 +55,9 @@ EOF
 
 echo "Configure and start Apache webserver and memcached RAM"
 
+sed -i -e 's/#LoadModule http2_module/LoadModule http2_module/g' /etc/apchache2/conf.d/default.conf
+sed -i -e 's/#LoadModule rewrite_module/LoadModule rewrite_module/g' /etc/apchache2/conf.d/default.conf
+
 rm /etc/apache2/sites-available/*
 rm /etc/apache2/sites-enabled/*
 
@@ -70,6 +74,10 @@ ServerName fado.org
             Header set Access-Control-Allow-Credentials "true"
             Header set Access-Control-Max-Age "3600"
         </IfModule>
+
+        <FilesMatch \.(php|phtml)$>
+            SetHandler "proxy:fcgi://127.0.0.1:9000"
+        </FilesMatch>
 
         <IfModule mod_ssl.c>
             <IfModule mod_rewrite.c>
@@ -104,6 +112,10 @@ ServerName fado.org
             Header set Access-Control-Allow-Credentials "true"
         </IfModule>
 
+        <FilesMatch \.(php|phtml)$>
+            SetHandler "proxy:fcgi://127.0.0.1:9000"
+        </FilesMatch>
+
         <IfModule mod_rewrite.c>
             RewriteEngine on
             RewriteCond %{REQUEST_FILENAME} !-d
@@ -132,11 +144,7 @@ ln -s /etc/apache2/sites-available/fado.conf /etc/apache2/sites-enabled/fado.con
 mkdir -p /run/0/openrc
 touch /run/0/openrc/softlevel
 
-/usr/sbin/a2enmod rewrite
-/usr/sbin/a2enmod headers
-#/usr/sbin/a2enmod ssl
-/usr/sbin/a2enmod proxy_fcgi setenvif
-/usr/sbin/a2enconf php-fpm
+#rm /etc/apchache2/conf.d/ssl.conf
 
 adduser -D apache
 adduser -D memcached
@@ -153,5 +161,5 @@ adduser -D memcached
 
 touch /var/www/isdeployed
 echo "true" > /var/www/isdeployed
-tail -f /var/log/apache2/other_vhosts_access.log
+tail -f /var/log/apache2/access.log
 exit 0

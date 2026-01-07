@@ -33,6 +33,7 @@ echo "Start & prepare MariaDB"
 
 adduser -D mariadb
 
+/etc/init.d/mariadb -U setup
 /etc/init.d/mariadb -U start
 
 mariadbd -u root -e "CREATE USER IF NOT EXISTS fado@localhost IDENTIFIED BY 'rood';"
@@ -144,7 +145,7 @@ ln -s /etc/apache2/sites-available/fado.conf /etc/apache2/sites-enabled/fado.con
 mkdir -p /run/0/openrc
 touch /run/0/openrc/softlevel
 
-#rm /etc/apchache2/conf.d/ssl.conf
+rm /etc/apchache2/conf.d/ssl.conf
 
 adduser -D apache
 adduser -D memcached

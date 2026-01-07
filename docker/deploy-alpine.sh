@@ -1,14 +1,26 @@
 #!/bin/bash
 #
-# udocker run --entrypoint="/bin/busybox sh" --volume="/data/data/com.termux/files/home/git/fado/:/var/www/html" alpine:latest
-# cd /var/www/html/docker
+# udocker run --entrypoint="/bin/busybox sh" --volume="/data/data/com.termux/files/home/git/fado/:/var/www/localhost/htdocs" alpine:latest
+# cd /var/www/localhost/htdocs/
 # busybox sh deploy-alpine.sh
 
 export XDG_RUNTIME_DIR=/run/$(id -u)
+mkdir -p /run/openrc/
+touch /run/openrc/softlevel
+mkdir -p /run/0/openrc
+touch /run/0/openrc/softlevel
+adduser -D apache
+adduser -D memcached
+adduser -D mariadb
+adduser -D mysql
 
 cwd=$(dirname "$0")
 
 if [ -f /var/www/isdeployed ]; then
+    chown -c -R mysql /var/lib/mysql
+    chmod -R 777 /var/lib/mysql
+    mv /var/lib/mysql/aria_log_control /var/lib/mysql/aria_log_control.orig
+    apk fix mariadb
     /etc/init.d/apache2 -U restart
     /etc/init.d/mariadb -U restart
     /etc/init.d/php-fpm84 -U restart
@@ -17,34 +29,38 @@ if [ -f /var/www/isdeployed ]; then
     /etc/init.d/mariadb -U status
     /etc/init.d/php-fpm84 -U status
     /etc/init.d/memcached -U status
-    tail -f /var/log/apache2/other_vhosts_access.log
+    rc-service -l -s -U
+    rc-status -a -U
+    tail -f /var/log/apache2/access.log
     exit 0
 fi
 
 echo "Download & install packages"
 
-apk add openrc udev-init-scripts-openrc apache2 php php-fpm php-intl php-pdo_mysql php-mbstring php-cli mariadb php-memcache memcached htop nano musl-locales mariadb-common mariadb-openrc mariadb-connector-c apache2-ssl
+apk add openrc udev-init-scripts-openrc apache2 php php-fpm php-intl php-pdo_mysql php-mbstring php-cli mariadb php-memcache memcached htop nano musl-locales mariadb-common mariadb-openrc mariadb-connector-c apache2-http2 apache2-ssl apache2-proxy
 
-adduser -D www-data
-chown -R www-data $cwd/*
+chown -R apache $cwd/*
 chmod -R 770 $cwd/*
 
 echo "Start & prepare MariaDB"
 
-adduser -D mariadb
-
+apk fix mariadb
+rm -rf /var/lib/mysql/
 /etc/init.d/mariadb -U setup
+chown -c -R mysql /var/lib/mysql
+chmod -R 777 /var/lib/mysql
+mv /var/lib/mysql/aria_log_control /var/lib/mysql/aria_log_control.orig
 /etc/init.d/mariadb -U start
 
 mariadbd -u root -e "CREATE USER IF NOT EXISTS fado@localhost IDENTIFIED BY 'rood';"
 mariadbd -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'fado'@'localhost' WITH GRANT OPTION; FLUSH PRIVILEGES;"
 mariadbd -u root -e "DROP DATABASE IF EXISTS fado; CREATE DATABASE fado DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;"
 mariadbd -u root -e "GRANT ALL PRIVILEGES ON fado.* TO 'fado'@'localhost' WITH GRANT OPTION; FLUSH PRIVILEGES;"
-mariadbd -u fado -prood fado < /var/www/html/fado-DML.sql
+mariadbd -u fado -prood fado < /var/www/localhost/htdocs/fado-DML.sql
 
-rm /var/www/html/database.csv
+rm /var/www/localhost/htdocs/database.csv
 
-cat <<EOF >> /var/www/html/database.csv
+cat <<EOF >> /var/www/localhost/htdocs/database.csv
 user;fado
 pwd;rood
 db;fado
@@ -56,18 +72,22 @@ EOF
 
 echo "Configure and start Apache webserver and memcached RAM"
 
-sed -i -e 's/#LoadModule http2_module/LoadModule http2_module/g' /etc/apchache2/conf.d/default.conf
-sed -i -e 's/#LoadModule rewrite_module/LoadModule rewrite_module/g' /etc/apchache2/conf.d/default.conf
+sed -i -e 's/#LoadModule http2_module/LoadModule http2_module/g' /etc/apache2/httpd.conf
+sed -i -e 's/#LoadModule rewrite_module/LoadModule rewrite_module/g' /etc/apache2/httpd.conf
+sed -i -e 's/LoadModule mpm_worker_module/#LoadModule mpm_worker_module/g' /etc/apache2/httpd.conf
+sed -i -e 's/#LoadModule mpm_event_module/LoadModule mpm_event_module/g' /etc/apache2/httpd.conf
+sed -i -e 's/LoadModule mpm_prefork_module/#LoadModule mpm_prefork_module/g' /etc/apache2/httpd.conf
 
-rm /etc/apache2/sites-available/*
-rm /etc/apache2/sites-enabled/*
+rm /etc/apache2/conf.d/default.conf
 
-cat <<EOF >> /etc/apache2/sites-available/fado.conf
+cat <<EOF >> /etc/apache2/conf.d/fado.conf
+DirectoryIndex index.php index.html
+
 ServerName fado.org
 
 <VirtualHost _default_:80>
         ServerAdmin admin@fado.org
-        DocumentRoot /var/www/html/
+        DocumentRoot /var/www/localhost/htdocs
         ServerName fado.org
 
         <IfModule mod_headers.c>
@@ -76,7 +96,7 @@ ServerName fado.org
             Header set Access-Control-Max-Age "3600"
         </IfModule>
 
-        <FilesMatch \.(php|phtml)$>
+        <FilesMatch "\.(php|phtml)$">
             SetHandler "proxy:fcgi://127.0.0.1:9000"
         </FilesMatch>
 
@@ -105,7 +125,7 @@ ServerName fado.org
 <IfModule mod_ssl.c>
     <VirtualHost _default_:443>
         ServerAdmin admin@fado.org
-        DocumentRoot /var/www/html/
+        DocumentRoot /var/www/localhost/htdocs
         ServerName fado.org
 
         <IfModule mod_headers.c>
@@ -113,7 +133,7 @@ ServerName fado.org
             Header set Access-Control-Allow-Credentials "true"
         </IfModule>
 
-        <FilesMatch \.(php|phtml)$>
+        <FilesMatch "\.(php|phtml)$">
             SetHandler "proxy:fcgi://127.0.0.1:9000"
         </FilesMatch>
 
@@ -139,19 +159,10 @@ ServerName fado.org
 </IfModule>
 EOF
 
-rm /var/www/html/index.html
-ln -s /etc/apache2/sites-available/fado.conf /etc/apache2/sites-enabled/fado.conf
-
-mkdir -p /run/0/openrc
-touch /run/0/openrc/softlevel
-
-rm /etc/apchache2/conf.d/ssl.conf
-
-adduser -D apache
-adduser -D memcached
+rm /var/www/localhost/htdocs/index.html
+rm /etc/apache2/conf.d/ssl.conf
 
 /etc/init.d/apache2 -U restart
-/etc/init.d/mariadb -U restart
 /etc/init.d/php-fpm84 -U restart
 /etc/init.d/memcached -U restart
 
@@ -159,6 +170,9 @@ adduser -D memcached
 /etc/init.d/mariadb -U status
 /etc/init.d/php-fpm84 -U status
 /etc/init.d/memcached -U status
+
+rc-service -l -s -U
+rc-status -a -U
 
 touch /var/www/isdeployed
 echo "true" > /var/www/isdeployed

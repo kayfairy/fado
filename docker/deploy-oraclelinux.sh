@@ -16,7 +16,7 @@ fi
 echo "Download & install packages"
 
 yum update && yum upgrade -y
-yum install -y httpd mariadb-client mariadb-server php php-pdo php-mbstring php-fpm php-intl memcached nano git glibc-locale-source initscripts-service ntsysv
+yum install -y httpd mariadb mariadb-server php php-pdo php-mbstring php-fpm php-intl memcached nano git glibc-locale-source
 
 echo "Compile locales"
 

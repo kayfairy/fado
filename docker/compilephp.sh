@@ -152,7 +152,7 @@ export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-autoconf-3510100
 export NTP_LIBS=-L$libsdir/ntp/ntp-4.2.8p18/lib
 export NTP_CFLAGS=-I$libsdir/ntp/ntp-4.2.8p18/include
 export GNU_PTH=-L$libsdir/gnupth/pth-2.0.7
-export LDFLAGS="-rdynamic -pthread -lm -L/lib -L/usr/lib -I/usr/local/include $GNU_PTH $LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
+export LDFLAGS="-rdynamic -pthread -lm -lxml2 -L/lib -L/usr/lib -I/usr/local/include $GNU_PTH $LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
 export LIBS="$LIBS $LDFLAGS"
 export LD_LIBRARY_PATH="/lib:/usr/lib:/usr/local/include:$PKG_CONFIG_PATH"
 export PATH="$PATH $LD_LIBRARY_PATH"
@@ -250,12 +250,12 @@ if [ true ]; then
             --enable-mbstring \
             --enable-cli \
             --enable-soap \
-            --disable-xmlwriter \
-            --disable-xmlreader \
             --disable-cgi \
             --disable-phpdbg \
             --prefix="/usr/local/bin" \
             --with-libdir=lib64 \
+            --with-libdir="$libsdir/libxml/libxml2-2.15.1/" \
+            --with-libdir="$libsdir/sqlite/sqlite-autoconf-3510100" \
 #            --enable-phpdbg-debug \
 #            --enable-debug
 

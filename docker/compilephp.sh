@@ -155,7 +155,7 @@ export GNU_PTH=-L$libsdir/gnupth/pth-2.0.7
 export LDFLAGS="-rdynamic -pthread -lm -lxml2 -L/lib -L/usr/lib -I/usr/local/include $GNU_PTH $LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
 export LIBS="$LIBS $LDFLAGS"
 export LD_LIBRARY_PATH="/lib:/usr/lib:/usr/local/include:$PKG_CONFIG_PATH"
-export PATH="$PATH $LD_LIBRARY_PATH"
+export PATH="$PATH:$LD_LIBRARY_PATH"
 export ICU_CXXFLAGS="$ICU_CXXFLAGS -std=c++17"
 export CXXFLAGS="$CXXFLAGS -std=c++17 -std=gnu99 -std=c99"
 export CC=$(which gcc)

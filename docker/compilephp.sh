@@ -1,11 +1,13 @@
 #!/bin/bash
 #
-# udocker run --entrypoint="/usr/bin/fish" --volume="/data/data/com.termux/files/home/git/fado/:/var/www/html" debian:forky
+# udocker run --entrypoint="/usr/bin/fish" --volume="/data/data/com.termux/files/home/git/fado/:/var/www/html" debian:sid
 # cd /var/www/html/docker
 # ./compilephp.sh true true true 1F
 # ./compilephp.sh $down_libs $extract_libs $install_pkgs $pre_compile_libs
 #
-# debian:forky kalilinux/kali-rolling:latest
+# (x) debian:forky
+# (x) debian:sid
+# ( ) kalilinux/kali-rolling:latest
 #
 
 down=$1
@@ -22,7 +24,7 @@ if [ "$pak" = "true" ]; then
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    dpkg-statoverride --remove "/usr/bin/crontab"
    apt update && apt upgrade -y && apt install -y fish
-   apt install -y make build-essential autoconf libtool binutils bison re2c wget wget2 tar unzip gnulib gcc glibc-source lld llvm-dev libstdc++-14-dev libgcc-14-dev libstdc++6 libc6-dev clang pkgconf python3-icu libgnutls28-dev libpsl-dev libtestsweeper-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl libpthreadpool-dev libevent-dev libgclib-dev libnpth0-dev libglib2.0-dev libxml2-dev python3-libxml2
+   apt install -y make build-essential autoconf libtool binutils bison re2c wget wget2 tar unzip gnulib gcc glibc-source lld llvm-dev libstdc++-14-dev libgcc-14-dev libstdc++6 libc6-dev clang pkgconf python3-icu libgnutls28-dev libpsl-dev libtestsweeper-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl libpthreadpool-dev libevent-dev libgclib-dev libnpth0-dev libglib2.0-dev libxml2-dev python3-libxml2 libsqlite3-dev
 fi
 
 if [ "$down" = "true" ]; then
@@ -152,7 +154,7 @@ export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-autoconf-3510100
 export NTP_LIBS=-L$libsdir/ntp/ntp-4.2.8p18/lib
 export NTP_CFLAGS=-I$libsdir/ntp/ntp-4.2.8p18/include
 export GNU_PTH=-L$libsdir/gnupth/pth-2.0.7
-export LDFLAGS="-rdynamic -pthread -lm -lxml2 -L/lib -L/usr/lib -I/usr/local/include $GNU_PTH $LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
+export LDFLAGS="-rdynamic -pthread -lm -lxml2 -lsqlite3 -L/lib -L/usr/lib -I/usr/local/include $GNU_PTH $LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
 export LIBS="$LIBS $LDFLAGS"
 export LD_LIBRARY_PATH="/lib:/usr/lib:/usr/local/include:$PKG_CONFIG_PATH"
 export PATH="$PATH:$LD_LIBRARY_PATH"

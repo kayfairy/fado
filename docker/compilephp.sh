@@ -36,7 +36,7 @@ if [ "$down" = "true" ]; then
    wget2 -O icu.zip  https://github.com/unicode-org/icu/archive/refs/tags/release-78.1.zip
    wget2 -O libxml.tar.xz  https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.1.tar.xz
    wget2 -O openssl.tar.gz  https://github.com/openssl/openssl/releases/download/openssl-3.5.1/openssl-3.5.1.tar.gz
-   wget2 -O php.tar.bz2  https://www.php.net/distributions/php-8.5.1.tar.bz2
+   wget2 -O php.tar.bz2  https://www.php.net/distributions/php-8.5.2.tar.bz2
    wget2 -O gettext.tar.gz  https://ftp.gnu.org/pub/gnu/gettext/gettext-0.26.tar.gz
    wget2 -O curl.tar.gz  https://curl.se/download/curl-8.17.0.tar.gz
    wget2 -O sqlite.tar.gz  https://sqlite.org/2025/sqlite-autoconf-3510100.tar.gz
@@ -118,9 +118,9 @@ if [ "$extract" = "true" ]; then
    cp "$libsdir/php.tar.bz2" php/
    cd php/
    tar xvf php.tar.bz2
-   cd php-8.5.1/
+   cd php-8.5.2/
 elif [ true ]; then
-   cd "$libsdir/extr/php/php-8.5.1/"
+   cd "$libsdir/extr/php/php-8.5.2/"
 fi
 
 libsdir="$libsdir/extr"
@@ -231,7 +231,7 @@ fi
 
 if [ true ]; then
 
-    cd "$libsdir/php/php-8.5.1/"
+    cd "$libsdir/php/php-8.5.2/"
 
     make clean
 

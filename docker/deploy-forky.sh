@@ -3,6 +3,7 @@
 cwd=$(dirname "$0")
 
 if [ -f /var/www/isdeployed ]; then
+    dpkg-statoverride --remove /etc/exim4/passwd.client
     dpkg-reconfigure --force mariadb-server
     dpkg-reconfigure --force memcached
     service apache2 restart
@@ -30,7 +31,7 @@ localedef -f UTF-8 -i fa_IR fa_IR.utf8
 localedef -f UTF-8 -i iw_IL iw_IL.utf8
 localedef -f UTF-8 -i ar_AR ar_AR.utf8
 localedef -f UTF-8 -i ru_RU ru_RU.utf8
-
+localedef -f UTF-8 -i nl_NL nl_NL.utf8
 
 chown -R www-data $cwd/*
 chmod -R 770 $cwd/*

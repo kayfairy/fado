@@ -109,7 +109,7 @@ if [ "$extract" = "true" ]; then
    cp "$libsdir/httpd.tar.bz2" httpd/
    cd httpd/
    tar xvf httpd.tar.bz2
-   mkdir httpd
+   mkdir httpdfcgi
    cp "$libsdir/httpdfcgi.tar.bz2" httpdfcgi/
    cd httpdfcgi/
    tar xvf httpdfcgi.tar.bz2
@@ -273,7 +273,7 @@ if [ true ]; then
 
      cd "$libsdir/memc/memcached-1.6.40"
 
-     ./configure --prefiz=/usr/local/bin --enable-static
+     ./configure --prefix=/usr/local/bin --enable-static
 
      make -j $(nproc)
 
@@ -283,7 +283,7 @@ if [ true ]; then
 
      ./configure --prefix=/usr/local/bin \
                  --enable-rewrite=shared \
-                 --enable-speling=shared
+                 --enable-spelling=shared
 
      make -j $(nproc)
 
@@ -302,5 +302,9 @@ fi
 php -v
 
 php-fpm -v
+
+memcached -V
+
+apache2ctl -v
 
 exit 0

@@ -6,8 +6,8 @@
 # ./compilephp.sh $down_libs $extract_libs $install_pkgs $pre_compile_libs
 #
 # (x) debian:forky
+# (x) debian:trixie
 # (x) debian:sid
-# ( ) kalilinux/kali-rolling:latest
 #
 
 down=$1
@@ -23,27 +23,28 @@ if [ "$pak" = "true" ]; then
    dpkg-statoverride --remove "/etc/ssl/private"
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    dpkg-statoverride --remove "/usr/bin/crontab"
-   apt update && apt upgrade -y && apt install -y fish
-   apt install -y make build-essential autoconf libtool binutils bison re2c wget wget2 tar unzip gnulib gcc glibc-source lld llvm-dev libstdc++-14-dev libgcc-14-dev libstdc++6 libc6-dev clang pkgconf python3-icu libgnutls28-dev libpsl-dev libtestsweeper-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl libpthreadpool-dev libevent-dev libgclib-dev libnpth0-dev libglib2.0-dev libxml2-dev python3-libxml2 libsqlite3-dev
+   apt update && apt upgrade -y
+   apt install -y make build-essential autoconf libtool binutils bison re2c wget tar unzip gnulib gcc glibc-source lld llvm-dev libstdc++-14-dev libgcc-14-dev libstdc++6 libc6-dev clang pkgconf python3-icu libgnutls28-dev libpsl-dev libtestsweeper-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl libpthreadpool-dev libevent-dev libgclib-dev libnpth0-dev libglib2.0-dev libxml2-dev python3-libxml2 libsqlite3-dev
 fi
 
 if [ "$down" = "true" ]; then
    rm -r "$libsdir"
    mkdir "$libsdir"
    cd "$libsdir"
-   wget2 -O zlib.tar.gz  https://zlib.net/zlib-1.3.1.tar.gz
-   wget2 -O oniguruma.tar.gz  https://github.com/kkos/oniguruma/releases/download/v6.9.10/onig-6.9.10.tar.gz
-   wget2 -O icu.zip  https://github.com/unicode-org/icu/archive/refs/tags/release-78.1.zip
-   wget2 -O libxml.tar.xz  https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.1.tar.xz
-   wget2 -O openssl.tar.gz  https://github.com/openssl/openssl/releases/download/openssl-3.5.1/openssl-3.5.1.tar.gz
-   wget2 -O php.tar.bz2  https://www.php.net/distributions/php-8.5.2.tar.bz2
-   wget2 -O gettext.tar.gz  https://ftp.gnu.org/pub/gnu/gettext/gettext-0.26.tar.gz
-   wget2 -O curl.tar.gz  https://curl.se/download/curl-8.17.0.tar.gz
-   wget2 -O sqlite.tar.gz  https://sqlite.org/2025/sqlite-autoconf-3510100.tar.gz
-   wget2 -O ntp.tar.gz  https://downloads.nwtime.org/ntp/ntp-4.2.8p18.tar.gz
-   wget2 -O httpd.tar.bz2  https://dlcdn.apache.org/httpd/httpd-2.4.66.tar.bz2
-   wget2 -O httpdfcgi.tar.bz2  https://dlcdn.apache.org/httpd/mod_fcgid/mod_fcgid-2.3.9.tar.bz2
+   wget -O zlib.tar.gz  https://zlib.net/zlib-1.3.1.tar.gz
+   wget -O oniguruma.tar.gz  https://github.com/kkos/oniguruma/releases/download/v6.9.10/onig-6.9.10.tar.gz
+   wget -O icu.zip  https://github.com/unicode-org/icu/archive/refs/tags/release-78.1.zip
+   wget -O libxml.tar.xz  https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.1.tar.xz
+   wget -O openssl.tar.gz  https://github.com/openssl/openssl/releases/download/openssl-3.5.1/openssl-3.5.1.tar.gz
+   wget -O php.tar.bz2  https://www.php.net/distributions/php-8.5.2.tar.bz2
+   wget -O gettext.tar.gz  https://ftp.gnu.org/pub/gnu/gettext/gettext-0.26.tar.gz
+   wget -O curl.tar.gz  https://curl.se/download/curl-8.17.0.tar.gz
+   wget -O sqlite.tar.gz  https://sqlite.org/2025/sqlite-autoconf-3510100.tar.gz
+   wget -O ntp.tar.gz  https://downloads.nwtime.org/ntp/ntp-4.2.8p18.tar.gz
+   wget -O httpd.tar.bz2  https://dlcdn.apache.org/httpd/httpd-2.4.66.tar.bz2
+   wget -O httpdfcgi.tar.bz2  https://dlcdn.apache.org/httpd/mod_fcgid/mod_fcgid-2.3.9.tar.bz2
    wget -O gnupth.tar.gz  ftp://ftp.gnu.org/gnu/pth/pth-2.0.7.tar.gz
+   wget -O memc.tar.gz  https://memcached.org/files/memcached-1.6.40.tar.gz
 fi
 
 if [ "$extract" = "true" ]; then
@@ -101,7 +102,7 @@ if [ "$extract" = "true" ]; then
    tar xzvf gettext.tar.gz
    cd "$libsdir/extr"
    mkdir sqlite
-   cp "$libsdir/sqlite.tar.gz" sqlite/
+   cp "$libsdir/.tar.gz" sqlite/
    cd sqlite/
    tar xvfz sqlite.tar.gz
    mkdir httpd
@@ -112,6 +113,11 @@ if [ "$extract" = "true" ]; then
    cp "$libsdir/httpdfcgi.tar.bz2" httpdfcgi/
    cd httpdfcgi/
    tar xvf httpdfcgi.tar.bz2
+   cd "$libsdir/extr"
+   mkdir memc
+   cp "$libsdir/memc.tar.gz" memc/
+   cd memc/
+   tar xf memc.tar.gz
    cd "$libsdir/extr"
    rm -r php/
    mkdir php
@@ -265,13 +271,21 @@ if [ true ]; then
 
      make install
 
+     cd "$libsdir/memc/memcached-1.6.40"
+
+     ./configure --prefiz=/usr/local/bin --enable-static
+
+     make -j $(nproc)
+
+     make install
+
      cd "$libsdir/httpd/httpd-2.4.66"
 
-     ./configure --prefix=/opt/apache \
-     --enable-rewrite=shared \
-     --enable-speling=shared
+     ./configure --prefix=/usr/local/bin \
+                 --enable-rewrite=shared \
+                 --enable-speling=shared
 
-     make -j 7
+     make -j $(nproc)
 
      make install
 

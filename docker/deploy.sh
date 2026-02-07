@@ -10,7 +10,10 @@ if [ -f /var/www/isdeployed ]; then
     service memcached restart
     service --status-all
 
-    tail -f /var/log/apache2/other_vhosts_access.log
+    if [ $1 != true ]; then
+        tail -f /var/log/apache2/other_vhosts_access.log
+    fi
+
     exit 0
 fi
 
@@ -21,6 +24,26 @@ apt install -y apache2 php8.2 php8.2-fpm php8.2-intl php8.2-mysql php8.2-mbstrin
 
 echo "Compile locales"
 
+locale-gen tr_TR.UTF-8
+locale-gen tr_TR
+locale-gen de_DE.UTF-8
+locale-gen de_DE
+locale-gen en_GB.UTF-8
+locale-gen en_GB
+locale-gen es_ES.UTF-8
+locale-gen es_ES
+locale-gen nl_NL.UTF-8
+locale-gen nl_NL
+locale-gen fr_FR.UTF-8
+locale-gen fr_FR
+locale-gen fa_IR.UTF-8
+locale-gen fa_IR
+locale-gen iw_IL.UTF-8
+locale-gen iw_IL
+locale-gen ar_AR.UTF-8
+locale-gen ar_AR
+locale-gen ru_RU.UTF-8
+locale-gen ru_RU
 localedef -f UTF-8 -i tr_TR tr_TR.utf8
 localedef -f UTF-8 -i de_DE de_DE.utf8
 localedef -f UTF-8 -i en_GB en_GB.utf8
@@ -31,6 +54,8 @@ localedef -f UTF-8 -i fa_IR fa_IR.utf8
 localedef -f UTF-8 -i iw_IL iw_IL.utf8
 localedef -f UTF-8 -i ar_AR ar_AR.utf8
 localedef -f UTF-8 -i ru_RU ru_RU.utf8
+update-locale
+locale -a
 
 chown -R www-data $cwd/*
 chmod -R 770 $cwd/*
@@ -148,5 +173,9 @@ service --status-all
 
 touch /var/www/isdeployed
 echo "true" > /var/www/isdeployed
-tail -f /var/log/apache2/other_vhosts_access.log
+
+if [ $1 != true ]; then
+    tail -f /var/log/apache2/other_vhosts_access.log
+fi
+
 exit 0

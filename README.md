@@ -15,7 +15,8 @@ Manage shops, vehicles and commodities in administration panel. Calculate invoic
 
 Download to `/var/www/html/` and run install script.
 
-    sudo sh /var/www/html/install.sh
+    cd /var/www/html/docker
+    ./deploy.sh
 
 ## Start Docker container
     cd /home/fado

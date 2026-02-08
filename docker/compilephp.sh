@@ -1,10 +1,13 @@
-
 #!/bin/bash
 #
+# udocker run --entrypoint="/usr/bin/fish" --volume="/data/data/com.termux/files/home/git/fado/:/var/www/html" debian:sid
 # cd /var/www/html/docker
-# ./compilephp.sh true true true true
+# ./compilephp.sh true true true 1F
+# ./compilephp.sh $down_libs $extract_libs $install_pkgs $pre_compile_libs
 #
-# (x) debian:bookworm (gitlab CI build)
+# (x) debian:forky
+# (x) debian:trixie
+# (x) debian:sid
 #
 
 down=$1
@@ -12,17 +15,16 @@ extract=$2
 pak=$3
 op=$4
 
-libsdir="/var/libs"
-rm -r "$libsdir"
-mkdir "$libsdir"
-cd "$libsdir"
+libsdir="/var/www/html/libs"
+
+cd $libsdir
 
 if [ "$pak" = "true" ]; then
    dpkg-statoverride --remove "/etc/ssl/private"
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    dpkg-statoverride --remove "/usr/bin/crontab"
    apt update && apt upgrade -y
-   apt install -y make build-essential autoconf libtool binutils bison re2c wget tar unzip gnulib gcc glibc-source lld llvm-dev libstdc++-12-dev libgcc-12-dev libstdc++6 libc6-dev clang pkgconf python3-icu libgnutls28-dev libpsl-dev libtestsweeper1 libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl libpthreadpool-dev libevent-dev libgclib-dev libnpth0-dev libglib2.0-dev libxml2-dev python3-libxml2 libsqlite3-dev
+   apt install -y make build-essential autoconf libtool binutils bison re2c wget tar unzip gnulib gcc glibc-source lld llvm-dev libstdc++-14-dev libgcc-14-dev libstdc++6 libc6-dev clang pkgconf python3-icu libgnutls28-dev libpsl-dev libtestsweeper-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl libpthreadpool-dev libevent-dev libgclib-dev libnpth0-dev libglib2.0-dev libxml2-dev python3-libxml2 libsqlite3-dev
 fi
 
 if [ "$down" = "true" ]; then
@@ -52,73 +54,76 @@ if [ "$extract" = "true" ]; then
    mkdir zlib
    cp "$libsdir/zlib.tar.gz" zlib/
    cd zlib/
-   tar xzf zlib.tar.gz
+   tar xzvf zlib.tar.gz
    cd "$libsdir/extr"
    mkdir oniguruma
    cp "$libsdir/oniguruma.tar.gz" oniguruma/
    cd oniguruma/
-   tar xfz oniguruma.tar.gz
+   tar xvfz oniguruma.tar.gz
    cd "$libsdir/extr"
    mkdir icu
    cp "$libsdir/icu.zip" icu/
    cd icu
-   unzip -qq icu.zip
+   unzip icu.zip
    cd "$libsdir/extr"
    mkdir libxml
    cp "$libsdir/libxml.tar.xz" libxml/
    cd libxml/
-   tar xf libxml.tar.xz
+   tar xvf libxml.tar.xz
    cd "$libsdir/extr"
    mkdir ntp
    cp "$libsdir/ntp.tar.gz" ntp/
    cd ntp/
-   tar xzf ntp.tar.gz
+   tar xzvf ntp.tar.gz
    cd "$libsdir/extr"
    mkdir gnupth
    cp "$libsdir/gnupth.tar.gz" gnupth/
    cd gnupth/
-   tar xfz gnupth.tar.gz
+   tar xvfz gnupth.tar.gz
    cd "$libsdir/extr"
    mkdir curl
    cp "$libsdir/curl.tar.bz2" curl/
    cd curl/
-   tar xf curl.tar.bz2
+   tar xvf curl.tar.bz2
    cd "$libsdir/extr"
    mkdir sqlite
    cp "$libsdir/sqlite.tar.gz" sqlite/
    cd sqlite/
-   tar xzf sqlite.tar.gz
+   tar xzvf sqlite.tar.gz
    cd  "$libsdir/extr"
    mkdir openssl
    cp "$libsdir/openssl.tar.gz" openssl/
    cd openssl/
-   tar xzf openssl.tar.gz
+   tar xzvf openssl.tar.gz
    cd "$libsdir/extr"
    mkdir gettext
    cp "$libsdir/gettext.tar.gz" gettext/
    cd gettext
-   tar xzf gettext.tar.gz
+   tar xzvf gettext.tar.gz
    cd "$libsdir/extr"
+   mkdir sqlite
+   cp "$libsdir/.tar.gz" sqlite/
+   cd sqlite/
+   tar xvfz sqlite.tar.gz
    mkdir httpd
    cp "$libsdir/httpd.tar.bz2" httpd/
    cd httpd/
-   tar xf httpd.tar.bz2
-   cd "$libsdir/extr"
+   tar xvf httpd.tar.bz2
    mkdir httpdfcgi
    cp "$libsdir/httpdfcgi.tar.bz2" httpdfcgi/
    cd httpdfcgi/
-   tar xf httpdfcgi.tar.bz2
+   tar xvf httpdfcgi.tar.bz2
    cd "$libsdir/extr"
    mkdir memc
    cp "$libsdir/memc.tar.gz" memc/
    cd memc/
-   tar zxf memc.tar.gz
+   tar xf memc.tar.gz
    cd "$libsdir/extr"
    rm -r php/
    mkdir php
    cp "$libsdir/php.tar.bz2" php/
    cd php/
-   tar xf php.tar.bz2
+   tar xvf php.tar.bz2
    cd php-8.5.2/
 elif [ true ]; then
    cd "$libsdir/extr/php/php-8.5.2/"
@@ -168,65 +173,65 @@ if [ "$op" = "true" ]; then
 
     cd "$libsdir/openssl/openssl-3.5.1/"
 
-    ./Configure > /dev/null
+    ./Configure
 
-    make -j $(nproc) > /dev/null
+#   make -j $(nproc)
 
     cd "$libsdir/gnupth/pth-2.0.7"
 
-    ./configure --build=i386 --host=i386-linux-gnu --enable-pthread > /dev/null
+    ./configure --host=armv4l --enable-pthread --build=armv4l
 
-    make -j $(nproc) > /dev/null
+    make -j $(nproc)
 
     cd "$libsdir/zlib/zlib-1.3.1/"
 
-    ./configure > /dev/null
+    ./configure
 
-    make -j $(nproc) > /dev/null
+    make -j $(nproc)
 
     cd "$libsdir/libxml/libxml2-2.15.1/"
 
-    ./configure --without-debug --with-zlib > /dev/null
+    ./configure --without-debug --with-zlib
 
-    make -j $(nproc) > /dev/null
+#    make -j $(nproc)
 
     cd "$libsdir/ntp/ntp-4.2.8p18"
 
-    ./configure --with-crypto=openssl --with-openssl-libdir=$libsdir/openssl/openssl-3.5.1 --with-openssl-incdir=$libsdir/openssl/openssl-3.5.1/include > /dev/null
+    ./configure --with-crypto=openssl --with-openssl-libdir=$libsdir/openssl/openssl-3.5.1 --with-openssl-incdir=$libsdir/openssl/openssl-3.5.1/include
 
-    make -j $(nproc) > /dev/null
+    make -j $(nproc)
 
     cd "$libsdir/gettext/gettext-0.26"
 
-    ./configure > /dev/null
+    ./configure
 
-    make -j $(nproc) > /dev/null
+    make -j $(nproc)
 
     cd "$libsdir/icu/icu-release-78.1/icu4c/source/"
 
-    ./configure > /dev/null
+    ./configure
 
-    make -j $(nproc) > /dev/null
+    make -j $(nproc)
 
     cd "$libsdir/curl/curl-8.15.0/"
 
-    ./configure --with-gnutls --without-python > /dev/null
+    ./configure --with-gnutls --without-python
 
-    make -j $(nproc) > /dev/null
+    make -j $(nproc)
 
     cd "$libsdir/oniguruma/onig-6.9.10/"
 
-    autoreconf -vfi > /dev/null
+    autoreconf -vfi
 
-    ./configure > /dev/null
+    ./configure
 
-    make -j $(nproc) > /dev/null
+    make -j $(nproc)
 
     cd "$libsdir/sqlite/sqlite-autoconf-3510100"
 
-    ./configure --with-icu-ldflags=$ICU_LIBS --with-icu-cflags=$ICU_CFLAGS --icu-collations > /dev/null
+    ./configure --with-icu-ldflags=$ICU_LIBS --with-icu-cflags=$ICU_CFLAGS --icu-collations
 
-    make -j $(nproc) > /dev/null
+    make -j $(nproc)
 
 fi
 
@@ -234,9 +239,9 @@ if [ true ]; then
 
     cd "$libsdir/php/php-8.5.2/"
 
-    make clean > /dev/null
+    make clean
 
-    ./buildconf -f > /dev/null
+    ./buildconf -f
 
     ./configure --enable-fpm=shared \
             --with-fpm-user=www-data \
@@ -259,8 +264,8 @@ if [ true ]; then
             --with-libdir=lib64 \
             --with-libdir="$libsdir/libxml/libxml2-2.15.1/" \
             --with-libdir="$libsdir/sqlite/sqlite-autoconf-3510100" \
-            --enable-phpdbg-debug \
-            --enable-debug
+#            --enable-phpdbg-debug \
+#            --enable-debug
 
      make -j $(nproc)
 
@@ -298,8 +303,8 @@ php -v
 
 php-fpm -v
 
-apache2ctl -v
-
 memcached -V
+
+apache2ctl -v
 
 exit 0

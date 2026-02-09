@@ -11,7 +11,7 @@ Manage shops, vehicles and commodities in administration panel. Calculate invoic
 ![FadoScreenshot](https://user-images.githubusercontent.com/45335404/71079337-5fd22600-218b-11ea-9500-a17b98e7d9c5.png)
 
 ## Install
-`Debian 11` required (PHP 8.2).
+`Debian Bookworm, Ubuntu 24.04 or Alpine'
 
 Download to `/var/www/html/` and run install script.
 
@@ -59,7 +59,7 @@ Move file to `/etc/fado/database.csv`. Edit `core/Loader.php`:
 Go to <http://127.0.0.1/?page=sq> and upload `fado-DML.sql`.
 
 ## Languages
-English, German, Spanish, Dutch, Turkish (per user 5 available)
+English, German, Spanish, Dutch, Turkish, Farsi, Jewish, Russian, French, Arabic
 
 ## License
 [GPLv3 License](https://www.gnu.org/licenses/gpl-3.0.en.html) © 2017-2025 Fatih Kaymak

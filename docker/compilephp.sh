@@ -225,7 +225,7 @@ if [ "$op" = "true" ]; then
 
     cd "$libsdir/sqlite/sqlite-autoconf-3510100"
 
-    ./configure --with-icu-ldflags=$ICU_LIBS --with-icu-cflags=$ICU_CFLAGS --icu-collations
+    ./configure
 
     make -j $(nproc)
 

@@ -156,8 +156,8 @@ export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-autoconf-3510100
 export NTP_LIBS=-L$libsdir/ntp/ntp-4.2.8p18/lib
 export NTP_CFLAGS=-I$libsdir/ntp/ntp-4.2.8p18/include
 export GNU_PTH=-L$libsdir/gnupth/pth-2.0.7
-export LDFLAGS="-rdynamic -pthread -lm -lxml2 -lsqlite3 -L/lib -L/usr/lib -I/usr/local/include $GNU_PTH $LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
-export LIBS="$LIBS $LDFLAGS"
+export LDFLAGS="-rdynamic -pthread -L/lib -L/usr/lib -I/usr/local/include $GNU_PTH $LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
+export LIBS="$LIBS -lm -lxml2 -lsqlite3 $LDFLAGS"
 export LD_LIBRARY_PATH="/lib:/usr/lib:/usr/local/include:$PKG_CONFIG_PATH"
 export PATH="$PATH:$LD_LIBRARY_PATH"
 export ICU_CXXFLAGS="$ICU_CXXFLAGS -std=c++17"

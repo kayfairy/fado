@@ -149,8 +149,8 @@ export ZLIB_CFLAGS=-I$libsdir/zlib/zlib-1.3.1/include
 export ZLIB_LIBS=-L$libsdir/zlib/zlib-1.3.1/lib
 export INTL_CFLAGS=-I$libsdir/gettext/gettext-0.26/include
 export INTL_LIBS=-L$libsdir/gettext/gettext-0.26/lib
-export CURL_CFLAGS=-I$libsdir/curl/curl-8.15.0/include
-export CURL_LIBS=-L$libsdir/curl/curl-8.15.0/lib
+export CURL_CFLAGS=-I$libsdir/curl/curl-8.17.0/include
+export CURL_LIBS=-L$libsdir/curl/curl-8.17.0/lib
 export SQLITE_LIBS=-L$libsdir/sqlite/sqlite-autoconf-3510100
 export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-autoconf-3510100
 export NTP_LIBS=-L$libsdir/ntp/ntp-4.2.8p18/lib
@@ -209,7 +209,7 @@ if [ "$op" = "true" ]; then
 
     make -j $(nproc)
 
-    cd "$libsdir/curl/curl-8.15.0/"
+    cd "$libsdir/curl/curl-8.17.0/"
 
     ./configure --with-gnutls --without-python
 

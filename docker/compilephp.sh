@@ -169,49 +169,49 @@ if [ "$op" = "true" ]; then
 
     cd "$libsdir/openssl/openssl-3.5.1/"
 
-    ./Configure --host=armv4l
+    ./Configure
 
 #   make -j $(nproc)
 
     cd "$libsdir/gnupth/pth-2.0.7"
 
-    ./configure --host=armv4l --enable-pthread --build=armv4l
+    ./configure --host=armv4l --enable-pthread --build=armv41
 
     make -j $(nproc)
 
     cd "$libsdir/zlib/zlib-1.3.1/"
 
-    ./configure --host=armv4l
+    ./configure
 
     make -j $(nproc)
 
     cd "$libsdir/libxml/libxml2-2.15.1/"
 
-    ./configure --without-debug --with-zlib --host=armv4l
+    ./configure --without-debug --with-zlib
 
     make -j $(nproc)
 
     cd "$libsdir/ntp/ntp-4.2.8p18"
 
     ./configure --with-crypto=openssl --with-openssl-libdir=$libsdir/openssl/openssl-3.5.1 --with-openssl-incdir=$libsdir/openssl/openssl-3.5.1/include
---host=armv4l
+
     make -j $(nproc)
 
     cd "$libsdir/icu/icu/source/"
 
-    ./configure --host=armv41
+    ./configure
 
     make -j $(nproc)
 
     cd "$libsdir/gettext/gettext-0.26"
 
-    ./configure --host=armv41
+    ./configure
 
     make -j $(nproc)
 
     cd "$libsdir/curl/curl-8.15.0/"
 
-    ./configure --with-gnutls --without-python --host=armv4l
+    ./configure --with-gnutls --without-python
 
     make -j $(nproc)
 
@@ -219,13 +219,13 @@ if [ "$op" = "true" ]; then
 
     autoreconf -vfi
 
-    ./configure --host=armv41
+    ./configure
 
     make -j $(nproc)
 
     cd "$libsdir/sqlite/sqlite-autoconf-3510100"
 
-    ./configure --with-icu-ldflags=$ICU_LIBS --with-icu-cflags=$ICU_CFLAGS --icu-collations --host=armv41
+    ./configure --with-icu-ldflags=$ICU_LIBS --with-icu-cflags=$ICU_CFLAGS --icu-collations
 
     make -j $(nproc)
 
@@ -260,9 +260,9 @@ if [ true ]; then
             --with-libdir=lib64 \
             --with-libdir="$libsdir/libxml/libxml2-2.15.1/" \
             --with-libdir="$libsdir/sqlite/sqlite-autoconf-3510100" \
-            --host=armv41 \
 #            --enable-phpdbg-debug \
 #            --enable-debug
+
 
      make -j $(nproc)
 
@@ -278,7 +278,7 @@ if [ true ]; then
 
      cd "$libsdir/httpd/httpd-2.4.66"
 
-     ./configure --prefix=/usr/local/bin --host=armv41 --enable-rewrite=shared \
+     ./configure --prefix=/usr/local/bin --enable-rewrite=shared
 
      make -j $(nproc)
 
@@ -286,7 +286,7 @@ if [ true ]; then
 
      cd "$libsdir/httpdfcgi/mod_fcgid-2.3.9"
 
-     ./configure --host=armv41
+     ./configure
 
      make
 

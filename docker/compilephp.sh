@@ -33,7 +33,7 @@ if [ "$down" = "true" ]; then
    cd "$libsdir"
    wget -O zlib.tar.gz  https://zlib.net/zlib-1.3.1.tar.gz
    wget -O oniguruma.tar.gz  https://github.com/kkos/oniguruma/releases/download/v6.9.10/onig-6.9.10.tar.gz
-   wget -O icu.zip  https://github.com/unicode-org/icu/archive/refs/tags/release-78.1.zip
+   wget -O icu.zip https://github.com/unicode-org/icu/releases/download/release-78.1/icu4c-78.1-sources.zip
    wget -O libxml.tar.xz  https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.1.tar.xz
    wget -O openssl.tar.gz  https://github.com/openssl/openssl/releases/download/openssl-3.5.1/openssl-3.5.1.tar.gz
    wget -O php.tar.bz2  https://www.php.net/distributions/php-8.5.2.tar.bz2
@@ -101,10 +101,6 @@ if [ "$extract" = "true" ]; then
    cd gettext
    tar xzvf gettext.tar.gz
    cd "$libsdir/extr"
-   mkdir sqlite
-   cp "$libsdir/.tar.gz" sqlite/
-   cd sqlite/
-   tar xvfz sqlite.tar.gz
    mkdir httpd
    cp "$libsdir/httpd.tar.bz2" httpd/
    cd httpd/
@@ -138,15 +134,15 @@ export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/libxml/libxml2-2.15.1
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/sqlite/sqlite-autoconf-3510100
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/zlib/zlib-1.3.1/lib
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/oniguruma/onig-6.9.10/src
-export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/icu/icu-release-78.1/icu4c/source/lib
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/icu/icu/source/lib
 export LIBXML_CFLAGS=-I$libsdir/libxml/libxml2-2.15.1/include
 export LIBXML_LIBS=-L$libsdir/libxml/libxml2-2.15.1
 export OPENSSL_CFLAGS=-I$libsdir/openssl/openssl-3.5.1/include
 export OPENSSL_LIBS=-L$libsdir/openssl/openssl-3.5.1/lib
 export PHP_SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-autoconf-3510100
 export PHP_SQLITE_LIBS=-L$libsdir/sqlite/sqlite-autoconf-3510100
-export ICU_CFLAGS=-I$libsdir/icu/icu-release-78.1/icu4c/source/common
-export ICU_LIBS=-L$libsdir/icu/icu-release-78.1/icu4c/source/lib
+export ICU_CFLAGS=-I$libsdir/icu/icu/source/common
+export ICU_LIBS=-L$libsdir/icu/icu/source/lib
 export ONIG_CFLAGS=-I$libsdir/oniguruma/onig-6.9.10/src
 export ONIG_LIBS=-L$libsdir/oniguruma/onig-6.9.10/src
 export ZLIB_CFLAGS=-I$libsdir/zlib/zlib-1.3.1/include
@@ -160,7 +156,7 @@ export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-autoconf-3510100
 export NTP_LIBS=-L$libsdir/ntp/ntp-4.2.8p18/lib
 export NTP_CFLAGS=-I$libsdir/ntp/ntp-4.2.8p18/include
 export GNU_PTH=-L$libsdir/gnupth/pth-2.0.7
-export LDFLAGS="-rdynamic -pthread -lm -lxml2 -lsqlite3 -L/lib -L/usr/lib -I/usr/local/include $GNU_PTH $LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
+export LDFLAGS="-shared -rdynamic -pthread -lm -lxml2 -lsqlite3 -L/lib -L/usr/lib -I/usr/local/include $GNU_PTH $LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
 export LIBS="$LIBS $LDFLAGS"
 export LD_LIBRARY_PATH="/lib:/usr/lib:/usr/local/include:$PKG_CONFIG_PATH"
 export PATH="$PATH:$LD_LIBRARY_PATH"
@@ -173,7 +169,7 @@ if [ "$op" = "true" ]; then
 
     cd "$libsdir/openssl/openssl-3.5.1/"
 
-    ./Configure
+    ./Configure --host=armv4l
 
 #   make -j $(nproc)
 
@@ -185,37 +181,37 @@ if [ "$op" = "true" ]; then
 
     cd "$libsdir/zlib/zlib-1.3.1/"
 
-    ./configure
+    ./configure --host=armv4l
 
     make -j $(nproc)
 
     cd "$libsdir/libxml/libxml2-2.15.1/"
 
-    ./configure --without-debug --with-zlib
+    ./configure --without-debug --with-zlib --host=armv4l
 
-#    make -j $(nproc)
+    make -j $(nproc)
 
     cd "$libsdir/ntp/ntp-4.2.8p18"
 
     ./configure --with-crypto=openssl --with-openssl-libdir=$libsdir/openssl/openssl-3.5.1 --with-openssl-incdir=$libsdir/openssl/openssl-3.5.1/include
+--host=armv4l
+    make -j $(nproc)
+
+    cd "$libsdir/icu/icu/source/"
+
+    ./configure --host=armv41
 
     make -j $(nproc)
 
     cd "$libsdir/gettext/gettext-0.26"
 
-    ./configure
-
-    make -j $(nproc)
-
-    cd "$libsdir/icu/icu-release-78.1/icu4c/source/"
-
-    ./configure
+    ./configure --host=armv41
 
     make -j $(nproc)
 
     cd "$libsdir/curl/curl-8.15.0/"
 
-    ./configure --with-gnutls --without-python
+    ./configure --with-gnutls --without-python --host=armv4l
 
     make -j $(nproc)
 
@@ -223,13 +219,13 @@ if [ "$op" = "true" ]; then
 
     autoreconf -vfi
 
-    ./configure
+    ./configure --host=armv41
 
     make -j $(nproc)
 
     cd "$libsdir/sqlite/sqlite-autoconf-3510100"
 
-    ./configure --with-icu-ldflags=$ICU_LIBS --with-icu-cflags=$ICU_CFLAGS --icu-collations
+    ./configure --with-icu-ldflags=$ICU_LIBS --with-icu-cflags=$ICU_CFLAGS --icu-collations --host=armv41
 
     make -j $(nproc)
 
@@ -264,6 +260,7 @@ if [ true ]; then
             --with-libdir=lib64 \
             --with-libdir="$libsdir/libxml/libxml2-2.15.1/" \
             --with-libdir="$libsdir/sqlite/sqlite-autoconf-3510100" \
+            --host=armv41 \
 #            --enable-phpdbg-debug \
 #            --enable-debug
 
@@ -273,7 +270,7 @@ if [ true ]; then
 
      cd "$libsdir/memc/memcached-1.6.40"
 
-     ./configure --prefix=/usr/local/bin --enable-static
+     ./configure --prefix=/usr/local/bin --enable-static --host=armv41
 
      make -j $(nproc)
 
@@ -281,9 +278,7 @@ if [ true ]; then
 
      cd "$libsdir/httpd/httpd-2.4.66"
 
-     ./configure --prefix=/usr/local/bin \
-                 --enable-rewrite=shared \
-                 --enable-spelling=shared
+     ./configure --prefix=/usr/local/bin --host=armv41 --enable-rewrite=shared \
 
      make -j $(nproc)
 
@@ -291,7 +286,7 @@ if [ true ]; then
 
      cd "$libsdir/httpdfcgi/mod_fcgid-2.3.9"
 
-     ./configure
+     ./configure --host=armv41
 
      make
 

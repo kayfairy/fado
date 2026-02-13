@@ -258,7 +258,7 @@ if [ true ]; then
             --disable-phpdbg \
             --prefix="/usr/local/bin" \
             --with-libdir=lib64 \
-            --with-libdir="$libsdir/libxml/libxml2-2.15.1/" \
+            --with-libdir="$libsdir/libxml/libxml2-2.15.1/include" \
             --with-libdir="$libsdir/sqlite/sqlite-autoconf-3510100" \
 #            --enable-phpdbg-debug \
 #            --enable-debug

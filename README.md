@@ -16,6 +16,7 @@ Manage shops, vehicles and commodities in administration panel. Calculate invoic
 Download to `/var/www/html/` and run install script.
 
     cd /var/www/html/docker
+    chmod 770 *.sh
     ./deploy.sh
 
 ## Start Docker container

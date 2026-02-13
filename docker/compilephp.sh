@@ -130,13 +130,13 @@ libsdir="$libsdir/extr"
 export SYSTEMD_LIBS=/usr/lib/systemd
 export PKG_CONFIG_PATH=/usr/lib/pkgconfig
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/openssl/openssl-3.5.1/libcrypto.pc
-export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/libxml/libxml2-2.15.1/include
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/libxml/libxml2-2.15.1
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/sqlite/sqlite-autoconf-3510100
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/zlib/zlib-1.3.1/lib
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/oniguruma/onig-6.9.10/src
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/icu/icu/source/lib
-export LIBXML_CFLAGS=-I$libsdir/libxml/libxml2-2.15.1
-export LIBXML_LIBS=-L$libsdir/libxml/libxml2-2.15.1/include
+export LIBXML_CFLAGS=-I$libsdir/libxml/libxml2-2.15.1/include
+export LIBXML_LIBS=-L$libsdir/libxml/libxml2-2.15.1
 export OPENSSL_CFLAGS=-I$libsdir/openssl/openssl-3.5.1/include
 export OPENSSL_LIBS=-L$libsdir/openssl/openssl-3.5.1/lib
 export PHP_SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-autoconf-3510100
@@ -175,7 +175,7 @@ if [ "$op" = "true" ]; then
 
     cd "$libsdir/gnupth/pth-2.0.7"
 
-    ./configure --host=armv4l --enable-pthread --build=armv41
+    ./configure --host=armv4l --enable-pthread --build=armv4l
 
     make -j $(nproc)
 
@@ -249,6 +249,7 @@ if [ true ]; then
             --with-pdo-mysql=shared \
             --with-mysql-sock="/var/mysqld/mysqld.pid" \
             --with-libxml=shared \
+            --with-zlib \
             --enable-calendar \
             --enable-intl \
             --enable-mbstring \

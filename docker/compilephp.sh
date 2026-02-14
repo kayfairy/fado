@@ -137,7 +137,7 @@ export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/oniguruma/onig-6.9.10/src
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/icu/icu/source/i18n
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/icu/icu/source/common
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/icu/icu/source/io
-export TIME_CFLAGS=-I$(find /usr/include -name time.h | grep -v -E ".+?(sys|linux).+" -m  1)
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$(find /usr/include -name time.h | grep -v -E ".+?(sys|linux).+" -m  1 | xargs dirname)
 export LIBXML_CFLAGS=-I$libsdir/libxml/libxml2-2.15.1/include
 export LIBXML_LIBS=-L$libsdir/libxml/libxml2-2.15.1
 export OPENSSL_CFLAGS=-I$libsdir/openssl/openssl-3.5.1/include
@@ -241,15 +241,15 @@ if [ true ]; then
 
     make clean
 
-    ./buildconf -f
+#    ./buildconf -f
 
-    ./configure --enable-fpm=shared \
+ #   ./configure --enable-fpm=shared \
             --with-fpm-user=www-data \
             --with-fpm-group=www-data \
             --with-fpm-systemd \
             --with-fpm-acl \
             --with-fpm-selinux \
-            --with-fpm-apparmor \
+  #          --with-fpm-apparmor \
             --with-pdo-mysql=shared \
             --with-mysql-sock="/var/mysqld/mysqld.pid" \
             --with-libxml=shared \

@@ -24,7 +24,7 @@ if [ "$pak" = "true" ]; then
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    dpkg-statoverride --remove "/usr/bin/crontab"
    apt update && apt upgrade -y
-   apt install -y make build-essential autoconf libtool binutils bison re2c wget tar unzip gnulib gcc glibc-source lld llvm-dev libstdc++-14-dev libgcc-14-dev libstdc++6 libc6-dev clang pkgconf python3-icu libgnutls28-dev libpsl-dev libtestsweeper-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl libpthreadpool-dev libevent-dev libgclib-dev libnpth0-dev libglib2.0-dev python3-libxml2
+   apt install -y make build-essential autoconf libtool binutils bison re2c wget tar gnulib gcc glibc-source lld llvm-dev libstdc++-14-dev libgcc-14-dev libstdc++6 libc6-dev clang pkgconf python3-icu libgnutls28-dev libpsl-dev libtestsweeper-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl libpthreadpool-dev libevent-dev libgclib-dev libnpth0-dev libglib2.0-dev python3-libxml2
 fi
 
 if [ "$down" = "true" ]; then
@@ -33,7 +33,7 @@ if [ "$down" = "true" ]; then
    cd "$libsdir"
    wget -O zlib.tar.gz  https://zlib.net/zlib-1.3.1.tar.gz
    wget -O oniguruma.tar.gz  https://github.com/kkos/oniguruma/releases/download/v6.9.10/onig-6.9.10.tar.gz
-   wget -O icu.zip https://github.com/unicode-org/icu/releases/download/release-78.1/icu4c-78.1-sources.zip
+   wget -O icu.tgz https://github.com/unicode-org/icu/releases/download/release-78.2/icu4c-78.2-sources.tgz
    wget -O libxml.tar.xz  https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.1.tar.xz
    wget -O openssl.tar.gz  https://github.com/openssl/openssl/releases/download/openssl-3.5.1/openssl-3.5.1.tar.gz
    wget -O php.tar.bz2  https://www.php.net/distributions/php-8.5.2.tar.bz2
@@ -62,9 +62,9 @@ if [ "$extract" = "true" ]; then
    tar xvfz oniguruma.tar.gz
    cd "$libsdir/extr"
    mkdir icu
-   cp "$libsdir/icu.zip" icu/
+   cp "$libsdir/icu.tgz" icu/
    cd icu
-   unzip icu.zip
+   tar xvf icu.tgz
    cd "$libsdir/extr"
    mkdir libxml
    cp "$libsdir/libxml.tar.xz" libxml/

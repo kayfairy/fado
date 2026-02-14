@@ -228,7 +228,7 @@ if [ "$op" = "true" ]; then
 
     cd "$libsdir/sqlite/sqlite-autoconf-3510100"
 
-    ./configure
+    ./configure --with-icu-ldflags=$ICU_LIBS --with-icu-cflags=-I$libsdir/icu/icu/source/common --with-icu-cflags=-I$libsdir/icu/icu/source/i18n --with-icu-cflags=-I$libsdir/icu/icu/source/io --icu-collations
 
     make -j $(nproc)
 
@@ -259,14 +259,12 @@ if [ true ]; then
             --enable-cli \
             --enable-soap \
             --disable-cgi \
+            --disable-debug \
             --disable-phpdbg-debug \
             --prefix="/usr/local/bin" \
             --with-libdir=lib64 \
             --with-libdir=$libsdir/sqlite/sqlite-autoconf-3510100 \
-            --with-libdir=$libsdir/libxml/libxml2-2.15.1/include \
-#            --enable-phpdbg-debug \
-#            --enable-debug
-
+            --with-libdir=$libsdir/libxml/libxml2-2.15.1/include
 
      make -j $(nproc)
 

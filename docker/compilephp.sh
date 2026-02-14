@@ -137,6 +137,7 @@ export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/oniguruma/onig-6.9.10/src
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/icu/icu/source/i18n
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/icu/icu/source/common
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/icu/icu/source/io
+export TIME_CFLAGS=-I/usr/include/aarch64-linux-gnu/sys/time.h
 export LIBXML_CFLAGS=-I$libsdir/libxml/libxml2-2.15.1/include
 export LIBXML_LIBS=-L$libsdir/libxml/libxml2-2.15.1
 export OPENSSL_CFLAGS=-I$libsdir/openssl/openssl-3.5.1/include
@@ -164,7 +165,7 @@ export LD_LIBRARY_PATH="/lib:/usr/lib:/usr/local/include:$PKG_CONFIG_PATH"
 export PATH="$PATH:$LD_LIBRARY_PATH"
 export ICU_CXXFLAGS="$ICU_CXXFLAGS -std=c++17"
 export CXXFLAGS="$CXXFLAGS -std=c++17"
-export CFLAGS="$CFLAGS -std=gnu99 -std=c99"
+export CFLAGS="$CFLAGS -std=gnu99 -std=c99 $TIME_CFLAGS"
 export CC=$(which gcc)
 export LD=$(which ld)
 
@@ -253,6 +254,7 @@ if [ true ]; then
             --with-mysql-sock="/var/mysqld/mysqld.pid" \
             --with-libxml=shared \
             --with-zlib \
+            --without-gdb \
             --enable-calendar \
             --enable-intl \
             --enable-mbstring \

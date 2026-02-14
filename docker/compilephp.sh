@@ -241,7 +241,7 @@ if [ true ]; then
 
     make clean
 
-#    ./buildconf -f
+    ./buildconf -f
 
     ./configure --enable-fpm=shared \
             --with-fpm-user=www-data \

@@ -259,7 +259,7 @@ if [ true ]; then
             --enable-cli \
             --enable-soap \
             --disable-cgi \
-            --disable-phpdbg \
+            --disable-phpdbg-debug \
             --prefix="/usr/local/bin" \
             --with-libdir=lib64 \
             --with-libdir=$libsdir/sqlite/sqlite-autoconf-3510100 \

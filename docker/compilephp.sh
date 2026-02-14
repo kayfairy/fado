@@ -137,7 +137,7 @@ export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/oniguruma/onig-6.9.10/src
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/icu/icu/source/i18n
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/icu/icu/source/common
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/icu/icu/source/io
-export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$(find /usr/include -name time.h | grep -v -E ".+?(sys|linux).+" -m  1 | xargs dirname)
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$(find /usr/include -name time.h | grep -v -E ".+?(sys|linux).+" -m  1)
 export LIBXML_CFLAGS=-I$libsdir/libxml/libxml2-2.15.1/include
 export LIBXML_LIBS=-L$libsdir/libxml/libxml2-2.15.1
 export OPENSSL_CFLAGS=-I$libsdir/openssl/openssl-3.5.1/include
@@ -159,13 +159,13 @@ export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-autoconf-3510100
 export NTP_LIBS=-L$libsdir/ntp/ntp-4.2.8p18/lib
 export NTP_CFLAGS=-I$libsdir/ntp/ntp-4.2.8p18/include
 export GNU_PTH=-L$libsdir/gnupth/pth-2.0.7
-export LDFLAGS="-rdynamic -pthread -L/lib -L/usr/lib -I/usr/local/include $GNU_PTH $LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
+export LDFLAGS="-rdynamic -pthread -L/lib -L/usr/lib -I/usr/local/include -L/usr/include $GNU_PTH $LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
 export LIBS="$LIBS $LDFLAGS"
-export LD_LIBRARY_PATH="/lib:/usr/lib:/usr/local/include:$PKG_CONFIG_PATH"
+export LD_LIBRARY_PATH="/lib:/usr/lib:/usr/include:/usr/local/include:$PKG_CONFIG_PATH"
 export PATH="$PATH:$LD_LIBRARY_PATH"
 export ICU_CXXFLAGS="$ICU_CXXFLAGS -std=c++17"
 export CXXFLAGS="$CXXFLAGS -std=c++17"
-export CFLAGS="$CFLAGS -std=gnu99 -std=c99 $TIME_CFLAGS"
+export CFLAGS="$CFLAGS -std=gnu99 -std=c99"
 export CC=$(which gcc)
 export LD=$(which ld)
 
@@ -243,13 +243,13 @@ if [ true ]; then
 
 #    ./buildconf -f
 
- #   ./configure --enable-fpm=shared \
+    ./configure --enable-fpm=shared \
             --with-fpm-user=www-data \
             --with-fpm-group=www-data \
             --with-fpm-systemd \
             --with-fpm-acl \
             --with-fpm-selinux \
-  #          --with-fpm-apparmor \
+            --with-fpm-apparmor \
             --with-pdo-mysql=shared \
             --with-mysql-sock="/var/mysqld/mysqld.pid" \
             --with-libxml=shared \

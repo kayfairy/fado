@@ -136,13 +136,14 @@ export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/zlib/zlib-1.3.1/lib
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/oniguruma/onig-6.9.10/src
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/icu/icu/source/i18n
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/icu/icu/source/common
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/icu/icu/source/io
 export LIBXML_CFLAGS=-I$libsdir/libxml/libxml2-2.15.1/include
 export LIBXML_LIBS=-L$libsdir/libxml/libxml2-2.15.1
 export OPENSSL_CFLAGS=-I$libsdir/openssl/openssl-3.5.1/include
 export OPENSSL_LIBS=-L$libsdir/openssl/openssl-3.5.1/lib
 export PHP_SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-autoconf-3510100
 export PHP_SQLITE_LIBS=-L$libsdir/sqlite/sqlite-autoconf-3510100
-export ICU_CFLAGS="-I$libsdir/icu/icu/source/i18n -I$libsdir/icu/icu/source/common"
+export ICU_CFLAGS="-I$libsdir/icu/icu/source/i18n -I$libsdir/icu/icu/source/common -I$libsdir/icu/icu/source/io"
 export ICU_LIBS=-L$libsdir/icu/icu/source
 export ONIG_CFLAGS=-I$libsdir/oniguruma/onig-6.9.10/src
 export ONIG_LIBS=-L$libsdir/oniguruma/onig-6.9.10/src
@@ -162,7 +163,8 @@ export LIBS="$LIBS $LDFLAGS"
 export LD_LIBRARY_PATH="/lib:/usr/lib:/usr/local/include:$PKG_CONFIG_PATH"
 export PATH="$PATH:$LD_LIBRARY_PATH"
 export ICU_CXXFLAGS="$ICU_CXXFLAGS -std=c++17"
-export CXXFLAGS="$CXXFLAGS -std=c++17 -std=gnu99 -std=c99"
+export CXXFLAGS="$CXXFLAGS -std=c++17"
+export CFLAGS="$CFLAGS -std=gnu99 -std=c99"
 export CC=$(which gcc)
 export LD=$(which ld)
 

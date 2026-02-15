@@ -159,13 +159,12 @@ export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-autoconf-3510100
 export NTP_LIBS=-L$libsdir/ntp/ntp-4.2.8p18/lib
 export NTP_CFLAGS=-I$libsdir/ntp/ntp-4.2.8p18/include
 export GNU_PTH=-L$libsdir/gnupth/pth-2.0.7
-export LDFLAGS="-rdynamic -pthread -L/lib -L/usr/lib -I/usr/local/include -L/usr/include $GNU_PTH $LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
+export LDFLAGS="-rdynamic -pthread -L/lib -L/usr/lib -I/usr/local/include -I/usr/include $GNU_PTH $LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
 export LIBS="$LIBS $LDFLAGS"
 export LD_LIBRARY_PATH="/lib:/usr/lib:/usr/include:/usr/local/include:$PKG_CONFIG_PATH"
 export PATH="$PATH:$LD_LIBRARY_PATH"
-export ICU_CXXFLAGS="$ICU_CXXFLAGS -std=c++17"
-export CXXFLAGS="$CXXFLAGS -std=c++17"
-export CFLAGS="$CFLAGS -std=gnu99 -std=c99"
+export CXXFLAGS="-O3 $CXXFLAGS -std=c++23 -std=gnu++23"
+export CFLAGS="-O3 -stdlib=libstdc++,libc++ $CFLAGS -std=gnu17 -std=c17"
 export CC=$(which gcc)
 export LD=$(which ld)
 
@@ -211,7 +210,7 @@ if [ "$op" = "true" ]; then
 
     ./configure
 
-    make -j $(nproc)
+#    make -j $(nproc)
 
     cd "$libsdir/curl/curl-8.17.0/"
 
@@ -254,7 +253,6 @@ if [ true ]; then
             --with-mysql-sock="/var/mysqld/mysqld.pid" \
             --with-libxml=shared \
             --with-zlib \
-            --without-gdb \
             --enable-calendar \
             --enable-intl \
             --enable-mbstring \
@@ -274,7 +272,7 @@ if [ true ]; then
 
      cd "$libsdir/memc/memcached-1.6.40"
 
-     ./configure --prefix=/usr/local/bin
+     ./configure --prefix=/usr/local/bin --enable-static --enable-64bit
 
      make -j $(nproc)
 

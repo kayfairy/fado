@@ -159,12 +159,13 @@ export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-autoconf-3510100
 export NTP_LIBS=-L$libsdir/ntp/ntp-4.2.8p18/lib
 export NTP_CFLAGS=-I$libsdir/ntp/ntp-4.2.8p18/include
 export GNU_PTH=-L$libsdir/gnupth/pth-2.0.7
-export LDFLAGS="-rdynamic -pthread -L/lib -L/usr/lib -I/usr/local/include -I/usr/include $GNU_PTH $LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
+export LDFLAGS="-L/lib -L/usr/lib -L/usr/local/include -I/usr/include $GNU_PTH $LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
 export LIBS="$LIBS $LDFLAGS"
+export LDFLAGS="-rdynamic -pthread $LDFLAGS"
 export LD_LIBRARY_PATH="/lib:/usr/lib:/usr/include:/usr/local/include:$PKG_CONFIG_PATH"
 export PATH="$PATH:$LD_LIBRARY_PATH"
-export CXXFLAGS="-O3 $CXXFLAGS -std=c++23 -std=gnu++23"
-export CFLAGS="-O3 -stdlib=libstdc++,libc++ $CFLAGS -std=gnu17 -std=c17"
+export CXXFLAGS="-O $CXXFLAGS -std=c++17 -std=gnu++17"
+export CFLAGS="-O $CFLAGS -std=gnu99 -std=c99"
 export CC=$(which gcc)
 export LD=$(which ld)
 
@@ -174,7 +175,7 @@ if [ "$op" = "true" ]; then
 
     ./Configure
 
-#   make -j $(nproc)
+#    make -j $(nproc)
 
     cd "$libsdir/gnupth/pth-2.0.7"
 
@@ -210,7 +211,7 @@ if [ "$op" = "true" ]; then
 
     ./configure
 
-#    make -j $(nproc)
+    make -j $(nproc)
 
     cd "$libsdir/curl/curl-8.17.0/"
 

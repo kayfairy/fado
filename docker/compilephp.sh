@@ -45,6 +45,7 @@ if [ "$down" = "true" ]; then
    wget -O httpdfcgi.tar.bz2  https://dlcdn.apache.org/httpd/mod_fcgid/mod_fcgid-2.3.9.tar.bz2
    wget -O gnupth.tar.gz  ftp://ftp.gnu.org/gnu/pth/pth-2.0.7.tar.gz
    wget -O memc.tar.gz  https://memcached.org/files/memcached-1.6.40.tar.gz
+   wget -O maria.tar.gz https://github.com/MariaDB/server/archive/refs/tags/mariadb-12.3.1.tar.gz
 fi
 
 if [ "$extract" = "true" ]; then
@@ -90,6 +91,11 @@ if [ "$extract" = "true" ]; then
    cp "$libsdir/sqlite.tar.gz" sqlite/
    cd sqlite/
    tar xzvf sqlite.tar.gz
+   cd  "$libsdir/extr"
+   mkdir maria
+   cd maria
+   cp "$libsdir/maria.tar.gz" maria/
+   tar xvfz maria.tar.gz
    cd  "$libsdir/extr"
    mkdir openssl
    cp "$libsdir/openssl.tar.gz" openssl/
@@ -167,6 +173,7 @@ export CXXFLAGS="-O $CXXFLAGS -std=c++23 -std=g++23 -march=armv8.2-a"
 export CFLAGS="-O $CFLAGS -std=gnu99 -std=c99 -march=armv8.2-a"
 export CC=$(which gcc)
 export LD=$(which ld)
+export DEB_BUILD_OPTIONS="parallel=$(nproc) nocheck"
 
 if [ "$op" = "true" ]; then
 
@@ -267,6 +274,16 @@ if [ true ]; then
      make -j $(nproc)
 
      make install
+
+     cd "$libsdir/maria/server-mariadb-12.3.1/"
+
+     apt install -y lsb_release devscripts
+
+     cd debian/
+
+     ./autobake-deb.sh
+
+     dpkg -i server-mariadb.deb
 
      cd "$libsdir/memc/memcached-1.6.40"
 

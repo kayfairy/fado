@@ -166,11 +166,11 @@ export NTP_LIBS=-L$libsdir/ntp/ntp-4.2.8p18/lib
 export NTP_CFLAGS=-I$libsdir/ntp/ntp-4.2.8p18/include
 export GNU_PTH=-L$libsdir/gnupth/pth-2.0.7
 export LIBS="-L/lib -L/usr/lib -L/usr/local/include -I/usr/include $GNU_PTH $LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
-export LDFLAGS="-rdynamic -pthread $LIBS"
+export LDFLAGS="-rdynamic -shared -lm -lxml2 -lsqlite3 -fpic/-fPIC -pthread $LIBS"
 export LD_LIBRARY_PATH="/lib:/usr/lib:/usr/include:/usr/local/include:$PKG_CONFIG_PATH"
 export PATH="$PATH:$LD_LIBRARY_PATH"
-export CXXFLAGS="-O $CXXFLAGS -std=c++23 -std=g++23 -march=armv8.2-a"
-export CFLAGS="-O $CFLAGS -std=gnu99 -std=c99 -march=armv8.2-a"
+export CXXFLAGS="-O $CXXFLAGS -std=c++22"
+export CFLAGS="-O $CFLAGS -std=c11"
 export CC=$(which gcc)
 export LD=$(which ld)
 export DEB_BUILD_OPTIONS="parallel=$(nproc) nocheck"

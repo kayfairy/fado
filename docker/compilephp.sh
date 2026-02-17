@@ -166,11 +166,11 @@ export SQLITE_CFLAGS=-I$libsdir/sqlite/sqlite-autoconf-3510100
 export NTP_LIBS=-L$libsdir/ntp/ntp-4.2.8p18/lib
 export NTP_CFLAGS=-I$libsdir/ntp/ntp-4.2.8p18/include
 export GNU_PTH=-L$libsdir/gnupth/pth-2.0.7
-export LIBS="-L/lib -L/usr/lib -L/usr/local/include -I/usr/include $GNU_PTH $LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
-export LDFLAGS="-rdynamic -shared -lxml2 -lsqlite3 -fpic/-fPIC -pthread $LIBS"
+export LIBS="-L/lib -L/usr/lib -L/usr/local/include -L/usr/include $GNU_PTH $LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
+export LDFLAGS="-rdynamic -pthread $LIBS"
 export LD_LIBRARY_PATH="/lib:/usr/lib:/usr/include:/usr/local/include:$PKG_CONFIG_PATH"
 export PATH="$PATH:$LD_LIBRARY_PATH"
-export CXXFLAGS="-O $CXXFLAGS -std=c++22"
+export CXXFLAGS="-O $CXXFLAGS -std=c++17"
 export CFLAGS="-O $CFLAGS -std=c11"
 export CC=$(which gcc)
 export LD=$(which ld)
@@ -180,13 +180,13 @@ if [ "$op" = "true" ]; then
 
     cd "$libsdir/openssl/openssl-3.5.1/"
 
-    ./Configure
+#    ./Configure
 
-    make -j $(nproc)
+#    make -j $(nproc)
 
     cd "$libsdir/gnupth/pth-2.0.7"
 
-    ./configure --host=x86_64 --target=aarch64 --enable-pthread --build=aarch64
+    ./configure --host=x86_64 --enable-pthread --build=arm
 
     cd "$libsdir/zlib/zlib-1.3.1/"
 

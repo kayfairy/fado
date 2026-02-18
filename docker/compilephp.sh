@@ -6,8 +6,6 @@
 # ./compilephp.sh $down_libs $extract_libs $install_pkgs $pre_compile_libs
 #
 # (x) debian:forky
-# (x) debian:trixie
-# (x) debian:sid
 #
 
 down=$1
@@ -24,7 +22,7 @@ if [ "$pak" = "true" ]; then
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    dpkg-statoverride --remove "/usr/bin/crontab"
    apt update && apt upgrade -y
-   apt install -y make build-essential autoconf libtool binutils bison re2c wget tar gnulib gcc glibc-source lld llvm-dev libstdc++-14-dev libgcc-14-dev libstdc++6 libc6-dev clang pkgconf python3-icu libgnutls28-dev libpsl-dev libtestsweeper-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl libpthreadpool-dev libevent-dev libgclib-dev libnpth0-dev libglib2.0-dev python3-libxml2
+   apt install -y make build-essential autoconf libtool binutils bison re2c wget tar gnulib gcc glibc-source lld llvm-dev libstdc++-15-dev libgcc-15-dev libstdc++6 libc6-dev clang pkgconf python3-icu libgnutls28-dev libpsl-dev libtestsweeper-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl libpthreadpool-dev libevent-dev libgclib-dev libnpth0-dev libglib2.0-dev python3-libxml2 libstdc++6-arm64-cross libgcc-15-dev-arm64-cross libc6-dev-arm64-cross libapr1-dev
 fi
 
 if [ "$down" = "true" ]; then
@@ -113,6 +111,7 @@ if [ "$extract" = "true" ]; then
    cd httpd/
    tar xvf httpd.tar.bz2
    mkdir httpdfcgi
+   cd "$libsdir/extr"
    cp "$libsdir/httpdfcgi.tar.bz2" httpdfcgi/
    cd httpdfcgi/
    tar xvf httpdfcgi.tar.bz2
@@ -180,7 +179,7 @@ if [ "$op" = "true" ]; then
 
     cd "$libsdir/openssl/openssl-3.5.1/"
 
-#    ./Configure
+    ./Configure
 
 #    make -j $(nproc)
 
@@ -288,17 +287,48 @@ if [ true ]; then
 
      cd "$libsdir/memc/memcached-1.6.40"
 
+     cat <<EOF >> timespec.patch
+--- a/util.c    2026-02-18 09:17:05.859130661 +0000
++++ b/util.c    2025-10-22 04:59:10.000000000 +0000
+@@ -281,7 +281,6 @@
+ }
+ #endif
+
+-#ifndef _STRUCT_TIMESPEC
+ // adds ts2 to ts1
+ #define NSEC_PER_SEC 1000000000
+ void mc_timespec_add(struct timespec *ts1,
+@@ -293,4 +292,4 @@
+         ts1->tv_nsec -= NSEC_PER_SEC;
+     }
+ }
+-#endif
++
+--- a/util.h    2026-02-18 09:17:10.159130661 +0000
++++ b/util.h    2025-10-22 04:59:10.000000000 +0000
+@@ -46,6 +46,4 @@
+ /* Some common timepsec functions.
+  */
+
+-#ifndef _STRUCT_TIMESPEC
+ void mc_timespec_add(struct timespec *ts1, struct timespec *ts2);
+-#endif
+EOF
+
+     patch timespec.patch
+
      make clean
 
      ./configure --prefix=/usr/local/bin \
-                 --enable-static \
-                 --enable-64bit
+                 --enable-static
 
      make -j $(nproc)
 
      make install
 
      cd "$libsdir/httpd/httpd-2.4.66"
+
+     apt install libaprutil1-dev libpcre2-dev libpcre2-32-0 pcre2-utils python3-pcre2 libpcre2-posix3
 
      make clean
 
@@ -314,7 +344,8 @@ if [ true ]; then
                  --host=x86_64 \
                  --target=aarch64 \
                  --with-curl=$libsdir/curl/curl-8.17.0 \
-                 --with-libxml2=$libsdir/libxml/libxml2-2.15.1
+                 --with-libxml2=$libsdir/libxml/libxml2-2.15.1 \
+                 --with-pcre=/usr/bin/pcre2-config
 
      make -j $(nproc)
 

@@ -110,8 +110,8 @@ if [ "$extract" = "true" ]; then
    cp "$libsdir/httpd.tar.bz2" httpd/
    cd httpd/
    tar xvf httpd.tar.bz2
-   mkdir httpdfcgi
    cd "$libsdir/extr"
+   mkdir httpdfcgi
    cp "$libsdir/httpdfcgi.tar.bz2" httpdfcgi/
    cd httpdfcgi/
    tar xvf httpdfcgi.tar.bz2
@@ -283,6 +283,8 @@ if [ true ]; then
 
      git submodule update --init --recursive
 
+     ln -f -s CMakeLists.txt -t builddir CMakeLists.txt
+
      /bin/bash debian/autobake-deb.sh
 
      dpkg -i 1:12.3.1+maria~debsid.deb
@@ -290,34 +292,6 @@ if [ true ]; then
      cd "$libsdir/memc/memcached-1.6.40"
 
      apt install autotools-dev automake libevent-dev
-
-     cat <<EOF >> timespec.patch
---- a/util.c    2026-02-18 09:17:05.859130661 +0000
-+++ b/util.c    2025-10-22 04:59:10.000000000 +0000
-@@ -281,7 +281,6 @@
- }
- #endif
-
--#ifndef _STRUCT_TIMESPEC
- // adds ts2 to ts1
- #define NSEC_PER_SEC 1000000000
- void mc_timespec_add(struct timespec *ts1,
-@@ -293,4 +292,4 @@
-         ts1->tv_nsec -= NSEC_PER_SEC;
-     }
- }
--#endif
-+
---- a/util.h    2026-02-18 09:17:10.159130661 +0000
-+++ b/util.h    2025-10-22 04:59:10.000000000 +0000
-@@ -46,6 +46,4 @@
- /* Some common timepsec functions.
-  */
-
--#ifndef _STRUCT_TIMESPEC
- void mc_timespec_add(struct timespec *ts1, struct timespec *ts2);
--#endif
-EOF
 
      patch timespec.patch
 

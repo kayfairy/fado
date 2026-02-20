@@ -277,11 +277,9 @@ if [ true ]; then
 
      cd "$libsdir/maria/server-mariadb-12.3.1/"
 
-     apt install -y lsb_release devscripts
+     apt install -y lsb-release devscripts dh-exec dh-package-notes cmake cracklib-runtime default-jdk flex gdb libaio-dev libboost-atomic-dev libboost-chrono-dev libboost-date-time-dev libboost-dev libboost-filesystem-dev libboost-regex-dev libboost-system-dev libboost-thread-dev libbz2-dev libcrack2-dev libcurl4-gnutls-dev libedit-dev libedit-dev libfmt-dev libjemalloc-dev libjudy-dev libkrb5-dev liblz4-dev liblzo2-dev libnuma-dev libpam0g-dev libsnappy-dev libssl-dev libssl-dev liburing-dev libzstd-dev unixodbc-dev
 
-     cd debian/
-
-     ./autobake-deb.sh
+     /bin/bash debian/autobake-deb.sh
 
      dpkg -i server-mariadb.deb
 

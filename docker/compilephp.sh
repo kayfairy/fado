@@ -275,15 +275,21 @@ if [ true ]; then
 
      make install
 
+     make test
+
      cd "$libsdir/maria/server-mariadb-12.3.1/"
 
-     apt install -y lsb-release devscripts dh-exec dh-package-notes cmake cracklib-runtime default-jdk flex gdb libaio-dev libboost-atomic-dev libboost-chrono-dev libboost-date-time-dev libboost-dev libboost-filesystem-dev libboost-regex-dev libboost-system-dev libboost-thread-dev libbz2-dev libcrack2-dev libcurl4-gnutls-dev libedit-dev libedit-dev libfmt-dev libjemalloc-dev libjudy-dev libkrb5-dev liblz4-dev liblzo2-dev libnuma-dev libpam0g-dev libsnappy-dev libssl-dev libssl-dev liburing-dev libzstd-dev unixodbc-dev
+     apt install -y lsb-release devscripts dh-exec dh-package-notes cmake cracklib-runtime default-jdk flex gdb libaio-dev libboost-atomic-dev libboost-chrono-dev libboost-date-time-dev libboost-dev libboost-filesystem-dev libboost-regex-dev libboost-system-dev libboost-thread-dev libbz2-dev libcrack2-dev libcurl4-gnutls-dev libedit-dev libedit-dev libfmt-dev libjemalloc-dev libjudy-dev libkrb5-dev liblz4-dev liblzo2-dev libnuma-dev libpam0g-dev libsnappy-dev libssl-dev libssl-dev liburing-dev libzstd-dev unixodbc-dev libmariadb-dev-compat python3-mariadb-connector
+
+     git submodule update --init --recursive
 
      /bin/bash debian/autobake-deb.sh
 
-     dpkg -i server-mariadb.deb
+     dpkg -i 1:12.3.1+maria~debsid.deb
 
      cd "$libsdir/memc/memcached-1.6.40"
+
+     apt install autotools-dev automake libevent-dev
 
      cat <<EOF >> timespec.patch
 --- a/util.c    2026-02-18 09:17:05.859130661 +0000
@@ -326,7 +332,7 @@ EOF
 
      cd "$libsdir/httpd/httpd-2.4.66"
 
-     apt install libaprutil1-dev libpcre2-dev libpcre2-32-0 pcre2-utils python3-pcre2 libpcre2-posix3
+     apt install -y libaprutil1-dev libpcre2-dev libpcre2-32-0 pcre2-utils python3-pcre2 libpcre2-posix3
 
      make clean
 
@@ -364,7 +370,5 @@ php -v
 php-fpm -v
 
 memcached -V
-
-apache2ctl -v
 
 exit 0

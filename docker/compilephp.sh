@@ -29,7 +29,7 @@ if [ "$down" = "true" ]; then
    rm -r "$libsdir"
    mkdir "$libsdir"
    cd "$libsdir"
-   wget -O zlib.tar.gz  https://zlib.net/zlib-1.3.1.tar.gz
+   wget -O zlib.tar.gz  https://zlib.net/current/zlib.tar.gz
    wget -O oniguruma.tar.gz  https://github.com/kkos/oniguruma/releases/download/v6.9.10/onig-6.9.10.tar.gz
    wget -O icu.tgz https://github.com/unicode-org/icu/releases/download/release-78.2/icu4c-78.2-sources.tgz
    wget -O libxml.tar.xz  https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.1.tar.xz
@@ -283,8 +283,8 @@ if [ true ]; then
 
      git submodule update --init --recursive
 
-     ln -f -s CMakeLists.txt -t builddir CMakeLists.txt
-
+     /bin/bash debian/autobake-deb.sh
+     sed -i '1i ln -f -s CMakeLists.txt -t builddir CMakeLists.txt' debian/rules
      /bin/bash debian/autobake-deb.sh
 
      dpkg -i 1:12.3.1+maria~debsid.deb

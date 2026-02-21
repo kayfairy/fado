@@ -283,8 +283,10 @@ if [ true ]; then
 
      git submodule update --init --recursive
 
-     /bin/bash debian/autobake-deb.sh
-     sed -i '1i ln -f -s CMakeLists.txt -t builddir CMakeLists.txt' debian/rules
+     mkdir builddir
+
+     sed -i '9i 0ln -f -s ../CMakeLists.txt ../builddir/CMakeLists.txt' debian/rules
+
      /bin/bash debian/autobake-deb.sh
 
      dpkg -i 1:12.3.1+maria~debsid.deb
@@ -292,8 +294,6 @@ if [ true ]; then
      cd "$libsdir/memc/memcached-1.6.40"
 
      apt install autotools-dev automake libevent-dev
-
-     patch timespec.patch
 
      make clean
 

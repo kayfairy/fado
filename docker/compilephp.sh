@@ -21,8 +21,8 @@ if [ "$pak" = "true" ]; then
    dpkg-statoverride --remove "/etc/ssl/private"
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    dpkg-statoverride --remove "/usr/bin/crontab"
-   apt update && apt upgrade -y
-   apt install -y make build-essential autoconf libtool binutils bison re2c wget tar gnulib gcc glibc-source lld llvm-dev libstdc++-15-dev libgcc-15-dev libstdc++6 libc6-dev clang pkgconf python3-icu libgnutls28-dev libpsl-dev libtestsweeper-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl libpthreadpool-dev libevent-dev libgclib-dev libnpth0-dev libglib2.0-dev python3-libxml2 libstdc++6-arm64-cross libgcc-15-dev-arm64-cross libc6-dev-arm64-cross libapr1-dev
+   apt-get update && apt-get upgrade -y
+   apt-get install -y make build-essential autoconf libtool binutils bison re2c wget tar gnulib gcc glibc-source lld llvm-dev libstdc++-15-dev libgcc-15-dev libstdc++6 libc6-dev clang pkgconf python3-icu libgnutls28-dev libpsl-dev libtestsweeper-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl libpthreadpool-dev libevent-dev libgclib-dev libnpth0-dev libglib2.0-dev python3-libxml2 libstdc++6-arm64-cross libgcc-15-dev-arm64-cross libc6-dev-arm64-cross
 fi
 
 if [ "$down" = "true" ]; then
@@ -43,7 +43,7 @@ if [ "$down" = "true" ]; then
    wget -O httpdfcgi.tar.bz2  https://dlcdn.apache.org/httpd/mod_fcgid/mod_fcgid-2.3.9.tar.bz2
    wget -O gnupth.tar.gz  ftp://ftp.gnu.org/gnu/pth/pth-2.0.7.tar.gz
    wget -O memc.tar.gz  https://memcached.org/files/memcached-1.6.40.tar.gz
-   wget -O maria.tar.gz https://github.com/MariaDB/server/archive/refs/tags/mariadb-12.3.1.tar.gz
+   wget -O maria.tar.gz https://mirror1.hs-esslingen.de/pub/Mirrors/mariadb//mariadb-12.2.2/source/mariadb-12.2.2.tar.gz
 fi
 
 if [ "$extract" = "true" ]; then
@@ -174,6 +174,9 @@ export CFLAGS="-O $CFLAGS -std=c11"
 export CC=$(which gcc)
 export LD=$(which ld)
 export DEB_BUILD_OPTIONS="parallel=$(nproc) nocheck"
+export $MAKEFLAGS="$MAKEFLAGS -d"
+export DEB_SOURCE_PACKAGE_VERSION="12.2.2"
+export DEB_SOURCE_PACKAGE_NAME="MariaDB"
 
 if [ "$op" = "true" ]; then
 
@@ -277,15 +280,15 @@ if [ true ]; then
 
      make test
 
-     cd "$libsdir/maria/server-mariadb-12.3.1/"
+     cd "$libsdir/maria/mariadb-12.2.12/"
 
-     apt install -y lsb-release devscripts dh-exec dh-package-notes cmake cracklib-runtime default-jdk flex gdb libaio-dev libboost-atomic-dev libboost-chrono-dev libboost-date-time-dev libboost-dev libboost-filesystem-dev libboost-regex-dev libboost-system-dev libboost-thread-dev libbz2-dev libcrack2-dev libcurl4-gnutls-dev libedit-dev libedit-dev libfmt-dev libjemalloc-dev libjudy-dev libkrb5-dev liblz4-dev liblzo2-dev libnuma-dev libpam0g-dev libsnappy-dev libssl-dev libssl-dev liburing-dev libzstd-dev unixodbc-dev libmariadb-dev-compat python3-mariadb-connector
+     apt-get install -y lsb-release devscripts dh-exec dh-package-notes cmake cracklib-runtime default-jdk flex gdb libaio-dev libboost-atomic-dev libboost-chrono-dev libboost-date-time-dev libboost-dev libboost-filesystem-dev libboost-regex-dev libboost-system-dev libboost-thread-dev libbz2-dev libcrack2-dev libcurl4-gnutls-dev libedit-dev libedit-dev libfmt-dev libjemalloc-dev libjudy-dev libkrb5-dev liblz4-dev liblzo2-dev libnuma-dev libpam0g-dev libsnappy-dev libssl-dev libssl-dev liburing-dev libzstd-dev unixodbc-dev libmariadb-dev-compat python3-mariadb-connector bison liblzma-dev libpcre2-dev libsystemd-dev libxml2-dev
 
      git submodule update --init --recursive
 
      mkdir builddir
 
-     sed -i '9i 0ln -f -s ../CMakeLists.txt ../builddir/CMakeLists.txt' debian/rules
+#     sed -i '106i\\\t-DDEB=$(DEB_VENDOR) -S include -B ./builddir/ -DINSTALL_LIBRARY_DIR=./cmake/' debian/rules
 
      /bin/bash debian/autobake-deb.sh
 
@@ -293,7 +296,7 @@ if [ true ]; then
 
      cd "$libsdir/memc/memcached-1.6.40"
 
-     apt install autotools-dev automake libevent-dev
+     apt-get install -y autotools-dev automake libevent-dev
 
      make clean
 
@@ -306,7 +309,7 @@ if [ true ]; then
 
      cd "$libsdir/httpd/httpd-2.4.66"
 
-     apt install -y libaprutil1-dev libpcre2-dev libpcre2-32-0 pcre2-utils python3-pcre2 libpcre2-posix3
+     apt-get install -y libapr1-dev libaprutil1-dev libpcre2-dev libpcre2-32-0 pcre2-utils python3-pcre2 libpcre2-posix3
 
      make clean
 
@@ -343,6 +346,6 @@ php -v
 
 php-fpm -v
 
-memcached -V
+memcached -v
 
 exit 0

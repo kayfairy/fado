@@ -22,7 +22,7 @@ if [ "$pak" = "true" ]; then
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    dpkg-statoverride --remove "/usr/bin/crontab"
    apt-get update && apt-get upgrade -y
-   apt-get install -y make build-essential autoconf libtool binutils bison re2c wget tar gnulib gcc glibc-source lld llvm-dev libstdc++-15-dev libgcc-15-dev libstdc++6 libc6-dev clang pkgconf python3-icu libgnutls28-dev libpsl-dev libtestsweeper-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl libpthreadpool-dev libevent-dev libgclib-dev libnpth0-dev libglib2.0-dev python3-libxml2 libstdc++6-arm64-cross libgcc-15-dev-arm64-cross libc6-dev-arm64-cross
+   apt-get install -y make build-essential autoconf libtool binutils bison re2c wget tar gnulib gcc glibc-source lld llvm-dev libstdc++-14-dev libgcc-14-dev libstdc++6 libc6-dev clang pkgconf python3-icu libgnutls28-dev libpsl-dev libtestsweeper-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl libpthreadpool-dev libevent-dev libgclib-dev libnpth0-dev libglib2.0-dev python3-libxml2 libstdc++6-arm64-cross libgcc-14-dev-arm64-cross libc6-dev-arm64-cross libpthread-stubs0-dev
 fi
 
 if [ "$down" = "true" ]; then
@@ -84,7 +84,7 @@ if [ "$extract" = "true" ]; then
    cp "$libsdir/curl.tar.bz2" curl/
    cd curl/
    tar xvf curl.tar.bz2
-   cd "$libsdir/extr"
+6   cd "$libsdir/extr"
    mkdir sqlite
    cp "$libsdir/sqlite.tar.gz" sqlite/
    cd sqlite/
@@ -154,8 +154,8 @@ export ICU_CFLAGS="-I$libsdir/icu/icu/source/i18n -I$libsdir/icu/icu/source/comm
 export ICU_LIBS=-L$libsdir/icu/icu/source
 export ONIG_CFLAGS=-I$libsdir/oniguruma/onig-6.9.10/src
 export ONIG_LIBS=-L$libsdir/oniguruma/onig-6.9.10/src
-export ZLIB_CFLAGS=-I$libsdir/zlib/zlib-1.3.1/include
-export ZLIB_LIBS=-L$libsdir/zlib/zlib-1.3.1/lib
+export ZLIB_CFLAGS=-I$libsdir/zlib/zlib-1.3.2/include
+export ZLIB_LIBS=-L$libsdir/zlib/zlib-1.3.2/lib
 export INTL_CFLAGS=-I$libsdir/gettext/gettext-0.26/include
 export INTL_LIBS=-L$libsdir/gettext/gettext-0.26/lib
 export CURL_CFLAGS=-I$libsdir/curl/curl-8.17.0/include
@@ -169,12 +169,14 @@ export LIBS="-L/lib -L/usr/lib -L/usr/local/include -L/usr/include $GNU_PTH $LIB
 export LDFLAGS="-rdynamic -pthread $LIBS"
 export LD_LIBRARY_PATH="/lib:/usr/lib:/usr/include:/usr/local/include:$PKG_CONFIG_PATH"
 export PATH="$PATH:$LD_LIBRARY_PATH"
+export CXXFLAGS_ORIG=$CXXFLAGS
+export CFLAGS_ORIG=$CFLAGS
 export CXXFLAGS="-O $CXXFLAGS -std=c++17"
 export CFLAGS="-O $CFLAGS -std=c11"
 export CC=$(which gcc)
 export LD=$(which ld)
 export DEB_BUILD_OPTIONS="parallel=$(nproc) nocheck"
-export $MAKEFLAGS="$MAKEFLAGS -d"
+export MAKEFLAGS="$MAKEFLAGS -d"
 export DEB_SOURCE_PACKAGE_VERSION="12.2.2"
 export DEB_SOURCE_PACKAGE_NAME="MariaDB"
 
@@ -190,7 +192,9 @@ if [ "$op" = "true" ]; then
 
     ./configure --host=x86_64 --enable-pthread --build=arm
 
-    cd "$libsdir/zlib/zlib-1.3.1/"
+    make -j $(nproc)
+
+    cd "$libsdir/zlib/zlib-1.3.2/"
 
     ./configure
 
@@ -286,22 +290,24 @@ if [ true ]; then
 
      git submodule update --init --recursive
 
-     mkdir builddir
-
-#     sed -i '106i\\\t-DDEB=$(DEB_VENDOR) -S include -B ./builddir/ -DINSTALL_LIBRARY_DIR=./cmake/' debian/rules
-
      /bin/bash debian/autobake-deb.sh
 
-     dpkg -i 1:12.3.1+maria~debsid.deb
+     dpkg -i ../mariadb_12.2.2+maria~debsid.deb
 
      cd "$libsdir/memc/memcached-1.6.40"
+
+     export CXXFLAGS=$CXXFLAGS_ORIG
+     export CFLAGS=$CFLAGS_ORIG
 
      apt-get install -y autotools-dev automake libevent-dev
 
      make clean
 
      ./configure --prefix=/usr/local/bin \
-                 --enable-static
+            --enable-tls \
+            --disable-docs \
+            --disable-coverage \
+            --enable-static
 
      make -j $(nproc)
 

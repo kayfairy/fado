@@ -6,6 +6,7 @@
 # ./compilephp.sh $down_libs $extract_libs $install_pkgs $pre_compile_libs
 #
 # (x) debian:forky
+# (x) debian:trixie
 #
 
 down=$1
@@ -22,7 +23,7 @@ if [ "$pak" = "true" ]; then
    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
    dpkg-statoverride --remove "/usr/bin/crontab"
    apt-get update && apt-get upgrade -y
-   apt-get install -y make build-essential autoconf libtool binutils bison re2c wget tar gnulib gcc glibc-source lld llvm-dev libstdc++-14-dev libgcc-14-dev libstdc++6 libc6-dev clang pkgconf python3-icu libgnutls28-dev libpsl-dev libtestsweeper-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl libpthreadpool-dev libevent-dev libgclib-dev libnpth0-dev libglib2.0-dev python3-libxml2 libstdc++6-arm64-cross libgcc-14-dev-arm64-cross libc6-dev-arm64-cross libpthread-stubs0-dev
+   apt-get install -y make build-essential autoconf libtool binutils bison re2c wget tar gnulib gcc glibc-source lld llvm-dev libstdc++-14-dev libgcc-14-dev libstdc++6 libc6-dev clang pkgconf python3-icu libgnutls28-dev libpsl-dev libtestsweeper-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl libpthreadpool-dev libevent-dev libgclib-dev libnpth0-dev libglib2.0-dev python3-libxml2 libpthread-stubs0-dev
 fi
 
 if [ "$down" = "true" ]; then
@@ -44,6 +45,7 @@ if [ "$down" = "true" ]; then
    wget -O gnupth.tar.gz  ftp://ftp.gnu.org/gnu/pth/pth-2.0.7.tar.gz
    wget -O memc.tar.gz  https://memcached.org/files/memcached-1.6.40.tar.gz
    wget -O maria.tar.gz https://mirror1.hs-esslingen.de/pub/Mirrors/mariadb//mariadb-12.2.2/source/mariadb-12.2.2.tar.gz
+   wget -O libevent.tar.gz  https://github.com/libevent/libevent/releases/download/release-2.1.12-stable/libevent-2.1.12-stable.tar.gz
 fi
 
 if [ "$extract" = "true" ]; then
@@ -84,7 +86,7 @@ if [ "$extract" = "true" ]; then
    cp "$libsdir/curl.tar.bz2" curl/
    cd curl/
    tar xvf curl.tar.bz2
-6   cd "$libsdir/extr"
+   cd "$libsdir/extr"
    mkdir sqlite
    cp "$libsdir/sqlite.tar.gz" sqlite/
    cd sqlite/
@@ -121,6 +123,11 @@ if [ "$extract" = "true" ]; then
    cd memc/
    tar xf memc.tar.gz
    cd "$libsdir/extr"
+   mkdir libevent
+   cp "$libsdir/libevent.tar.gz" libevent/
+   cd libevent/
+   tar xfzf libevent.tar.gz
+   cd "$libsdir/extr"
    rm -r php/
    mkdir php
    cp "$libsdir/php.tar.bz2" php/
@@ -143,7 +150,6 @@ export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/oniguruma/onig-6.9.10/src
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/icu/icu/source/i18n
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/icu/icu/source/common
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/icu/icu/source/io
-export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$(find /usr/include -name time.h | grep -v -E ".+?(sys|linux).+" -m  1)
 export LIBXML_CFLAGS=-I$libsdir/libxml/libxml2-2.15.1/include
 export LIBXML_LIBS=-L$libsdir/libxml/libxml2-2.15.1
 export OPENSSL_CFLAGS=-I$libsdir/openssl/openssl-3.5.1/include
@@ -305,6 +311,8 @@ if [ true ]; then
 
      ./configure --prefix=/usr/local/bin \
             --enable-tls \
+            --with-libssl="$libsdir/openssl/openssl-3.5.1/" \
+            --with-libevent="$libsdir/libevent/libevent-release-2.1.12-stable"
             --disable-docs \
             --disable-coverage \
             --enable-static

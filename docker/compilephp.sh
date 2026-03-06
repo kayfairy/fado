@@ -140,6 +140,7 @@ fi
 
 libsdir="$libsdir/extr"
 
+export libsdir=$libsdir
 export SYSTEMD_LIBS=/usr/lib/systemd
 export PKG_CONFIG_PATH=/usr/lib/pkgconfig
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/openssl/openssl-3.5.1/libcrypto.pc
@@ -172,13 +173,16 @@ export NTP_LIBS=-L$libsdir/ntp/ntp-4.2.8p18/lib
 export NTP_CFLAGS=-I$libsdir/ntp/ntp-4.2.8p18/include
 export GNU_PTH=-L$libsdir/gnupth/pth-2.0.7
 export LIBS="-L/lib -L/usr/lib -L/usr/local/include -L/usr/include $GNU_PTH $LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
-export LDFLAGS="-rdynamic -pthread $LIBS"
+export LDFLAGS="-rdynamic -lpthread $LIBS"
 export LD_LIBRARY_PATH="/lib:/usr/lib:/usr/include:/usr/local/include:$PKG_CONFIG_PATH"
 export PATH="$PATH:$LD_LIBRARY_PATH"
 export CXXFLAGS_ORIG=$CXXFLAGS
 export CFLAGS_ORIG=$CFLAGS
-export CXXFLAGS="-O $CXXFLAGS -std=c++17"
-export CFLAGS="-O $CFLAGS -std=c11"
+export CXXFLAGS="-O -std=c++11 -std=gnu++11 $CXXFLAGS"
+export CFLAGS="-O -std=c11 -std=gnu11 $CFLAGS"
+export PHP_INTL_STDCXX=17
+export ICU_CXXFLAGS="$ICU_CXXFLAGS -std=c++17"
+export PHP_CXX_COMPILE_STDCXX=17
 export CC=$(which gcc)
 export LD=$(which ld)
 export DEB_BUILD_OPTIONS="parallel=$(nproc) nocheck"
@@ -192,7 +196,7 @@ if [ "$op" = "true" ]; then
 
     ./Configure
 
-#    make -j $(nproc)
+    make -j $(nproc)
 
     cd "$libsdir/gnupth/pth-2.0.7"
 
@@ -250,6 +254,11 @@ if [ "$op" = "true" ]; then
 
     make -j $(nproc)
 
+    cd "$libsdir/libevent/libevent-release-2.1.12-stable"
+
+    ./configure
+
+    make -j $(nproc)
 fi
 
 if [ true ]; then
@@ -276,6 +285,8 @@ if [ true ]; then
             --enable-mbstring \
             --enable-cli \
             --enable-soap \
+            --host=x86_64 \
+            --target=aarch64 \
             --disable-cgi \
             --disable-debug \
             --disable-phpdbg-debug \
@@ -292,7 +303,7 @@ if [ true ]; then
 
      cd "$libsdir/maria/mariadb-12.2.12/"
 
-     apt-get install -y lsb-release devscripts dh-exec dh-package-notes cmake cracklib-runtime default-jdk flex gdb libaio-dev libboost-atomic-dev libboost-chrono-dev libboost-date-time-dev libboost-dev libboost-filesystem-dev libboost-regex-dev libboost-system-dev libboost-thread-dev libbz2-dev libcrack2-dev libcurl4-gnutls-dev libedit-dev libedit-dev libfmt-dev libjemalloc-dev libjudy-dev libkrb5-dev liblz4-dev liblzo2-dev libnuma-dev libpam0g-dev libsnappy-dev libssl-dev libssl-dev liburing-dev libzstd-dev unixodbc-dev libmariadb-dev-compat python3-mariadb-connector bison liblzma-dev libpcre2-dev libsystemd-dev libxml2-dev
+     apt-get install -y lsb-release devscripts dh-exec dh-package-notes cmake cracklib-runtime default-jdk flex gdb libaio-dev libboost-atomic-dev libboost-chrono-dev libboost-date-time-dev libboost-dev libboost-filesystem-dev libboost-regex-dev libboost-system-dev libboost-thread-dev libbz2-dev libcrack2-dev libcurl4-gnutls-dev libedit-dev libedit-dev libfmt-dev libjemalloc-dev libjudy-dev libkrb5-dev liblz4-dev liblzo2-dev libnuma-dev libpam0g-dev libsnappy-dev libssl-dev libssl-dev liburing-dev libzstd-dev unixodbc-dev libmariadb-dev-compat python3-mariadb-connector bison liblzma-dev libpcre2-dev libsystemd-dev libxml2-dev git
 
      git submodule update --init --recursive
 

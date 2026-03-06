@@ -11,6 +11,6 @@ fi
 apt update
 apt upgrade -y
 apt install -y fish
-/bin/bash -f /var/www/html/docker/deploy-forky.sh true
+#/bin/bash -f /var/www/html/docker/deploy-forky.sh true
 /bin/fish
 exit 0

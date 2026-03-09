@@ -19,11 +19,46 @@ libsdir="/var/www/html/libs"
 cd $libsdir
 
 if [ "$pak" = "true" ]; then
-   dpkg-statoverride --remove "/etc/ssl/private"
-   dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
-   dpkg-statoverride --remove "/usr/bin/crontab"
-   apt-get update && apt-get upgrade -y
-   apt-get install -y make build-essential autoconf libtool binutils bison re2c wget tar gnulib gcc glibc-source lld llvm-dev libstdc++-14-dev libgcc-14-dev libstdc++6 libc6-dev clang pkgconf python3-icu libgnutls28-dev libpsl-dev libtestsweeper-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl libpthreadpool-dev libevent-dev libgclib-dev libnpth0-dev libglib2.0-dev python3-libxml2 libpthread-stubs0-dev
+    dpkg-statoverride --remove "/etc/ssl/private"
+    dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
+    dpkg-statoverride --remove "/usr/bin/crontab"
+    apt-get update && apt-get upgrade -y
+    apt-get install -y make build-essential autoconf libtool binutils bison re2c wget tar gnulib gcc glibc-source lld llvm-dev libstdc++-14-dev libgcc-14-dev libstdc++6 libc6-dev clang pkgconf python3-icu libgnutls28-dev libpsl-dev libtestsweeper-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl libpthreadpool-dev libevent-dev libgclib-dev libnpth0-dev libglib2.0-dev python3-libxml2 libpthread-stubs0-dev locales
+
+    locale-gen tr_TR.UTF-8
+    locale-gen tr_TR
+    locale-gen de_DE.UTF-8
+    locale-gen de_DE
+    locale-gen en_GB.UTF-8
+    locale-gen en_GB
+    locale-gen es_ES.UTF-8
+    locale-gen es_ES
+    locale-gen nl_NL.UTF-8
+    locale-gen nl_NL
+    locale-gen fr_FR.UTF-8
+    locale-gen fr_FR
+    locale-gen fa_IR.UTF-8
+    locale-gen fa_IR
+    locale-gen iw_IL.UTF-8
+    locale-gen iw_IL
+    locale-gen ar_AR.UTF-8
+    locale-gen ar_AR
+    locale-gen ru_RU.UTF-8
+    locale-gen ru_RU
+    localedef -f UTF-8 -i tr_TR tr_TR.utf8
+    localedef -f UTF-8 -i de_DE de_DE.utf8
+    localedef -f UTF-8 -i en_GB en_GB.utf8
+    localedef -f UTF-8 -i es_ES es_ES.utf8
+    localedef -f UTF-8 -i nl_NL nl_NL.utf8
+    localedef -f UTF-8 -i fr_FR fr_FR.utf8
+    localedef -f UTF-8 -i fa_IR fa_IR.utf8
+    localedef -f UTF-8 -i iw_IL iw_IL.utf8
+    localedef -f UTF-8 -i ar_AR ar_AR.utf8
+    localedef -f UTF-8 -i ru_RU ru_RU.utf8
+    export LC_ALL=es_ES.utf8
+    update-locale
+    locale -a
+
 fi
 
 if [ "$down" = "true" ]; then
@@ -41,7 +76,6 @@ if [ "$down" = "true" ]; then
    wget -O sqlite.tar.gz  https://sqlite.org/2025/sqlite-autoconf-3510100.tar.gz
    wget -O ntp.tar.gz  https://downloads.nwtime.org/ntp/ntp-4.2.8p18.tar.gz
    wget -O httpd.tar.bz2  https://dlcdn.apache.org/httpd/httpd-2.4.66.tar.bz2
-   wget -O httpdfcgi.tar.bz2  https://dlcdn.apache.org/httpd/mod_fcgid/mod_fcgid-2.3.9.tar.bz2
    wget -O gnupth.tar.gz  ftp://ftp.gnu.org/gnu/pth/pth-2.0.7.tar.gz
    wget -O memc.tar.gz  https://memcached.org/files/memcached-1.6.40.tar.gz
    wget -O maria.tar.gz https://mirror1.hs-esslingen.de/pub/Mirrors/mariadb//mariadb-12.2.2/source/mariadb-12.2.2.tar.gz
@@ -113,11 +147,6 @@ if [ "$extract" = "true" ]; then
    cd httpd/
    tar xvf httpd.tar.bz2
    cd "$libsdir/extr"
-   mkdir httpdfcgi
-   cp "$libsdir/httpdfcgi.tar.bz2" httpdfcgi/
-   cd httpdfcgi/
-   tar xvf httpdfcgi.tar.bz2
-   cd "$libsdir/extr"
    mkdir memc
    cp "$libsdir/memc.tar.gz" memc/
    cd memc/
@@ -133,9 +162,9 @@ if [ "$extract" = "true" ]; then
    cp "$libsdir/php.tar.bz2" php/
    cd php/
    tar xvf php.tar.bz2
-   cd php-8.5.2/
+   cd php-8.4.18/
 elif [ true ]; then
-   cd "$libsdir/extr/php/php-8.5.2/"
+   cd "$libsdir/extr/php/php-8.4.18/"
 fi
 
 libsdir="$libsdir/extr"
@@ -178,15 +207,13 @@ export LD_LIBRARY_PATH="/lib:/usr/lib:/usr/include:/usr/local/include:$PKG_CONFI
 export PATH="$PATH:$LD_LIBRARY_PATH"
 export CXXFLAGS_ORIG=$CXXFLAGS
 export CFLAGS_ORIG=$CFLAGS
-export CXXFLAGS="-O -std=c++11 -std=gnu++11 $CXXFLAGS"
-export CFLAGS="-O -std=c11 -std=gnu11 $CFLAGS"
+export CXXFLAGS="-O2 -std=c++11 $CXXFLAGS"
+export CFLAGS="-O2 -std=c11 -std=gnu99 $CFLAGS"
 export PHP_INTL_STDCXX=17
-export ICU_CXXFLAGS="$ICU_CXXFLAGS -std=c++17"
-export PHP_CXX_COMPILE_STDCXX=17
+export ICU_CXXFLAGS="-std=c++17 $ICU_CXXFLAGS"
 export CC=$(which gcc)
 export LD=$(which ld)
 export DEB_BUILD_OPTIONS="parallel=$(nproc) nocheck"
-export MAKEFLAGS="$MAKEFLAGS -d"
 export DEB_SOURCE_PACKAGE_VERSION="12.2.2"
 export DEB_SOURCE_PACKAGE_NAME="MariaDB"
 
@@ -263,7 +290,7 @@ fi
 
 if [ true ]; then
 
-    cd "$libsdir/php/php-8.5.2/"
+    cd "$libsdir/php/php-8.4.18/"
 
     make clean
 
@@ -309,7 +336,7 @@ if [ true ]; then
 
      /bin/bash debian/autobake-deb.sh
 
-     dpkg -i ../mariadb_12.2.2+maria~debsid.deb
+     dpkg -i ../mariadb_12.2.2+maria~deb13.deb
 
      cd "$libsdir/memc/memcached-1.6.40"
 
@@ -354,14 +381,6 @@ if [ true ]; then
                  --with-pcre=/usr/bin/pcre2-config
 
      make -j $(nproc)
-
-     make install
-
-     cd "$libsdir/httpdfcgi/mod_fcgid-2.3.9"
-
-     ./configure
-
-     make
 
      make install
 

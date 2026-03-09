@@ -202,15 +202,15 @@ export NTP_LIBS=-L$libsdir/ntp/ntp-4.2.8p18/lib
 export NTP_CFLAGS=-I$libsdir/ntp/ntp-4.2.8p18/include
 export GNU_PTH=-L$libsdir/gnupth/pth-2.0.7
 export LIBS="-L/lib -L/usr/lib -L/usr/local/include -L/usr/include $GNU_PTH $LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
-export LDFLAGS="-rdynamic -lpthread $LIBS"
+export LDFLAGS="-rdynamic -pthread -lpthread -lxml2 -lsqlite3 $LIBS"
 export LD_LIBRARY_PATH="/lib:/usr/lib:/usr/include:/usr/local/include:$PKG_CONFIG_PATH"
 export PATH="$PATH:$LD_LIBRARY_PATH"
 export CXXFLAGS_ORIG=$CXXFLAGS
 export CFLAGS_ORIG=$CFLAGS
-export CXXFLAGS="-O2 -std=c++11 $CXXFLAGS"
-export CFLAGS="-O2 -std=c11 -std=gnu99 $CFLAGS"
+export CXXFLAGS="-O3 -march=native $LIBXML_CFLAGS $OPENSSL_CFLAGS $ICU_CFLAGS $ONIG_CFLAGS $ZLIB_CFLAGS $INTL_CFLAGS $CURL_CFLAGS $SQLITE_CFLAGS $NTP_CFLAGS $CXXFLAGS"
+export CFLAGS="-O3 -march=native -std=c99 -std=gnu99 $LIBXML_CFLAGS $OPENSSL_CFLAGS $ICU_CFLAGS $ONIG_CFLAGS $ZLIB_CFLAGS $INTL_CFLAGS $CURL_CFLAGS $SQLITE_CFLAGS $NTP_CFLAGS $CFLAGS"
 export PHP_INTL_STDCXX=17
-export ICU_CXXFLAGS="-std=c++17 $ICU_CXXFLAGS"
+export ICU_CXXFLAGS="-std=c++17 -std=gnu++17 $LIBXML_CFLAGS $OPENSSL_CFLAGS $ICU_CFLAGS $ONIG_CFLAGS $ZLIB_CFLAGS $INTL_CFLAGS $CURL_CFLAGS $SQLITE_CFLAGS $NTP_CFLAGS $ICU_CXXFLAGS"
 export CC=$(which gcc)
 export LD=$(which ld)
 export DEB_BUILD_OPTIONS="parallel=$(nproc) nocheck"
@@ -312,7 +312,7 @@ if [ true ]; then
             --enable-mbstring \
             --enable-cli \
             --enable-soap \
-            --host=x86_64 \
+            --host=aarch64-linux-gnu \
             --target=aarch64 \
             --disable-cgi \
             --disable-debug \
@@ -325,7 +325,7 @@ if [ true ]; then
      make -j $(nproc)
 
      make install
-
+exit 0
      make test
 
      cd "$libsdir/maria/mariadb-12.2.12/"

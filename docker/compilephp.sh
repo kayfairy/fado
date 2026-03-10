@@ -227,7 +227,7 @@ if [ "$op" = "true" ]; then
 
     cd "$libsdir/gnupth/pth-2.0.7"
 
-    ./configure --host=x86_64 --enable-pthread --build=arm
+    ./configure --enable-pthread --host=x86_64 --target=aarch64 --build=arm
 
     make -j $(nproc)
 
@@ -290,7 +290,10 @@ fi
 
 if [ true ]; then
 
-    cd "$libsdir/php/php-8.4.18/"
+#    rm "$libsdir/php/php-8.4.18"
+    cd "$libsdir/php"
+ #   tar xvfz php-8.4.18.tar.gz
+    cd "$libsdir/php/php-8.5.2/"
 
     make clean
 
@@ -319,8 +322,16 @@ if [ true ]; then
             --disable-phpdbg-debug \
             --prefix="/usr/local/bin" \
             --with-libdir=lib64 \
-            --with-libdir=$libsdir/sqlite/sqlite-autoconf-3510100 \
-            --with-libdir=$libsdir/libxml/libxml2-2.15.1/include
+            --with-libdir=$libsdir/sqlite/sqlite-autoconf-3510100/lib \
+            --with-libdir=$libsdir/libxml/libxml2-2.15.1 \
+            --with-libdir=$libsdir/icu/icu/source/common \
+            --with-libdir=$libsdir/icu/icu/source/io \
+            --with-libdir=$libsdir/icu/icu/source/i18n \
+            --with-libdir=$libsdir/oniguruma/onig-6.9.10/src \
+            --with-libdir=$libsdir/gettext/gettext-0.26/lib \
+            --with-libdir=$libsdir/openssl/openssl-3.5.1/lib \
+            --with-libdir=$libsdir/curl/curl-8.17.0/lib \
+            --with-libdir=$libsdir/zlib/zlib-1.3.2/lib
 
      make -j $(nproc)
 

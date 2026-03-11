@@ -23,7 +23,7 @@ if [ "$pak" = "true" ]; then
     dpkg-statoverride --remove "/usr/lib/dbus-1.0/dbus-daemon-launch-helper"
     dpkg-statoverride --remove "/usr/bin/crontab"
     apt-get update && apt-get upgrade -y
-    apt-get install -y make build-essential autoconf libtool binutils bison re2c wget tar gnulib gcc glibc-source lld llvm-dev libstdc++-14-dev libgcc-14-dev libstdc++6 libc6-dev clang pkgconf python3-icu libgnutls28-dev libpsl-dev libtestsweeper-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl libpthreadpool-dev libevent-dev libgclib-dev libnpth0-dev libglib2.0-dev python3-libxml2 libpthread-stubs0-dev locales
+    apt-get install -y make build-essential autoconf libtool binutils bison re2c wget tar gnulib gcc glibc-source lld llvm-dev libstdc++-14-dev libgcc-14-dev libstdc++6 libc6-dev clang pkgconf python3-icu libgnutls28-dev libpsl-dev libtestsweeper-dev libselinux-dev libapparmor-dev libsystemd-dev libacl1-dev python3-pylibacl libpthreadpool-dev libevent-dev libgclib-dev libnpth0-dev libglib2.0-dev python3-libxml2 libpthread-stubs0-dev locales cmake
 
     locale-gen tr_TR.UTF-8
     locale-gen tr_TR
@@ -164,7 +164,7 @@ if [ "$extract" = "true" ]; then
    tar xvf php.tar.bz2
    cd php-8.4.18/
 elif [ true ]; then
-   cd "$libsdir/extr/php/php-8.4.18/"
+   cd "$libsdir/extr/php/php-8.5.2/"
 fi
 
 libsdir="$libsdir/extr"
@@ -173,6 +173,7 @@ export libsdir=$libsdir
 export SYSTEMD_LIBS=/usr/lib/systemd
 export PKG_CONFIG_PATH=/usr/lib/pkgconfig
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/openssl/openssl-3.5.1/libcrypto.pc
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/openssl/openssl-3.5.1
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/libxml/libxml2-2.15.1
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/sqlite/sqlite-autoconf-3510100
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$libsdir/zlib/zlib-1.3.1/lib
@@ -202,17 +203,17 @@ export NTP_LIBS=-L$libsdir/ntp/ntp-4.2.8p18/lib
 export NTP_CFLAGS=-I$libsdir/ntp/ntp-4.2.8p18/include
 export GNU_PTH=-L$libsdir/gnupth/pth-2.0.7
 export LIBS="-L/lib -L/usr/lib -L/usr/local/include -L/usr/include $GNU_PTH $LIBXML_LIBS $OPENSSL_LIBS $ICU_LIBS $ONIG_LIBS $ZLIB_LIBS $INTL_LIBS $CURL_LIBS $SQLITE_LIBS $NTP_LIBS"
-export LDFLAGS="-rdynamic -pthread -lpthread -lxml2 -lsqlite3 $LIBS"
+export LDFLAGS="-lpthread -lxml2 -lsqlite3 $LIBS $LIBXML_CFLAGS $OPENSSL_CFLAGS $ICU_CFLAGS $ONIG_CFLAGS $ZLIB_CFLAGS $INTL_CFLAGS $CURL_CFLAGS $SQLITE_CFLAGS $NTP_CFLAGS"
 export LD_LIBRARY_PATH="/lib:/usr/lib:/usr/include:/usr/local/include:$PKG_CONFIG_PATH"
 export PATH="$PATH:$LD_LIBRARY_PATH"
 export CXXFLAGS_ORIG=$CXXFLAGS
 export CFLAGS_ORIG=$CFLAGS
-export CXXFLAGS="-O3 -march=native $LIBXML_CFLAGS $OPENSSL_CFLAGS $ICU_CFLAGS $ONIG_CFLAGS $ZLIB_CFLAGS $INTL_CFLAGS $CURL_CFLAGS $SQLITE_CFLAGS $NTP_CFLAGS $CXXFLAGS"
-export CFLAGS="-O3 -march=native -std=c99 -std=gnu99 $LIBXML_CFLAGS $OPENSSL_CFLAGS $ICU_CFLAGS $ONIG_CFLAGS $ZLIB_CFLAGS $INTL_CFLAGS $CURL_CFLAGS $SQLITE_CFLAGS $NTP_CFLAGS $CFLAGS"
+export CXXFLAGS="-O3 -fPIC -march=native $LIBXML_CFLAGS $OPENSSL_CFLAGS $ICU_CFLAGS $ONIG_CFLAGS $ZLIB_CFLAGS $INTL_CFLAGS $CURL_CFLAGS $SQLITE_CFLAGS $NTP_CFLAGS $CXXFLAGS"
+export CFLAGS="-O3 -fPIC -march=native $LIBXML_CFLAGS $OPENSSL_CFLAGS $ICU_CFLAGS $ONIG_CFLAGS $ZLIB_CFLAGS $INTL_CFLAGS $CURL_CFLAGS $SQLITE_CFLAGS $NTP_CFLAGS $CFLAGS"
 export PHP_INTL_STDCXX=17
-export ICU_CXXFLAGS="-std=c++17 -std=gnu++17 $LIBXML_CFLAGS $OPENSSL_CFLAGS $ICU_CFLAGS $ONIG_CFLAGS $ZLIB_CFLAGS $INTL_CFLAGS $CURL_CFLAGS $SQLITE_CFLAGS $NTP_CFLAGS $ICU_CXXFLAGS"
-export CC=$(which gcc)
-export LD=$(which ld)
+export ICU_CXXFLAGS="-std=c++17 $LIBXML_CFLAGS $OPENSSL_CFLAGS $ICU_CFLAGS $ONIG_CFLAGS $ZLIB_CFLAGS $INTL_CFLAGS $CURL_CFLAGS $SQLITE_CFLAGS $NTP_CFLAGS $ICU_CXXFLAGS"
+export CC="/usr/bin/aarch64-linux-gnu-gcc"
+export LD="/usr/bin/aarch64-linux-gnu-ld -shared -pie $LIBS"
 export DEB_BUILD_OPTIONS="parallel=$(nproc) nocheck"
 export DEB_SOURCE_PACKAGE_VERSION="12.2.2"
 export DEB_SOURCE_PACKAGE_NAME="MariaDB"
@@ -243,9 +244,19 @@ if [ "$op" = "true" ]; then
 
     make -j $(nproc)
 
+    cd "$libsdir/libevent/libevent-release-2.1.12-stable"
+
+    mkdir build && cd build
+
+    cmake .. -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+
+    ./configure --host=aarch64-linux-gnu
+
+    make -j $(nproc)
+
     cd "$libsdir/ntp/ntp-4.2.8p18"
 
-    ./configure --with-crypto=openssl --with-openssl-libdir=$libsdir/openssl/openssl-3.5.1 --with-openssl-incdir=$libsdir/openssl/openssl-3.5.1/include
+    ./configure --with-crypto --with-openssl-libdir=$libsdir/openssl/openssl-3.5.1 --with-openssl-incdir=$libsdir/openssl/openssl-3.5.1/include --enable-local-libevent=$libsdir/libevent/libevent-release-2.1.12-stable --without-threads
 
     make -j $(nproc)
 
@@ -281,18 +292,13 @@ if [ "$op" = "true" ]; then
 
     make -j $(nproc)
 
-    cd "$libsdir/libevent/libevent-release-2.1.12-stable"
-
-    ./configure
-
-    make -j $(nproc)
 fi
 
 if [ true ]; then
 
-#    rm "$libsdir/php/php-8.4.18"
-    cd "$libsdir/php"
- #   tar xvfz php-8.4.18.tar.gz
+#    rm -r "$libsdir/php/php-8.5.2"
+#    cd "$libsdir/php"
+#    tar xvf php.tar.bz2
     cd "$libsdir/php/php-8.5.2/"
 
     make clean
@@ -310,6 +316,8 @@ if [ true ]; then
             --with-mysql-sock="/var/mysqld/mysqld.pid" \
             --with-libxml=shared \
             --with-zlib \
+            --enable-libgcc \
+            --with-gnu-ld \
             --enable-calendar \
             --enable-intl \
             --enable-mbstring \
@@ -321,17 +329,7 @@ if [ true ]; then
             --disable-debug \
             --disable-phpdbg-debug \
             --prefix="/usr/local/bin" \
-            --with-libdir=lib64 \
-            --with-libdir=$libsdir/sqlite/sqlite-autoconf-3510100/lib \
-            --with-libdir=$libsdir/libxml/libxml2-2.15.1 \
-            --with-libdir=$libsdir/icu/icu/source/common \
-            --with-libdir=$libsdir/icu/icu/source/io \
-            --with-libdir=$libsdir/icu/icu/source/i18n \
-            --with-libdir=$libsdir/oniguruma/onig-6.9.10/src \
-            --with-libdir=$libsdir/gettext/gettext-0.26/lib \
-            --with-libdir=$libsdir/openssl/openssl-3.5.1/lib \
-            --with-libdir=$libsdir/curl/curl-8.17.0/lib \
-            --with-libdir=$libsdir/zlib/zlib-1.3.2/lib
+            --with-libdir=/usr/lib
 
      make -j $(nproc)
 
@@ -364,7 +362,9 @@ exit 0
             --with-libevent="$libsdir/libevent/libevent-release-2.1.12-stable"
             --disable-docs \
             --disable-coverage \
-            --enable-static
+            --enable-static \
+            --host=aarch64-linux-gnu \
+            --target=aarch64
 
      make -j $(nproc)
 
@@ -385,7 +385,7 @@ exit 0
                  --enable-proxy-fcgi \
                  --enable-heartbeat \
                  --enable-heartbeatmonitor \
-                 --host=x86_64 \
+                 --host=aarch64-linux-gnu \
                  --target=aarch64 \
                  --with-curl=$libsdir/curl/curl-8.17.0 \
                  --with-libxml2=$libsdir/libxml/libxml2-2.15.1 \
